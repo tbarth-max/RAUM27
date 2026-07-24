@@ -1,0 +1,62 @@
+"""RAUM27 mathematical core: rational-space geometry and fractal attractors.
+
+This package implements the parts of the RAUM27 notes that are ordinary,
+checkable mathematics (a multiplicative group of positive rationals, a
+3-adic/9-adic scale hierarchy, cube symmetry, iterated function systems,
+and a rational Taylor approximation of sine).
+
+It deliberately does NOT implement the predictive or metaphysical claims
+found in the source notes (forecasting random draws, "resonance",
+"consciousness", or any claim of physical signal transfer). Those claims
+are either unfalsifiable or contradict basic probability theory, and are
+out of scope for a benchmarkable codebase.
+"""
+
+from raum27.rational_space import involution, is_fixed_point
+from raum27.scale_hierarchy import area_scale, digital_root, linear_scale, volume_scale
+from raum27.cube_symmetry import (
+    corner_directions,
+    coupling_constant,
+    face_directions,
+    vector_equilibrium,
+)
+from raum27.ifs_attractor import AffineMap, IFS
+from raum27.taylor import sin_taylor
+from raum27.lotto_benchmark import (
+    FingerprintKNNPredictor,
+    RandomPredictor,
+    backtest,
+    expected_matches,
+    match_probability,
+    permutation_test,
+)
+from raum27.autocorrelation_control import (
+    PersistencePredictor,
+    permutation_test_continuous,
+    simulate_ar1,
+)
+
+__all__ = [
+    "involution",
+    "is_fixed_point",
+    "linear_scale",
+    "area_scale",
+    "volume_scale",
+    "digital_root",
+    "face_directions",
+    "corner_directions",
+    "vector_equilibrium",
+    "coupling_constant",
+    "AffineMap",
+    "IFS",
+    "sin_taylor",
+    "FingerprintKNNPredictor",
+    "RandomPredictor",
+    "backtest",
+    "expected_matches",
+    "match_probability",
+    "permutation_test",
+    "PersistencePredictor",
+    "permutation_test_continuous",
+    "simulate_ar1",
+]

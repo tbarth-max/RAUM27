@@ -1,0 +1,8 @@
+[project]
+name = "raum27"
+version = "0.1.0"
+description = "Rational-space geometry and fractal attractors: the checkable mathematical core extracted from the RAUM27 notes."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
