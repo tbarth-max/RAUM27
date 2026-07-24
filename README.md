@@ -45,20 +45,67 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (47 tests, all mathematical claims above
-are verified, not asserted).
+Run the test suite with `pytest` (54 tests, all mathematical claims in
+this README are verified, not asserted).
 
-### What this deliberately excludes
+## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
 
-The source notes also describe using this geometry to *predict* random
-draws (lottery-style numbers), and frame the system in terms of
-"resonance," "holography," and AI "consciousness." Those claims are out
-of scope here:
+The source notes describe using the fingerprint above to *predict*
+lottery-style draws. Whether that has any real signal cannot be argued
+away in prose — the project's own principle says to benchmark it, so
+this module does exactly that, and reports the result honestly either
+way.
 
-- Predicting independent random draws from their geometric encoding
-  cannot outperform chance, by definition of statistical independence —
-  no amount of feature engineering changes that. Per this project's own
-  principle above, that idea does not stay unless it is benchmarked and
-  shown to beat a random baseline; it hasn't been, and it won't be.
-- Claims about physical "resonance," instantaneous coupling, or AI
-  consciousness are not represented in this codebase.
+**Why a lottery, specifically:** verifying a forecasting method against a
+slow, causally-connected system (e.g. a climate model) can take decades
+before ground truth is known. A certified lottery draw is the opposite —
+fast feedback, and by construction an i.i.d. uniform random process with
+zero mutual information between draws. That makes it a useful *null
+test*: a method that fabricates false-positive structure out of pure
+noise (the standard failure mode of an overfit forecasting pipeline)
+should reveal that here, immediately, instead of only decades into a real
+forecast.
+
+**What it contains:**
+
+- `match_probability(m)` — the exact hypergeometric baseline. Worth
+  stating precisely because it's easy to misremember: P(3 of 6 matches
+  in 6-aus-49) ≈ **1.76%**, not 5%. The whole benchmark is only as
+  correct as this baseline.
+- `RandomPredictor` — the zero-information baseline.
+- `FingerprintKNNPredictor` — the fingerprint + k-nearest-neighbours
+  forecaster from the source notes, implemented exactly as specified
+  (rational Taylor-sine fingerprint, L1 nearest neighbours,
+  inverse-distance-weighted vote on the neighbours' successors).
+- `backtest` — walk-forward evaluation (predicts draw t from draws
+  `[:t]` only, never with lookahead).
+- `permutation_test` — shuffles the draw order to build a null
+  distribution and reports a p-value for "does this predictor's
+  performance exceed what shuffled, structure-free data would produce."
+
+**Result, run on synthetic i.i.d. random draws (`tests/test_lotto_benchmark.py`):**
+the fingerprint/k-NN predictor shows **no statistically significant
+edge** over the random baseline (p > 0.05). This is not a bug in the
+implementation — it is the mathematically expected outcome of applying
+any function of history to a process with provably zero mutual
+information between past and future draws, and the benchmark's job is to
+demonstrate that honestly rather than assume it.
+
+**What this does and does not establish:**
+
+- It shows this specific algorithm does not manufacture a fake edge out
+  of pure noise, which is a reasonable prerequisite before trusting it on
+  anything else — a sanity check, not proof of general forecasting
+  ability.
+- It says nothing about causally-connected systems (weather, climate,
+  markets with real autocorrelation). Those have physical structure a
+  certified lottery deliberately has none of; a result on one does not
+  transfer to the other in either direction.
+- **This is not a gambling tool.** An apparent "edge" on a small
+  historical sample is expected sampling noise unless it survives
+  permutation testing *and* replicates on data collected after the
+  method was fixed. Do not use this to make wagering decisions.
+
+Claims about physical "resonance," instantaneous coupling, or AI
+consciousness from the source notes are still not represented anywhere
+in this codebase.

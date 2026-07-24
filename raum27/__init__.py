@@ -22,6 +22,14 @@ from raum27.cube_symmetry import (
 )
 from raum27.ifs_attractor import AffineMap, IFS
 from raum27.taylor import sin_taylor
+from raum27.lotto_benchmark import (
+    FingerprintKNNPredictor,
+    RandomPredictor,
+    backtest,
+    expected_matches,
+    match_probability,
+    permutation_test,
+)
 
 __all__ = [
     "involution",
@@ -37,4 +45,10 @@ __all__ = [
     "AffineMap",
     "IFS",
     "sin_taylor",
+    "FingerprintKNNPredictor",
+    "RandomPredictor",
+    "backtest",
+    "expected_matches",
+    "match_probability",
+    "permutation_test",
 ]
