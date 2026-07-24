@@ -30,6 +30,11 @@ from raum27.lotto_benchmark import (
     match_probability,
     permutation_test,
 )
+from raum27.autocorrelation_control import (
+    PersistencePredictor,
+    permutation_test_continuous,
+    simulate_ar1,
+)
 
 __all__ = [
     "involution",
@@ -51,4 +56,7 @@ __all__ = [
     "expected_matches",
     "match_probability",
     "permutation_test",
+    "PersistencePredictor",
+    "permutation_test_continuous",
+    "simulate_ar1",
 ]

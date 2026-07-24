@@ -45,7 +45,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (54 tests, all mathematical claims in
+Run the test suite with `pytest` (56 tests, all mathematical claims in
 this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -109,3 +109,44 @@ demonstrate that honestly rather than assume it.
 Claims about physical "resonance," instantaneous coupling, or AI
 consciousness from the source notes are still not represented anywhere
 in this codebase.
+
+## Module: `raum27.autocorrelation_control` — Positive Control
+
+A null result is only meaningful if the test could have found something.
+This module checks that: it runs the *identical* shuffle-based
+permutation test from `lotto_benchmark` against an AR(1) process, the
+textbook toy model for a system with genuine short-range memory (e.g.
+daily temperature anomalies, where today really is informative about
+tomorrow).
+
+- With strong real autocorrelation (`phi=0.85`), the test finds a
+  significant edge (**p ≈ 0.005**, stable across seeds).
+- With no autocorrelation (`phi=0`, i.e. i.i.d. noise — structurally the
+  same situation as a lottery draw), the identical test finds **no**
+  significant edge (p > 0.05, also stable across seeds).
+
+This is the direct answer to "isn't a lottery drum just physics, the same
+as weather?" — yes, both are classical mechanical/fluid systems, but that
+alone doesn't make them equally predictable from a sequence of past
+outputs. What actually matters is whether that sequence carries
+serial correlation, and by how much, relative to how fast the system's
+chaos erases it:
+
+- **Weather** has real short-range serial correlation (measured in
+  hours to days) *and* is fed by dense, continuous sensor networks
+  (satellites, stations) plus physical PDE models — which is why
+  forecasts work for roughly two weeks before chaos (the same
+  sensitive-dependence-on-initial-conditions effect) erases predictability.
+- **A certified lottery drum is engineered to do the opposite**: turbulent
+  air jets and ball collisions are specifically designed to erase any
+  memory of the ball positions within seconds — regulators certify
+  machines on exactly this property. And critically, the forecaster here
+  never receives physical sensor data about the machine at all — only the
+  final output numbers of past draws, a data stream that decades of
+  statistical certification testing on real lotteries has never found
+  serial structure in.
+
+"It's all physics" is true of both and settles nothing; what settles it
+is whether the specific data stream you hand the model has measurable
+memory in it. This module demonstrates, with the same code, that the
+methodology correctly says yes to one and no to the other.
