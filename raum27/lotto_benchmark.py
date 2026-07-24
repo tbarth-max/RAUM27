@@ -30,6 +30,8 @@ held-out data collected after the method was fixed.
 
 from __future__ import annotations
 
+import csv
+import math
 import random
 from fractions import Fraction
 from math import comb
@@ -38,6 +40,21 @@ from typing import Callable, Sequence
 from raum27.taylor import sin_taylor
 
 Draw = Sequence[int]
+
+
+def load_draws_from_csv(path: str, pool: int = 49, picks: int = 6) -> list[tuple[int, ...]]:
+    """Load real historical draws from a CSV with columns date,n1..n6[,superzahl],
+    sorted by date ascending (the format used by data/lotto_6aus49_since_2000.csv).
+    Returns each draw as a sorted tuple of `picks` ints in [1, pool].
+    """
+    draws = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            numbers = tuple(sorted(int(row[f"n{i}"]) for i in range(1, picks + 1)))
+            if len(numbers) != picks or any(not (1 <= n <= pool) for n in numbers):
+                raise ValueError(f"malformed row in {path}: {row}")
+            draws.append(numbers)
+    return draws
 
 
 def match_probability(m: int, pool: int = 49, picks: int = 6, winning: int = 6) -> Fraction:
@@ -169,3 +186,41 @@ def permutation_test(
         null_stats.append(stat_fn(backtest(shuffled, predictor_factory())))
     p_value = (sum(1 for s in null_stats if s >= observed) + 1) / (n_permutations + 1)
     return observed, p_value, null_stats
+
+
+def z_test_vs_theoretical_baseline(
+    matches: Sequence[int], pool: int = 49, picks: int = 6, winning: int = 6
+) -> tuple[float, float]:
+    """Fast, exact-in-the-large-sample-limit alternative to permutation_test
+    for large real datasets, where re-running the predictor hundreds of
+    times (as permutation_test does) is too expensive.
+
+    Claim: under the null hypothesis (the predictor carries no real
+    information about the future draw), the match counts from a
+    walk-forward backtest are i.i.d. Hypergeometric(pool, picks, winning) --
+    REGARDLESS of any correlation the predictor's own picks have with each
+    other across time. Proof sketch: backtest() never lets predict() see
+    the draw it is predicting, so for every t, the true draw at t is
+    independent of the prediction at t and independent of every other
+    draw. By linearity of expectation, E[matches_t | any fixed pick] =
+    picks*winning/pool regardless of which numbers were picked, and by the
+    same conditioning argument applied pairwise, Cov(matches_t, matches_s)
+    = 0 for t != s. That makes the sum of match counts a sum of pairwise
+    uncorrelated, identically distributed variables, so the Central Limit
+    Theorem applies to it directly -- no need to actually re-run the
+    (expensive) predictor under reshuffled histories to get a null
+    distribution; the null distribution's mean and variance are known in
+    closed form.
+
+    Returns (z_score, one_sided_p_value) for "is the total significantly
+    HIGHER than the no-skill expectation".
+    """
+    n = len(matches)
+    mean_one = picks * winning / pool
+    var_one = picks * (winning / pool) * ((pool - winning) / pool) * ((pool - picks) / (pool - 1))
+    observed_total = sum(matches)
+    expected_total = n * mean_one
+    sd_total = math.sqrt(n * var_one)
+    z = (observed_total - expected_total) / sd_total
+    p_value = 0.5 * math.erfc(z / math.sqrt(2))
+    return z, p_value

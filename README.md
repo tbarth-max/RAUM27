@@ -91,6 +91,27 @@ any function of history to a process with provably zero mutual
 information between past and future draws, and the benchmark's job is to
 demonstrate that honestly rather than assume it.
 
+**Real data, not just synthetic:** `data/lotto_6aus49_since_2000.csv`
+holds 2724 real German Lotto 6-aus-49 draws, 2000-01-01 through
+2026-07-22 (source: [daowa89/lottery-archive](https://github.com/daowa89/lottery-archive),
+see `data/README.md`). `load_draws_from_csv` loads it;
+`scripts/run_real_data_benchmark.py` runs both `RandomPredictor` and
+`FingerprintKNNPredictor` over the full real history and reports the
+delta between them — the exact "Zufallsdurchlauf vs. Vorhersagedurchlauf"
+comparison this benchmark exists to make. It is a standalone script, not
+part of `pytest`, because the k-NN backtest over ~2700 real draws is
+O(n²) and takes several minutes; `tests/test_real_data_and_ztest.py`
+covers the same loading/statistics logic in milliseconds on a slice of
+the real data instead.
+
+Because a full permutation test on that much data would mean re-running
+the expensive predictor hundreds of times, real-data significance is
+assessed with `z_test_vs_theoretical_baseline` instead: under the null
+hypothesis, walk-forward match counts are i.i.d. Hypergeometric(49,6,6)
+*regardless of any correlation in the predictor's own picks* (proof in
+its docstring), so the Central Limit Theorem gives an exact-in-the-large-sample
+significance test without needing to re-run the predictor at all.
+
 **What this does and does not establish:**
 
 - It shows this specific algorithm does not manufacture a fake edge out
