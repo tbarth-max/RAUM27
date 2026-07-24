@@ -22,6 +22,15 @@ gespeichert.
 - Cluster-Skalen: `128`, `256`, `1140`
 - Bit-Wechsel-Zyklus alle 3 Impulse: 1-Bit-Flip, 4-Bit-Flip, Zufallsmuster
 
+## 5b: Exakte-Arithmetik-Härtung
+
+[`exact_arithmetic/`](exact_arithmetic/README.md) verifiziert denselben
+8↔7-Hadamard/Simplex-Kern exhaustiv in reiner Integer/Rational-Arithmetik
+(kein Float, keine Rundung) als Korrektheits-Voraussetzung für den
+Bayes-Filter oben. Das ist eine Härtung dieses Meilensteins, kein neuer
+Zweig — ein Vergleich gegen den bestehenden Float-Kern (BER,
+Moden-Freigaberate) steht noch aus.
+
 ## Metriken
 
 Pro Skala werden u. a. BER je Richtung und gesamt, die Rate
