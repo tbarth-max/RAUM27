@@ -1,0 +1,91 @@
+{
+  "app_roundtrips": [
+    {
+      "actually_smaller": false,
+      "archive_size": 87,
+      "codec": "raw",
+      "original_size": 0,
+      "sample": "empty"
+    },
+    {
+      "actually_smaller": false,
+      "archive_size": 88,
+      "codec": "raw",
+      "original_size": 1,
+      "sample": "one-byte"
+    },
+    {
+      "actually_smaller": true,
+      "archive_size": 118,
+      "codec": "xor-zlib",
+      "original_size": 256,
+      "sample": "all-bytes"
+    },
+    {
+      "actually_smaller": true,
+      "archive_size": 158,
+      "codec": "zlib",
+      "original_size": 24576,
+      "sample": "repeated"
+    },
+    {
+      "actually_smaller": true,
+      "archive_size": 95,
+      "codec": "rle",
+      "original_size": 16384,
+      "sample": "runs"
+    },
+    {
+      "actually_smaller": false,
+      "archive_size": 8281,
+      "codec": "raw",
+      "original_size": 8192,
+      "sample": "deterministic-noise"
+    }
+  ],
+  "core": {
+    "duplex_tests": {
+      "errors": 0,
+      "pairs": 65536
+    },
+    "fatal_error": false,
+    "protocol": {
+      "automatic_reduction": false,
+      "first_interaction": [
+        4,
+        3
+      ],
+      "inner_reconstruction_ratio": [
+        14,
+        14
+      ],
+      "outer_reconstruction_ratio": [
+        8,
+        8
+      ],
+      "phase_group": "Z4",
+      "reciprocal_interaction": [
+        3,
+        4
+      ]
+    },
+    "quarter_turn_tests": {
+      "errors": 0
+    },
+    "single_byte_tests": {
+      "cases": 1280,
+      "history_errors": 0,
+      "inner_roundtrip_errors": 0,
+      "outer_inner_disagreement": 0,
+      "outer_roundtrip_errors": 0
+    },
+    "source_policy": {
+      "banned_calls": 0,
+      "banned_imports": 0,
+      "float_literals": 0,
+      "true_divisions": 0
+    }
+  },
+  "fatal_error": false,
+  "tamper_detected": true
+}
