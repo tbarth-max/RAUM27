@@ -112,6 +112,26 @@ hypothesis, walk-forward match counts are i.i.d. Hypergeometric(49,6,6)
 its docstring), so the Central Limit Theorem gives an exact-in-the-large-sample
 significance test without needing to re-run the predictor at all.
 
+**Actual result, run once on the full real history (`k=5`, `seed=1`, no
+tuning or cherry-picking — this is the exact specification from the
+source notes):**
+
+| | mean matches/draw | vs. theoretical baseline (0.7347) | p-value |
+|---|---|---|---|
+| `RandomPredictor` | 0.7384 | +0.0037 | 0.40 (not significant) |
+| `FingerprintKNNPredictor` | 0.7032 | **−0.0315** | 0.98 for "better than chance" |
+
+**Delta (Vorhersage − Zufall) = −0.0353 matches/draw.** The fingerprint/k-NN
+system did not show the requested measurable improvement over random —
+on this real dataset its point estimate is slightly *below* random
+guessing, not above it (z ≈ −2.17; treated as its own one-sided test for
+"significantly worse," that corresponds to p ≈ 0.015, though with no
+correction for having looked at this after the fact, so read that as
+suggestive rather than conclusive). The one claim this result does
+support without qualification: there is no evidence here of the
+algorithm doing better than chance, which is the bar this whole exercise
+was set up to test.
+
 **What this does and does not establish:**
 
 - It shows this specific algorithm does not manufacture a fake edge out
