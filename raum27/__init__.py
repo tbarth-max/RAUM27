@@ -35,6 +35,21 @@ from raum27.autocorrelation_control import (
     permutation_test_continuous,
     simulate_ar1,
 )
+from raum27.q144 import (
+    NUM_STATES,
+    State,
+    all_states,
+    operator_period,
+    orbit,
+    phi,
+)
+from raum27.clockfree_scheduler import (
+    Process,
+    Schedule,
+    ScheduleResult,
+    schedule_round_robin,
+    schedule_run_to_completion,
+)
 
 __all__ = [
     "involution",
@@ -59,4 +74,15 @@ __all__ = [
     "PersistencePredictor",
     "permutation_test_continuous",
     "simulate_ar1",
+    "NUM_STATES",
+    "State",
+    "all_states",
+    "operator_period",
+    "orbit",
+    "phi",
+    "Process",
+    "Schedule",
+    "ScheduleResult",
+    "schedule_round_robin",
+    "schedule_run_to_completion",
 ]
