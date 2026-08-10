@@ -87,6 +87,7 @@ from raum27.cube_projection import (
     m_8to6,
     composed_kernel as cube_projection_kernel,
     apply as apply_matrix,
+    apply_driven as apply_driven_matrix,
 )
 
 __all__ = [
@@ -153,4 +154,5 @@ __all__ = [
     "m_8to6",
     "cube_projection_kernel",
     "apply_matrix",
+    "apply_driven_matrix",
 ]

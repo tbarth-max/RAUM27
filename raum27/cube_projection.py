@@ -21,6 +21,27 @@ in rational arithmetic (no floats, no numpy):
 
 Repeatedly applying K to any starting vector converges to the uniform
 state, since 1 is the only eigenvalue with magnitude 1.
+
+A *driven* system -- a constant source added every step instead of a
+single one-off input left to decay, v_{n+1} = K @ v_n + source -- behaves
+very differently depending on which eigenspace the source falls in:
+
+- A source component along the eigenvalue-1 (uniform) direction is never
+  damped: the mean of v grows by exactly mean(source) every step,
+  without bound. This is resonance in the ordinary linear-systems sense
+  -- a constant drive aligned with an undamped eigendirection.
+- A source component in the eigenvalue-1/3 eigenspace converges to a
+  finite steady state, source_component * 3/2 (the geometric series
+  1/(1-1/3)).
+- A source component in the eigenvalue-0 eigenspace locks to exactly the
+  source's own value after a single step (there's no previous state left
+  for K to add to).
+
+So a source with components in more than one eigenspace produces an
+ever-growing mean with a fixed, bounded pattern superimposed on it --
+verified in tests/test_cube_projection.py against the exact closed-form
+solution of the linear recurrence, not just by iterating and eyeballing
+convergence.
 """
 
 from __future__ import annotations
@@ -73,3 +94,9 @@ def composed_kernel() -> Matrix:
 
 def apply(matrix: Matrix, vector: Vector) -> Vector:
     return tuple(sum(row[i] * vector[i] for i in range(len(vector))) for row in matrix)
+
+
+def apply_driven(matrix: Matrix, vector: Vector, source: Vector) -> Vector:
+    """One step of a driven system: v_{n+1} = matrix @ v_n + source."""
+    driven = apply(matrix, vector)
+    return tuple(a + b for a, b in zip(driven, source))

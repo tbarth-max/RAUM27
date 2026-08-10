@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (104 tests as of this module set, all
+Run the test suite with `pytest` (108 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -284,4 +284,25 @@ application of `K` to *any* starting state converges toward the uniform
 state — checked exactly (not approximately) by decomposing a mixed input
 into its eigen-components and verifying the non-uniform part shrinks by
 precisely `(1/3)ⁿ` after `n` applications, while the uniform part is
-untouched. See `tests/test_cube_projection.py`.
+untouched.
+
+**Driven system:** `apply_driven` adds a constant source every step
+instead of a single one-off input left to decay, `v_{n+1} = K @ v_n +
+source`. This behaves differently per eigenspace, verified against the
+exact closed-form solution of the linear recurrence (not by iterating
+and eyeballing convergence):
+
+- A source component along the eigenvalue-1 (uniform) direction is never
+  damped — the mean grows by exactly `mean(source)` every step, without
+  bound. This is resonance in the ordinary linear-systems sense: a
+  constant drive aligned with an undamped eigendirection.
+- A source component in the eigenvalue-1/3 eigenspace converges to a
+  finite steady state, `source_component * 3/2` (the geometric series
+  `1/(1 - 1/3)`).
+- A source component in the eigenvalue-0 eigenspace locks to exactly the
+  source's own value after a single step.
+
+A source with components in more than one eigenspace therefore produces
+an ever-growing mean with a fixed, bounded pattern superimposed on it —
+a standing pattern riding an unbounded carrier, driven by a source that
+never stops. See `tests/test_cube_projection.py`.
