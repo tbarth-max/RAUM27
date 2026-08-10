@@ -110,6 +110,45 @@ Claims about physical "resonance," instantaneous coupling, or AI
 consciousness from the source notes are still not represented anywhere
 in this codebase.
 
+## Module: `raum27.q144` — The 144-State Space and the Φ Operator
+
+The notes describe a "clock-free kernel" built on a 144-state space
+(Q₁₄₄) and a cyclic Φ operator. The state-space part of that is ordinary,
+checkable combinatorics, and is implemented here:
+
+- 144 states = 12 cube edges × 4 phases (0°/90°/180°/270°) × 3 projection
+  planes (XY/XZ/YZ).
+- `phi(state)` advances all three coordinates by one step at once.
+  Verified in `tests/test_q144.py`: Φ is a permutation of Q₁₄₄, every
+  orbit has exactly length 12 (= lcm(12, 4, 3)), and the 144 states
+  decompose into exactly 12 disjoint orbits of that length.
+
+## Module: `raum27.clockfree_scheduler` + Milestone 6 — Taktfreier Scheduler, Benchmarked
+
+The notes claim a scheduler that runs processes to completion of their
+own workload ("taktfrei") instead of in fixed time slices is simply
+better. [`milestones/06_taktfreier_kernel/`](milestones/06_taktfreier_kernel/README.md)
+implements that policy for real — `schedule_run_to_completion`, a
+non-preemptive FCFS scheduler — and benchmarks it against the standard
+time-sliced baseline, `schedule_round_robin`, on the notes' own worked
+example (three processes needing 3, 1,000,000,000 and 100 operations).
+
+**Result:** run-to-completion needs far fewer context switches and, when
+short jobs happen to be queued first, gives everyone the lowest possible
+waiting time. But queue a short job behind a long one — exactly the
+notes' own example — and it waits for the long job's *entire* runtime
+before running at all: the classical **convoy effect** of non-preemptive
+FCFS scheduling, which round-robin bounds by design. Neither policy is
+unconditionally better; the notes only show the favorable case. This is
+the project's own benchmarking principle applied to the notes' scheduling
+claim rather than to a prediction claim.
+
+The notes' interactive console, published apps, arXiv preprint, and
+physical hypotheses (fractal densification, "neutral resonance fields,"
+crystallization nuclei) are not part of this milestone — they are either
+UI around the logic implemented here, or claims that would need their
+own benchmarks against physical measurements, not scheduling metrics.
+
 ## Module: `raum27.autocorrelation_control` — Positive Control
 
 A null result is only meaningful if the test could have found something.
