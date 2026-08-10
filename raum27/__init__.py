@@ -15,9 +15,16 @@ out of scope for a benchmarkable codebase.
 from raum27.rational_space import involution, is_fixed_point
 from raum27.scale_hierarchy import area_scale, digital_root, linear_scale, volume_scale
 from raum27.cube_symmetry import (
+    axis_cross_product,
     corner_directions,
     coupling_constant,
+    cube_center,
+    face_diagonal_midpoint,
+    face_diagonal_squared,
     face_directions,
+    space_diagonal_midpoint,
+    space_diagonal_squared,
+    space_diagonals,
     vector_equilibrium,
 )
 from raum27.ifs_attractor import AffineMap, IFS
@@ -62,6 +69,13 @@ __all__ = [
     "corner_directions",
     "vector_equilibrium",
     "coupling_constant",
+    "axis_cross_product",
+    "cube_center",
+    "face_diagonal_midpoint",
+    "face_diagonal_squared",
+    "space_diagonal_midpoint",
+    "space_diagonal_squared",
+    "space_diagonals",
     "AffineMap",
     "IFS",
     "sin_taylor",

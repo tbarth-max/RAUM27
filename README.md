@@ -38,7 +38,16 @@ ordinary, checkable mathematics:
   powers of 9.
 - **`cube_symmetry`** — the 6 face directions and 8 corner directions of
   a cube, their vector equilibrium, and the coupling constant
-  C = 8/6 = 4/3.
+  C = 8/6 = 4/3. Also the cube's diagonals, in exact rational arithmetic:
+  the third face direction as the cross product of the other two
+  (`ex × ey = ez`), the 8 corner directions collapsing into 4 unique
+  space diagonals, and a correction of a claim from the notes — the 4
+  diagonals that meet at the cube's center have squared length 3
+  (i.e. **√3**), not √2. √2 is real (it's the *face* diagonal, legs 1
+  and 1 via Pythagoras), but the face diagonal's midpoint is its own
+  face's center, not the cube's center — only the space (body) diagonal,
+  corner to opposite corner, passes through the cube's center. Verified
+  by comparing exact midpoints and squared lengths, never a float `sqrt`.
 - **`ifs_attractor`** — a general Iterated Function System engine (the
   Banach fixed-point theorem applied to contraction maps), instantiated
   as the 6-map cube-face system A = ∪ᵢ f_i(A).
