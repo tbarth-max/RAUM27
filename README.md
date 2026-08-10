@@ -48,6 +48,11 @@ ordinary, checkable mathematics:
   face's center, not the cube's center — only the space (body) diagonal,
   corner to opposite corner, passes through the cube's center. Verified
   by comparing exact midpoints and squared lengths, never a float `sqrt`.
+  Also: the cube decomposes into 6 congruent pyramids (one per face,
+  apex at the cube's center) — verified two independent ways, geometry
+  (apex-to-corner distance matches half the space diagonal exactly) and
+  volume (`6 * pyramid_volume(edge) == cube_volume(edge)`, exact
+  rational arithmetic for every edge length).
 - **`ifs_attractor`** — a general Iterated Function System engine (the
   Banach fixed-point theorem applied to contraction maps), instantiated
   as the 6-map cube-face system A = ∪ᵢ f_i(A).

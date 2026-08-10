@@ -14,6 +14,15 @@ face's center). The 4 diagonals through the cube's center are the *space*
 -- a second application of Pythagoras. Both facts are verified below in
 exact rational arithmetic (by comparing squared lengths and midpoints,
 never a float sqrt), see tests/test_cube_symmetry.py.
+
+And: a cube decomposes into 6 congruent pyramids, one per face, each with
+its apex at the cube's center. For a cube with center-to-face distance
+"radius" 1 (edge 2), each pyramid has height 1, a base half-diagonal
+(face center to face corner) of sqrt(2), and an apex-to-corner distance
+of sqrt(3) -- matching the space diagonal above, since center-to-corner
+is exactly half of corner-to-opposite-corner. Cross-checked independently
+by volume: 6 * pyramid_volume(edge) == cube_volume(edge) exactly, for
+every edge length, in exact rational arithmetic.
 """
 
 from fractions import Fraction
@@ -112,3 +121,35 @@ def space_diagonal_midpoint(edge: Fraction = Fraction(1)) -> Point3:
     """Midpoint of the body diagonal from (0,0,0) to (edge,edge,edge)."""
     half = edge / 2
     return (half, half, half)
+
+
+def cube_volume(edge: Fraction = Fraction(1)) -> Fraction:
+    return edge**3
+
+
+def pyramid_height(edge: Fraction = Fraction(1)) -> Fraction:
+    """Perpendicular distance from the cube's center to one face: edge/2.
+    The height of each of the 6 congruent pyramids formed by pairing the
+    center with one face (see pyramid_volume / cube_volume below)."""
+    return edge / 2
+
+
+def pyramid_base_half_diagonal_squared(edge: Fraction = Fraction(1)) -> Fraction:
+    """Squared distance from a face's center to one of its own corners:
+    Pythagoras with both legs = edge/2."""
+    half = edge / 2
+    return half**2 + half**2
+
+
+def pyramid_apex_to_corner_squared(edge: Fraction = Fraction(1)) -> Fraction:
+    """Squared distance from the cube's center to one of its corners: a
+    second Pythagoras, combining the pyramid height with the base's half
+    diagonal. This is a quarter of the full space diagonal squared,
+    because center-to-corner is half of corner-to-opposite-corner."""
+    return pyramid_height(edge) ** 2 + pyramid_base_half_diagonal_squared(edge)
+
+
+def pyramid_volume(edge: Fraction = Fraction(1)) -> Fraction:
+    """Volume of one of the 6 face-pyramids (apex at the cube's center,
+    base = one face): (1/3) * base area * height."""
+    return Fraction(1, 3) * edge**2 * pyramid_height(edge)

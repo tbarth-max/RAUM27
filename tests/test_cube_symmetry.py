@@ -5,9 +5,14 @@ from raum27.cube_symmetry import (
     corner_directions,
     coupling_constant,
     cube_center,
+    cube_volume,
     face_diagonal_midpoint,
     face_diagonal_squared,
     face_directions,
+    pyramid_apex_to_corner_squared,
+    pyramid_base_half_diagonal_squared,
+    pyramid_height,
+    pyramid_volume,
     space_diagonal_midpoint,
     space_diagonal_squared,
     space_diagonals,
@@ -73,3 +78,21 @@ def test_diagonal_facts_scale_with_edge_length():
     assert face_diagonal_squared(edge) == 2 * edge**2
     assert space_diagonal_squared(edge) == 3 * edge**2
     assert space_diagonal_midpoint(edge) == cube_center(edge)
+
+
+def test_pyramid_dimensions_for_radius_one_cube():
+    # edge=2: center-to-face distance ("radius") = 1.
+    edge = Fraction(2)
+    assert pyramid_height(edge) == Fraction(1)
+    assert pyramid_base_half_diagonal_squared(edge) == Fraction(2)  # sqrt(2)
+    assert pyramid_apex_to_corner_squared(edge) == Fraction(3)      # sqrt(3)
+
+
+def test_pyramid_apex_to_corner_matches_half_the_space_diagonal():
+    for edge in (Fraction(1), Fraction(2), Fraction(5), Fraction(7, 3)):
+        assert pyramid_apex_to_corner_squared(edge) == space_diagonal_squared(edge) / 4
+
+
+def test_six_pyramids_fill_the_cube_exactly():
+    for edge in (Fraction(1), Fraction(2), Fraction(3), Fraction(5, 2)):
+        assert 6 * pyramid_volume(edge) == cube_volume(edge)
