@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (94 tests as of this module set, all
+Run the test suite with `pytest` (104 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -240,3 +240,48 @@ audible "beat"), formalized and verified here rather than left as prose:
   (1/0.3 s ≈ 3.333 s) to within 1%.
 
 See `tests/test_phase_sync.py`.
+
+## Module: `raum27.octahedron` — The Cube's Dual Polyhedron
+
+Put a vertex at each of the cube's 6 face centers (`cube_symmetry`'s
+`face_directions`) and a face at each of its 8 corners
+(`corner_directions`) and you get the octahedron: vertex and face counts
+trade places exactly, `(8,6) -> (6,8)`, edge count stays 12. Verified via
+Euler's formula (`V - E + F = 2`) and by checking each of the 8 candidate
+faces really is a face of the convex hull (all other vertices strictly on
+one side of its plane).
+
+A question that came up while discussing this: does dualizing *again*
+(cube → octahedron → cube, using face centroids as new vertices each
+time) produce a bigger copy of the original cube? Checked in exact
+rational arithmetic, corner by corner: no — it produces the original
+cube shrunk by exactly **1/3**, not enlarged. Repeating the cycle
+converges toward the center, it doesn't expand outward. (A different,
+classical definition of "dualize" — reciprocation with respect to a
+fixed sphere — instead returns exactly the original with *no* scaling
+at all, `P°° = P`; neither of the two natural definitions produces
+growth on its own.)
+
+## Module: `raum27.cube_projection` — Corner↔Face Projection, Exact Eigenstructure
+
+Two linear maps built from the cube's corner/face incidence (each corner
+touches 3 faces, each face has 4 corners): `m_6to8` distributes 6
+face-values onto 8 corner-values (average of the 3 adjacent faces),
+`m_8to6` projects 8 corner-values back onto 6 face-values (average of the
+4 corners). Their composition `K = m_8to6 @ m_6to8` (6×6) has a closed
+form, `K = (1/6)(I + A - P)` (`A` = all-ones, `P` = swap-with-opposite-face),
+with an exact eigenstructure verified in rational arithmetic — no floats,
+no numpy:
+
+- **eigenvalue 1** (multiplicity 1): the uniform state — the only state
+  that survives a corner-then-face round trip unchanged.
+- **eigenvalue 1/3** (multiplicity 3): one "this face up, its opposite
+  face down" mode per axis.
+- **eigenvalue 0** (multiplicity 2): modes erased in a single round trip.
+
+Since every non-uniform eigenvalue has magnitude < 1, repeated
+application of `K` to *any* starting state converges toward the uniform
+state — checked exactly (not approximately) by decomposing a mixed input
+into its eigen-components and verifying the non-uniform part shrinks by
+precisely `(1/3)ⁿ` after `n` applications, while the uniform part is
+untouched. See `tests/test_cube_projection.py`.

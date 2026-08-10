@@ -74,6 +74,20 @@ from raum27.phase_sync import (
     phase_angle,
     phase_difference,
 )
+from raum27.octahedron import (
+    vertices as octahedron_vertices,
+    faces as octahedron_faces,
+    edges as octahedron_edges,
+    euler_characteristic as octahedron_euler_characteristic,
+    dual_cube_corners as octahedron_dual_cube_corners,
+)
+from raum27.cube_projection import (
+    incidence_matrix as cube_incidence_matrix,
+    m_6to8,
+    m_8to6,
+    composed_kernel as cube_projection_kernel,
+    apply as apply_matrix,
+)
 
 __all__ = [
     "involution",
@@ -129,4 +143,14 @@ __all__ = [
     "is_synchronized",
     "phase_angle",
     "phase_difference",
+    "octahedron_vertices",
+    "octahedron_faces",
+    "octahedron_edges",
+    "octahedron_euler_characteristic",
+    "octahedron_dual_cube_corners",
+    "cube_incidence_matrix",
+    "m_6to8",
+    "m_8to6",
+    "cube_projection_kernel",
+    "apply_matrix",
 ]
