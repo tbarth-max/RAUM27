@@ -68,6 +68,12 @@ from raum27.rubik_state import (
     face_is_uniform,
     is_solved,
 )
+from raum27.phase_sync import (
+    beat_period,
+    is_synchronized,
+    phase_angle,
+    phase_difference,
+)
 
 __all__ = [
     "involution",
@@ -119,4 +125,8 @@ __all__ = [
     "axis_pairs",
     "face_is_uniform",
     "is_solved",
+    "beat_period",
+    "is_synchronized",
+    "phase_angle",
+    "phase_difference",
 ]

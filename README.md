@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (87 tests as of this module set, all
+Run the test suite with `pytest` (94 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -221,3 +221,22 @@ wrong sticker on one face makes exactly that face's axis-check fail while
 the other two still pass, and a cube with only one of three axes solved
 correctly reports as unsolved overall while identifying which axis is
 still open. See `tests/test_rubik_state.py`.
+
+## Module: `raum27.phase_sync` — Phase Synchronization Between Two Signals
+
+A phase detector: two "pointers" sweep a circle at frequencies f1, f2
+(`theta(t) = 2*pi*f*t`), and are "synchronized" when their phase angles
+coincide within a tolerance. This is a standard, well-known concept (a
+phase-locked loop's phase detector; two near-identical tones producing an
+audible "beat"), formalized and verified here rather than left as prose:
+
+- Equal frequency, equal phase → always synchronized.
+- Equal frequency, offset phase → never synchronized (frequency alone
+  doesn't create periodic coincidences).
+- Different frequencies → synchronization recurs periodically at the
+  **beat period** `1 / |f1 - f2|`. Verified by simulating two signals at
+  5.0 Hz and 5.3 Hz and measuring the actual time between synchronization
+  events: the measured interval matches the theoretical beat period
+  (1/0.3 s ≈ 3.333 s) to within 1%.
+
+See `tests/test_phase_sync.py`.
