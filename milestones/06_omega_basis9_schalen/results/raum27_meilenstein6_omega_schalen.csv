@@ -1,0 +1,4 @@
+Schale (Ebene),Zaehlerstand,Uebertraege bisher,Omega^Ebene,effektives SNR [linear],Impulse in Schale,BER Richtung A,BER Richtung B,BER Duplex gesamt,selbstbewusst falsche Bits,Freigaberate Moden [%],"mittleres Informationsvolumen [bit, Gauss-Proxy]"
+0,010,1,1,3.9810717055349722,9,0.0005967881944444445,0.0005425347222222222,0.0005696614583333334,0,0.4611545138888889,10.995989858835815
+1,020,2,9,35.82964534981475,9,0.0,0.0,0.0,0,0.6076388888888888,22.468104628963566
+2,030,3,81,322.46680814833275,9,0.0,0.0,0.0,0,0.6401909722222222,35.141700692090694
