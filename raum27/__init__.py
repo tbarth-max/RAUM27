@@ -62,6 +62,12 @@ from raum27.clockfree_scheduler import (
     schedule_round_robin,
     schedule_run_to_completion,
 )
+from raum27.rubik_state import (
+    axis_is_solved,
+    axis_pairs,
+    face_is_uniform,
+    is_solved,
+)
 
 __all__ = [
     "involution",
@@ -109,4 +115,8 @@ __all__ = [
     "ScheduleResult",
     "schedule_round_robin",
     "schedule_run_to_completion",
+    "axis_is_solved",
+    "axis_pairs",
+    "face_is_uniform",
+    "is_solved",
 ]

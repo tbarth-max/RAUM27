@@ -59,8 +59,8 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (56 tests, all mathematical claims in
-this README are verified, not asserted).
+Run the test suite with `pytest` (87 tests as of this module set, all
+mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
 
@@ -203,3 +203,21 @@ chaos erases it:
 is whether the specific data stream you hand the model has measurable
 memory in it. This module demonstrates, with the same code, that the
 methodology correctly says yes to one and no to the other.
+
+## Module: `raum27.rubik_state` — Solved-State Check, Factored by Axis
+
+A small, concrete idea that came up while discussing the cube's geometry:
+check whether a Rubik's cube is solved by factoring the check along the
+cube's 3 axes, reusing the same 6 `face_directions()` from
+`cube_symmetry`. A face is "uniform" if every one of its stickers shares
+one color; the cube is solved iff all 6 faces are uniform. Grouping that
+into the 3 opposite-face axis pairs (each pair one AND-condition) gives 3
+independent checks whose combined AND is the overall solved state —
+not a new operation, just the single global "all faces uniform" check
+factored along the axes already used elsewhere in this package.
+
+Verified with real pass/fail cases, not just the solved state: a single
+wrong sticker on one face makes exactly that face's axis-check fail while
+the other two still pass, and a cube with only one of three axes solved
+correctly reports as unsolved overall while identifying which axis is
+still open. See `tests/test_rubik_state.py`.
