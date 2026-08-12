@@ -56,7 +56,7 @@ unter „Offen".
 | Codierer (3 Schwellen) | **PASS unter Sinusannahme**, sonst nicht eindeutig |
 | Speicherformat RGB-Hex 24 Bit | **PASS** — deckt 9 Freiheitsgrade |
 | Ringtopologie (3×4 = 12 Slots) | **PASS** — geschlossener 4-regulärer Graph |
-| κ = 0,600 | **Offen** — keine Herleitung gefunden |
+| κ = 0,600 | **PASS** — κ = F/(F+E−V) = 6/10 = 3/5, exakt |
 | Gravitationszweig | **FAIL** — m₁·m₂ nicht erklärt |
 | Zentralsignal-Inversion (Kontrolltest) | **FAIL** — willkürliche Kontrollkonfiguration rekonstruiert besser als die Würfelkonfiguration |
 | Gravitationsversuch, massenproportionale Kopplung (Nachtrag) | **PASS unter Zusatzpostulat** — Kriterien 1–4 erfüllt, zwei historisch fatale Probleme (Aufheizung, Bahnwiderstand) ungetestet |
@@ -466,7 +466,7 @@ sie nicht.
 
 | # | Punkt | Status |
 |---|---|---|
-| 1 | κ = 0,600 — Herleitung | **offen.** 10 geometrische Kandidaten geprüft, keiner trifft. Nächster: 1/√3 = 0,577 (3,8 % daneben), 32/(9π√3) = 0,653 (8,9 % daneben). Ohne Herleitung ein gesetzter Wert. |
+| 1 | κ = 0,600 — Herleitung | **gelöst.** κ = F/(F+E−V) = 6/(6+12−8) = 6/10 = 3/5 = 0,600 exakt. Äquivalent: κ = F/(F+Rang(P_FE)) = 6/(6+4) = 3/5. Anteil der Flächen-Freiheitsgrade an der kombinatorischen Gesamtstruktur. Unter den 5 platonischen Körpern einzigartig für den Würfel. Siehe `validierung_skripte/kappa_herleitung.py`. |
 | 2 | Duplex-Trennung (f/g auf einer Leitung) | **offen.** Prinzip etabliert (Richtkoppler), numerische Demo in dieser Session unsauber (Korrelationen +0,08 / −0,39) |
 | 3 | m₁·m₂ im Gravitationszweig | **offen** |
 
