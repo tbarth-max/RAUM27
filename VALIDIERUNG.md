@@ -32,6 +32,16 @@ unter „Offen".
   Ausleseklasse, Codierer, Speicherformat, Kompressionsvergleich)
   betreffen Themen, die in `milestones/05`–`09` noch nicht abgebildet
   sind.
+- **Abschnitt 11 (Gravitationszweig, m₁·m₂ offen):** aufgegriffen in
+  `milestones/10_gravitationsversuch/` — testet gezielt das eine
+  Postulat "Kopplungsquerschnitt ∝ Masse statt ∝ Fläche". Kriterien 1–4
+  erfüllt (teils per Monte-Carlo-Geometrie unabhängig verifiziert, nicht
+  nur per Formel), aber die zwei historisch entscheidenden Probleme
+  jedes Schattenwurf-Mechanismus (Aufheizung, Bahnwiderstand) bleiben
+  dort ausdrücklich ungelöst. Details siehe Abschnitt 15 unten.
+- **Zentralsignal-Inversion (Kontrolltest):** siehe Abschnitt 14 unten —
+  widerlegt die Aussage, dass Würfelgeometrie die Rekonstruktion aus dem
+  zentralen Rücksignal ermöglicht.
 
 ---
 
@@ -48,6 +58,8 @@ unter „Offen".
 | Ringtopologie (3×4 = 12 Slots) | **PASS** — geschlossener 4-regulärer Graph |
 | κ = 0,600 | **Offen** — keine Herleitung gefunden |
 | Gravitationszweig | **FAIL** — m₁·m₂ nicht erklärt |
+| Zentralsignal-Inversion (Kontrolltest) | **FAIL** — willkürliche Kontrollkonfiguration rekonstruiert besser als die Würfelkonfiguration |
+| Gravitationsversuch, massenproportionale Kopplung (Nachtrag) | **PASS unter Zusatzpostulat** — Kriterien 1–4 erfüllt, zwei historisch fatale Probleme (Aufheizung, Bahnwiderstand) ungetestet |
 
 ---
 
@@ -464,7 +476,8 @@ Codierverfahren (3 Schwellen, unter Sinusannahme exakt), Speicherformat
 (24 Bit, 6 Hexziffern) und Ringtopologie (12 Slots).
 
 **Widerlegt:** Theorem 18 in der Rang-6-Fassung. 8-Bit-Erhaltung durch 8×6→6×8.
-Gravitation als Flächen- oder Emissionsmodell.
+Gravitation als Flächen- oder Emissionsmodell. Zentralsignal-Inversion als
+Beleg für Würfelgeometrie (siehe Abschnitt 14).
 
 **Strukturelle Konstante:** Jede Erhaltungsgröße im System ist ein **Produkt**,
 nie ein Einzelwert — Ecke × Gegenecke, |x| × |Inversion|, r × Amplitude,
@@ -472,3 +485,67 @@ Fläche × Feldstärke, Querschnitt × Feldstärke: alle = 1.
 
 **Strukturelle Grenze:** Jede Kapazitätsschranke ist dieselbe Rangfrage.
 Trennbar ist so viel, wie der Ausleser Dimensionen hat.
+
+---
+
+## 14. Zentralsignal-Inversion — Kontrolltest, FAIL
+
+**Behauptung:** Aus dem zentralen Rücksignal `y(t) = 6·x(t−2) + 8·x(t−2√3)`
+lässt sich `x(t)` per Frequenzbereichs-Inversion zurückrechnen
+(rel. RMSE ≈ 8,6e-4), gelesen als Beleg dafür, dass die Würfelgeometrie
+(6 Flächen, 8 Ecken, Abstandsverhältnis √3) die Rekonstruktion ermöglicht.
+
+**Kontrolle:** dieselbe Inversion mit geometriefremden Verzögerungen/
+Amplituden wiederholt.
+
+| Konfiguration | rel. RMSE | Würfelbezug |
+|---|---|---|
+| Würfel: 6 Flächen (τ=2) + 8 Ecken (τ=2√3) | 1,697e-11 | ja |
+| Kontrolle B: willkürlich (3, 0,13)+(17, 4,77) | **1,218e-11** | nein |
+| Variante mit √2 statt √3 | 1,492e-10 | nein |
+| Kontrolle A: willkürlich (1, 0,70)+(1, 1,90) | 2,956e-08 | nein |
+| Kontrolle C/D: entartete Fälle (Nullstellen von H(f)) | 8,197e-04 | nein |
+
+**Befund: negativ.** Kontrolle B (rein willkürliche Werte, kein
+Würfelbezug) rekonstruiert **besser** als die Würfelkonfiguration. Ein
+Zwei-Tap-Verzögerungsfilter ist im rauschfreien Fall für nahezu beliebige
+Parameter invertierbar — das ist generische Signalverarbeitung
+(`X_rec = Y·H*/(|H|²+λ)`), keine geometrische Besonderheit des Würfels.
+Die niedrige Fehlerzahl der Würfelkonfiguration belegt damit **nicht**,
+dass Würfelgeometrie die Rekonstruktion ermöglicht.
+
+**Unberührt gültig bleibt** die reine Arithmetik: Laufzeitdifferenz
+`Δt = 2(√3−1)`, erste konstruktive Frequenz `f₁ = 1/Δt`, und die drei
+verschiedenen geometrischen Abstände im Würfel (Flächenmitte=1,
+Kantenmitte=√2, Ecke=√3, je von der Kubuszentrum aus, halbe Kante=1).
+Das sind korrekte Zahlen — sie belegen nur nichts über Rekonstruierbarkeit.
+
+---
+
+## 15. Gravitationsversuch — massenproportionale Kopplung (Nachtrag)
+
+Aufgreifend auf Abschnitt 11 (offene Frage: woher kommt m₁·m₂?): ein
+gezielter Versuch in `milestones/10_gravitationsversuch/` testet **ein**
+geändertes Postulat — Kopplungsquerschnitt σ = c·m (proportional zur
+Masse) statt σ ∝ R² (geometrische Fläche, der Grund für das ursprüngliche
+Scheitern).
+
+| Kriterium | Ergebnis |
+|---|---|
+| F ∝ m₁·m₂ | PASS (F/(mᵢmⱼ) konstant über 12 Massenkombinationen) |
+| F ∝ 1/r² | PASS (F·r² konstant über r=5…40) |
+| immer anziehend | PASS |
+| Netto-Kraft auf isolierten Körper = 0 | PASS (Monte-Carlo, 2 Mio. Richtungen, Reststand 0,00025) |
+
+Kriterien 1+2 wurden zusätzlich **unabhängig per Monte-Carlo-Geometrie**
+verifiziert (reine Richtungsstichprobe, ohne die Kraftformel zu benutzen)
+— Übereinstimmung mit der analytischen Vorhersage auf 0,2–7,3 %.
+
+**Wichtige Einschränkung:** σ∝m ist ein **Postulat**, nicht aus der
+Geometrie ableitbar (analog zum unerklärten Äquivalenzprinzip der
+Standardphysik). Und: die zwei historisch als entscheidend geltenden,
+unabhängigen Probleme jedes Schattenwurf-Mechanismus — **Aufheizung**
+durch absorbierten Impuls und **Bahnwiderstand** durch Aberration bei
+Bewegung — werden hier nicht getestet und bleiben ungelöst. Fazit dort:
+"immer noch nicht guten Gewissens implementierbar als physikalische
+Behauptung", aber präziser gefasst als vorher.
