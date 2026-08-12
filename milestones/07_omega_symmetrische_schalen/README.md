@@ -89,3 +89,27 @@ hier Zahlenspiel, kein Beleg.
 - Eine konkrete Definition, was "Kräfteäquivalent" rechnerisch bedeuten
   soll (aktuell nur deskriptiv als Readout-Norm, keine Wirkung auf den
   Zustand).
+
+## Update: Rang 4 unabhängig zweifach bestätigt (siehe `VALIDIERUNG.md`)
+
+Eine unabhängige Prüfung in einer separaten Session (siehe
+[`VALIDIERUNG.md`](../../VALIDIERUNG.md) im Repo-Wurzelverzeichnis,
+Abschnitt 2) hat mit einer **anderen** Matrix-Konstruktion — `P_FE`
+(8 Ecken × 6 Flächen, jede Ecke = Mittelwert ihrer 3 Nachbarflächen,
+statt der hier verwendeten Oktaeder-Richtungen aus `B`) — ebenfalls
+**Rang 4** gefunden, mit derselben algebraischen Ursache: die drei
+antipodalen Achsenpaare (+X/-X, +Y/-Y, +Z/-Z) erzeugen identische
+Summenvektoren, das sind 2 unabhängige lineare Zwangsbedingungen, nicht
+3 — daher 6−2=4. Das ist jetzt kein Einzelfund mehr, sondern ein
+strukturelles, zweifach unabhängig bestätigtes Faktum der
+Würfel/Oktaeder-Geometrie.
+
+**Der Eigenwert-Quotient 3 bleibt trotzdem Zufall** — das ändert nichts
+an der Einschätzung oben, `D` hängt weiterhin nicht von `k` ab.
+
+**Zur 4/3-Frage aus dem Chat-Verlauf** (k=4/3, Ω=16/9): Die dort
+diskutierte Herleitung über "Fläche Quadrat/Kreis" wurde verworfen (nur
+eine π≈3-Näherung, 4,7 % Abweichung von der exakten Kreisrechnung). Die
+`VALIDIERUNG.md` liefert stattdessen eine exakte, geometrie-freie
+Herleitung: **4/3 = 8 Ecken / 6 Flächen** des Würfels — eine reine
+Zählung, kein Näherungswert.
