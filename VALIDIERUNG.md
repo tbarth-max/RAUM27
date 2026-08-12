@@ -127,6 +127,10 @@ Zellmenge {−1, 0, 1}³ → **{1/r, 1, r}³**
 
 ## 2. Theorem 18 — FAIL
 
+*Ausführbare, exakte Reproduktion (parameterfrei, kein Seed):
+[`validierung_skripte/roundtrip_8bit.py`](validierung_skripte/roundtrip_8bit.py)
+— liefert dieselben Werte wie hier und in Abschnitt 3 dokumentiert.*
+
 **Behauptung:** Φ invertierbar ⟺ rang(P_FE) = 6
 
 **Befund:** P_FE (8 Ecken × 6 Flächen, jede Ecke = Mittelwert ihrer 3 Nachbarflächen)
