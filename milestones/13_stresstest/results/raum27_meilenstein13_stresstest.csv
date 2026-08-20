@@ -1,0 +1,27 @@
+Test,Status,Detail
+T01 H^T H = I,PASS,max|H^T H - I| = 1.11e-16
+T02 J^2 = I,PASS,
+"T03 J Eigenwerte: +1(x4), -1(x4)",PASS,"+1: 4, -1: 4"
+T04 S^2 = I,PASS,
+T05 8-Bit Roundtrip: 1000 Vektoren durch H fehlerfrei,PASS,BER = 0.000000
+T06 J-Atemzug: x @ J @ J = x (1000 Vektoren),PASS,max|x - x_back| = 0.00e+00
+T07 Rang(M_FE) = 4,PASS,Rang = 4
+T08 Rang(P_pyr) = 4,PASS,Rang = 4
+T09 Rang(P_pyr @ S) = 4,PASS,Rang = 4
+T10 Gesamtrang [M_FE; P_pyr; P_pyr@S] = 4,PASS,Gesamtrang = 4
+T11 16/9-Verhaeltnis exakt fuer 6 verschiedene r,PASS,r=4/3: ratio=r^2=16/9; r=3/2: ratio=r^2=9/4; r=5/4: ratio=r^2=25/16 ...
+T12 kappa = F/(F+E-V) = 3/5 exakt (Wuerfel),PASS,kappa = 3/5 = 0.6000
+T13 kappa = 3/5 einzigartig unter Platonischen Koerpern,PASS,Tetraeder: 2/3; Wuerfel: 3/5; Oktaeder: 4/7; Dodekaeder: 6/11; Ikosaeder: 10/19
+T14 105 = d*(F^2-1) = 3*(36-1) = 3*35,PASS,3*(6^2-1) = 105
+T15 tau(105) = 8 = V,PASS,"tau(105) = 8, V = 8"
+T16 #Loesungen(X^2-Y^2=105) = 4 = Rang,PASS,"#Loesungen = 4, Rang = 4"
+T17 Buch hoch: Produkt(s^1..s^5) = (16/9)^5,PASS,Produkt = 1048576/59049 = 17.757727
+T18 Buch runter: Produkt(s^-1..s^-5) = (9/16)^5,PASS,Produkt = 59049/1048576 = 0.056314
+T19 Buch Roundtrip: hoch * runter = 1,PASS,Produkt = 1
+"T20 Schneller Wechsel: 10x hoch/runter, jeder Zustand > 0",PASS,Endzustand = 1
+T21 Rueckkopplung F^2=Id an allen 4 Fixpunkten,PASS,"Getestet: [(13, 8), (11, 4), (19, 16), (53, 52)]"
+"T22 Jacobi-Eigenwerte = {{+1,-1}} an allen Fixpunkten",PASS,
+T23 Omega-Schalen: SNR-Verhaeltnis = Omega^level exakt,PASS,"Omega=9, Ebenen [-2, -1, 0, 1, 2]"
+T24 Duplex rauschfrei: BER=0 fuer beide Kanaele,PASS,"BER_real=0.000000, BER_imag=0.000000"
+"T25 Spiegel S ist Permutation (bijektiv, kein Verlust)",PASS,Verschiedene Ziele: 8/8
+T26 ||M_FE||^2_F = 4F = 24,PASS,"||M_FE||^2_F = 24.0, 4F = 24"
