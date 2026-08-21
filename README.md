@@ -189,3 +189,68 @@ chaos erases it:
 is whether the specific data stream you hand the model has measurable
 memory in it. This module demonstrates, with the same code, that the
 methodology correctly says yes to one and no to the other.
+
+## Module: `raum27.debruijn_loop` — Cyclic State Space with Instant Position Lookup
+
+A De Bruijn sequence B(2, k) is a binary cyclic sequence of length 2^k in which
+every possible k-bit window appears **exactly once**. The consequence: reading
+any k consecutive bits from anywhere in the loop uniquely identifies the
+absolute position — without knowing the entry point, without scanning from a
+fixed start.
+
+This is the mathematical core of absolute rotary encoders (used in robotics and
+CNC machines) and is proven combinatorics (Martin 1934; van Aardenne-Ehrenfest
+& de Bruijn 1951).
+
+**What is implemented and verified (`tests/test_debruijn_loop.py`, 10 tests):**
+
+- `generate(k)` — FKM recursive construction of B(2, k), length exactly 2^k.
+- `position_map(loop, k)` — lookup table of all 2^k windows → position, built
+  in O(N); raises `ValueError` if any window appears more than once.
+- `lookup_position(window, table)` — O(1) absolute position recovery from a
+  k-bit window read at any entry point.
+- `shannon_capacity(n)` — log₂(n) bits for n distinguishable positions. The
+  loop topology does not add storage capacity over a linear arrangement of the
+  same n positions; the advantage is access pattern, not density.
+
+**What this does NOT claim:**
+
+- The circular arrangement stores more information than a linear one — it does
+  not. Shannon capacity is log₂(N) bits in both cases.
+- Anything about physical signals, resonance, or photonics.
+
+## Module: `raum27.scale_selection` — Automatic Resolution-Level Selection
+
+Every signal containing a pattern of characteristic width σ_pattern embedded in
+noise has an **optimal analysis scale**: too fine (σ → 0) and noise dominates;
+too coarse (σ ≫ σ_pattern) and the pattern averages away. The signal-to-noise
+ratio of pattern detection is maximised when the smoothing scale matches the
+pattern width — the classical Matched Filter / Scale-Space theorem (Lindeberg
+1994).
+
+Applied to multi-agent systems: an agent network can measure its own detection
+quality across candidate scales and select the maximum without any prior
+knowledge of what the pattern width is.
+
+**What is implemented and verified (`tests/test_scale_selection.py`, 10 tests):**
+
+- `smooth(signal, sigma)` — 1D Gaussian convolution, pure stdlib.
+- `detection_snr(signal, sigma, center, exclude_radius)` — SNR of the pattern
+  peak above background at a given smoothing scale.
+- `select_scale(signal, center, exclude_radius, scales)` — scans candidate
+  scales and returns the (sigma, SNR) pair at the maximum.
+
+**Verified claims:**
+
+- The automatically selected scale lies within ±10σ of the true pattern width
+  across a range of pattern widths (5, 10, 20, 30 samples).
+- Both the nano-scale extreme (σ = 0, no smoothing) and the macro-scale extreme
+  (σ = 55) yield strictly lower SNR than the selected optimum.
+- The selection is parameter-free with respect to the pattern width.
+
+**What this does NOT claim:**
+
+- "Nano-level" has special physical status.
+- The result generalises unchanged to non-Gaussian patterns or non-Gaussian
+  noise (the theorem still applies, but the optimal kernel shape changes).
+- Anything about consciousness or resonance fields.

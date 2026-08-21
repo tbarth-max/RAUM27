@@ -50,6 +50,17 @@ from raum27.clockfree_scheduler import (
     schedule_round_robin,
     schedule_run_to_completion,
 )
+from raum27.debruijn_loop import (
+    generate as debruijn_generate,
+    lookup_position,
+    position_map,
+    shannon_capacity,
+)
+from raum27.scale_selection import (
+    detection_snr,
+    select_scale,
+    smooth,
+)
 
 __all__ = [
     "involution",
@@ -85,4 +96,11 @@ __all__ = [
     "ScheduleResult",
     "schedule_round_robin",
     "schedule_run_to_completion",
+    "debruijn_generate",
+    "lookup_position",
+    "position_map",
+    "shannon_capacity",
+    "detection_snr",
+    "select_scale",
+    "smooth",
 ]
