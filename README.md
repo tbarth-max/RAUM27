@@ -14,11 +14,14 @@ Every hypothesis must survive objective benchmarks before it becomes part of the
 
 ## Research Areas
 
-- Prediction Benchmarks
-- Pattern Recognition
-- Multi-Agent Systems
-- Information Geometry
-- Reproducible Experiments
+- **Prediction Benchmarks** — active, see below.
+- Pattern Recognition — not started.
+- Multi-Agent Systems — not started.
+- Information Geometry — not started.
+- Reproducible Experiments — not started.
+
+Listed for direction, not as a claim of coverage: per the principle below,
+nothing here counts until it has actual benchmarked work behind it.
 
 ## Research Principle
 
