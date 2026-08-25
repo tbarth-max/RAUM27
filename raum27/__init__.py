@@ -89,6 +89,21 @@ from raum27.cube_projection import (
     apply as apply_matrix,
     apply_driven as apply_driven_matrix,
 )
+from raum27.kern_modul_v1 import (
+    all_corners as kmv1_all_corners,
+    complement_contribution as kmv1_complement_contribution,
+    face_contribution as kmv1_face_contribution,
+    face_diagonal as kmv1_face_diagonal,
+    flip_x as kmv1_flip_x,
+    flip_y as kmv1_flip_y,
+    flip_z as kmv1_flip_z,
+    octant_solid_angle as kmv1_octant_solid_angle,
+    parity as kmv1_parity,
+    reachable as kmv1_reachable,
+    redundancy_holds as kmv1_redundancy_holds,
+    space_diagonal as kmv1_space_diagonal,
+    tdoa_position as kmv1_tdoa_position,
+)
 
 __all__ = [
     "involution",
@@ -155,4 +170,17 @@ __all__ = [
     "cube_projection_kernel",
     "apply_matrix",
     "apply_driven_matrix",
+    "kmv1_all_corners",
+    "kmv1_complement_contribution",
+    "kmv1_face_contribution",
+    "kmv1_face_diagonal",
+    "kmv1_flip_x",
+    "kmv1_flip_y",
+    "kmv1_flip_z",
+    "kmv1_octant_solid_angle",
+    "kmv1_parity",
+    "kmv1_reachable",
+    "kmv1_redundancy_holds",
+    "kmv1_space_diagonal",
+    "kmv1_tdoa_position",
 ]

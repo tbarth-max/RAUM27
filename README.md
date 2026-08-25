@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (108 tests as of this module set, all
+Run the test suite with `pytest` (121 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -306,3 +306,43 @@ A source with components in more than one eigenspace therefore produces
 an ever-growing mean with a fixed, bounded pattern superimposed on it —
 a standing pattern riding an unbounded carrier, driven by a source that
 never stops. See `tests/test_cube_projection.py`.
+
+## Module: `raum27.kern_modul_v1` — Five Checkable Facts, Ported from a Lean Draft
+
+Independently re-verified here in exact rational arithmetic, from an
+external Lean 4 draft (`RAUM27_Modul_v1.lean`) that itself explicitly
+marked its unproven parts with `sorry` instead of hiding them:
+
+- **Reflection group on the cube's 8 corners**: 1 reflection reaches only
+  2 corners, 2 reflections (X, Y) reach only 4, and all 3 (X, Y, Z) are
+  needed to reach all 8 — checked by breadth-first closure, not asserted.
+- **Octant solid angle**: exactly 1/2 (in units of π sr) of the full
+  sphere's 4π sr, for any octant regardless of cube size.
+- **Corner parity** (number of set bits mod 2): exactly 4 of the 8
+  corners are even, 4 are odd. An edge (1 bit flips) always toggles
+  parity; a face diagonal (2 bits) never does; a space diagonal (3 bits)
+  always does.
+- **TDOA localization**: `x = (L - v·Δt) / 2` puts the source at the
+  midpoint when Δt = 0, and is exactly linear in Δt (so a small timing
+  error produces a proportional, not runaway, position error).
+- **Redundancy condition** `X · (1/X) = 1` for `X ≠ 0`, checked for a
+  batch of random rationals.
+- **A rational identity behind "1/9"**: `(√3)⁴ = (√3²)² = 3² = 9` (no
+  irrational ever appears in the arithmetic), so a corner's `1/r⁴`-model
+  contribution is `1/9`.
+
+**Deliberately left out**, because nothing backs them yet: the source
+draft's three `sorry`-marked claims (full transitivity of the reflection
+group — true, but not formalized here either; an empirical "2.6–3.2×
+noise reduction" factor with no reproducible experiment attached; and an
+explicitly unfinished compression chain).
+
+**One thing flagged rather than accepted**: the source presents the 1/9
+identity above and a second computation, `1 − 8/9 = 1/9`, as two
+*independent* confirmations. They aren't — the second one assumes the
+other 8 corners contribute exactly 8/9 without deriving that from
+anything, so `1 − 8/9 = 1/9` holds by construction for whatever share is
+assumed, not as independent evidence. Both functions are still included
+(`face_contribution`, `complement_contribution`) so this distinction
+stays checkable rather than silently accepted. See
+`tests/test_kern_modul_v1.py`.
