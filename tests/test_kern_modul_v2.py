@@ -116,3 +116,38 @@ def test_periodicity_control_has_real_assert():
         f"period {winning_period} won {winning_count}/{total} trials on pure "
         "random data -- the detector is biased toward reporting a fixed period"
     )
+
+
+def test_redundancy_state_third_slot_is_always_exactly_one():
+    for x in (Fraction(2), Fraction(1, 3), Fraction(1618, 1000), Fraction(-7, 5)):
+        state = k.redundancy_state(x)
+        assert state == (x, 1 / x, Fraction(1))
+
+
+def test_redundancy_deviation_at_reference_is_zero():
+    assert k.redundancy_deviation(Fraction(1)) == 0
+    assert k.redundancy_deviation(Fraction(5), reference=Fraction(5)) == 0
+
+
+def test_redundancy_deviation_is_symmetric_under_inversion():
+    for n, d in ((3, 1), (7, 2), (1, 5), (11, 4)):
+        x = Fraction(n, d)
+        assert k.redundancy_deviation(x) == k.redundancy_deviation(1 / x)
+
+
+def test_redundancy_deviation_increases_moving_away_from_one_in_each_direction():
+    above_one = [Fraction(10 + n, 10) for n in range(0, 90)]
+    values_above = [k.redundancy_deviation(x) for x in above_one]
+    assert all(values_above[i] < values_above[i + 1] for i in range(len(values_above) - 1))
+
+    below_one = [Fraction(n, 100) for n in range(1, 101)]
+    values_below = [k.redundancy_deviation(x) for x in below_one]
+    assert all(values_below[i] > values_below[i + 1] for i in range(len(values_below) - 1))
+
+
+def test_redundancy_deviation_not_monotonic_in_plain_distance_from_reference():
+    """deviation(2) == deviation(1/2) even though |2-1| != |1/2-1| -- the
+    quantity is symmetric under x -> 1/x, not a function of |x-1| alone.
+    Documented here so this isn't silently mis-described as such later."""
+    assert k.redundancy_deviation(Fraction(2)) == k.redundancy_deviation(Fraction(1, 2))
+    assert abs(Fraction(2) - 1) != abs(Fraction(1, 2) - 1)

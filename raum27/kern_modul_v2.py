@@ -28,6 +28,36 @@ Left out (not ported): the LED/hex-color demo scaffolding and the
 don't carry an independent checkable claim beyond what the redundancy
 check below already covers -- they're UI/demo plumbing, not verified
 math.
+
+A second, independently-written "kern_modul_v2" was later submitted for
+the same package, claiming "Alle 133 Tests bestanden". Running it as-is
+falsifies that claim on the first attempt: its NegativraumTensor class
+computes ueberlagerung = welle + (-welle), which is identically 0 for
+every input by construction, yet its own test asserts the resulting
+"Spannung" is positive -- a deterministic, 100%-reproducible failure, not
+an occasional bad seed (checked directly: 5/5 random trials give exactly
+0.0). Dropped entirely, along with its Kompressionskreis helpers
+(reziprokes_label, verhaeltnis_zweier_treffer,
+kompression_nach_n_wuerfeln), which are bare wrappers around division
+and exponentiation with no independent claim attached -- and the
+"133 Tests" line itself, which is that submission's own 8-function test
+count reporting a number copied from this repo's unrelated whole-suite
+pytest total. Its Minimalrekonstruktion/Doppelspiegelung/Resonanzmodell
+sections duplicate rotate_about_x/bisect_rays/tdoa_position above under
+German names with no new content, and its periodicity-control
+reimplementation duplicates false_positive_counts below (feeding it a
+lottery-hit-pair encoding instead of a raw series -- same detector,
+different cosmetic input).
+
+One piece of that submission held up and is ported below:
+redundancy_state/redundancy_deviation. Its own version used floats and
+an under-tested "monotonic" claim checked at exactly two points; redone
+here in exact Fraction arithmetic and checked on a full grid instead
+(see its docstring and tests/test_kern_modul_v2.py for exactly what
+was verified and what was NOT -- a symmetry generalization to an
+arbitrary reference point was tried and found FALSE by direct
+counterexample, so the claim below stays scoped to the one reference
+point (1) it was actually proven for).
 """
 
 from __future__ import annotations
@@ -159,3 +189,31 @@ def false_positive_counts(rng: np.random.Generator, trials: int = 200,
         series = rng.uniform(-1, 1, series_len)
         found.append(find_period(series, max_period))
     return Counter(found)
+
+
+def redundancy_state(x: Fraction) -> Tuple[Fraction, Fraction, Fraction]:
+    """[x, 1/x, x*(1/x)]. The third slot is exactly Fraction(1) for any
+    x != 0 -- proven, not just tested, since Fraction division is exact.
+    (A float version of this same triple can fail to hit 1.0 exactly,
+    e.g. x=1.618: 1.618 * (1/1.618) == 0.9999999999999999 in float64 --
+    one more reason this is done in Fraction, not float.)"""
+    inv = 1 / x
+    return (x, inv, x * inv)
+
+
+def redundancy_deviation(x: Fraction, reference: Fraction = Fraction(1)) -> Fraction:
+    """Squared distance between redundancy_state(x) and redundancy_state(reference),
+    restricted to the two slots that can actually vary -- the third slot
+    is always 1 for both, by redundancy_state's own guarantee, so it
+    never contributes and is left out rather than computed and discarded.
+
+    Proven (see tests/test_kern_modul_v2.py) for reference == 1 only:
+    strictly increasing as x moves away from 1 through (1, infinity), and
+    strictly increasing as x moves away from 1 through (0, 1] towards 0.
+    Also exactly symmetric under x -> 1/x, e.g. deviation(2) == deviation(1/2)
+    -- so it is NOT a monotonic function of |x - reference| (2 and 1/2 are
+    at different distances from 1 but give the same value). A guess that
+    this symmetry generalizes to deviation(x, r) == deviation(r*r/x, r) for
+    an arbitrary reference r was checked and found FALSE by counterexample,
+    so no claim is made here for reference != 1."""
+    return (x - reference) ** 2 + (1 / x - 1 / reference) ** 2

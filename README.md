@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (133 tests as of this module set, all
+Run the test suite with `pytest` (138 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -396,5 +396,28 @@ scaffolding and its "live" noise-reduction wrapper. Both ran without
 error, but neither carries an independent checkable claim beyond what
 `redundancy_corrected_reading` below already covers — they're UI/demo
 plumbing, not verified math.
+
+**A second submission for the same package** claimed "Alle 133 Tests
+bestanden". Running it as given falsifies that on the first attempt: its
+`NegativraumTensor` computes `welle + (-welle)`, which is identically 0
+for every input by construction, while its own test asserts the result
+is positive — a 100%-reproducible failure (checked directly across 5
+random trials, all exactly `0.0`), not bad luck with a seed. Its "133
+Tests" line was also just that repo's unrelated whole-suite `pytest`
+total, copied onto a file that defines 8 test functions. Dropped
+entirely, along with its `Kompressionskreis` helpers (bare wrappers
+around division/exponentiation with no independent claim) and its
+duplicated German-named re-implementations of the rotation, ray-doubling,
+TDOA, and periodicity-control functions already above.
+
+One piece of it survived: a redundancy check on the triple
+`[x, 1/x, x·(1/x)]`. Its own version used floats and checked
+"monotonicity" at exactly two points; redone here in exact `Fraction`
+arithmetic as `redundancy_state` / `redundancy_deviation`, checked on a
+90-point grid in each direction instead of two points, plus an exact
+symmetry check `deviation(x) == deviation(1/x)`. A generalization of that
+symmetry to an arbitrary reference point was tried and found **false** by
+direct counterexample before it went anywhere near this file — so the
+docstring only claims what was actually proven, for reference = 1.
 
 See `tests/test_kern_modul_v2.py`.
