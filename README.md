@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (138 tests as of this module set, all
+Run the test suite with `pytest` (139 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -419,5 +419,33 @@ symmetry check `deviation(x) == deviation(1/x)`. A generalization of that
 symmetry to an arbitrary reference point was tried and found **false** by
 direct counterexample before it went anywhere near this file — so the
 docstring only claims what was actually proven, for reference = 1.
+
+**The rest of the original package was checked too:**
+
+- `raum27_delta_mustererkennung.py`, `raum27_led_sensor.py`,
+  `raum27_live_kompakt.py` all duplicate content already covered above
+  (the `[x, 1/x, x·(1/x)]` delta, a TDOA formula with a constant offset,
+  and the same hex-color demo pattern) — except one real, new claim in
+  `raum27_live_kompakt.py`: averaging 8 independent noisy redundancy
+  readings should cut the mean error by about `√8 ≈ 2.828` (ordinary
+  statistics — standard error falls off as `√n` for `n` i.i.d. samples).
+  The source measured 2.572 in a single 500-trial run and stopped. Rerun
+  against this module's own `redundancy_corrected_reading` /
+  `averaged_reading` across 4 seeds × 400 trials: 2.61–2.88 — 2.572 was
+  one noisy sample of a real effect, not a discrepancy. Now covered by
+  `test_averaging_eight_axes_reduces_noise_by_roughly_sqrt_eight`.
+- `raum27_kompressionskreis.py` was named in the package's own status
+  table but was never actually among the files pasted — nothing to
+  verify, so nothing was ported under that name.
+- The three Lean files that passed the bracket-balance check
+  (`RAUM27_Kern.lean`, `RAUM27_Wuerfelsymmetrie.lean`,
+  `RAUM27_Resonanzauslese.lean`) contain no `sorry` and no circular
+  proofs; their corner-reflection and TDOA/velocity/period claims check
+  out algebraically. One naming overreach found in `RAUM27_Kern.lean`:
+  `wave_resonance_left_right` sounds like a general law, but its
+  hypothesis fixes `n.val = 1`; the same formula at `n.val = 2` gives
+  `(2·16/9)·(2·9/16) = 4`, not 1. The Lean statement is honest about the
+  restriction — the hypothesis is right there — but the name oversells a
+  trivial special case as a general resonance effect. Not ported.
 
 See `tests/test_kern_modul_v2.py`.

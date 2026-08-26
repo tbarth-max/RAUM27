@@ -58,6 +58,43 @@ was verified and what was NOT -- a symmetry generalization to an
 arbitrary reference point was tried and found FALSE by direct
 counterexample, so the claim below stays scoped to the one reference
 point (1) it was actually proven for).
+
+The remaining files in the original package were then checked too:
+
+- raum27_delta_mustererkennung.py: its core ([x, 1/x, x*(1/x)] delta) is
+  the same construction as redundancy_state/redundancy_deviation above
+  (confirms the port was based on the right source), its TDOA class is
+  the same tdoa_position formula with a constant axis-offset added (not
+  independently new), and it ends in the same hex-color demo pattern as
+  the LED file -- all three already accounted for above.
+- raum27_led_sensor.py: runs cleanly, but "zustand_als_zahl" (frequency x
+  brightness x (1 + morse-code weight)) is an arbitrary made-up formula
+  with no geometric grounding and nothing to falsify. Left out.
+- raum27_live_kompakt.py: same hex-demo pattern, but it also carries a
+  real claim worth keeping: averaging 8 independent noisy redundancy
+  readings should cut the mean error by about sqrt(8)=2.828 (ordinary
+  statistics: standard error falls off as sqrt(n) for n i.i.d. samples).
+  The source measured 2.572 in one 500-trial run and stopped there.
+  Re-measured against this module's own redundancy_corrected_reading /
+  averaged_reading across 4 seeds x 400 trials each: 2.61-2.88 -- 2.572
+  was just one noisy sample of a real effect, not a discrepancy. Added as
+  test_averaging_eight_axes_reduces_noise_by_roughly_sqrt_eight.
+- raum27_kompressionskreis.py, listed in the package's own status table,
+  was never actually present in the files that were pasted -- it isn't
+  ported here because there is nothing to verify.
+- The three Lean files that passed the bracket-balance check
+  (RAUM27_Kern.lean, RAUM27_Wuerfelsymmetrie.lean,
+  RAUM27_Resonanzauslese.lean) contain no `sorry` and no circular proofs.
+  RAUM27_Wuerfelsymmetrie's corner-reflection claims and
+  RAUM27_Resonanzauslese's TDOA/velocity/period theorems check out
+  algebraically. One naming overreach in RAUM27_Kern.lean:
+  `wave_resonance_left_right` sounds like a general law but its own
+  hypothesis fixes n.val = 1; substituting n.val = 2 into the same
+  formula gives (2*16/9)*(2*9/16) = 4, not 1. The Lean statement itself
+  is honest about the restriction (the hypothesis is right there), but
+  the name oversells a trivial special case as a general resonance
+  effect. Not ported -- kern_modul_v1/v2 don't need it, and there's no
+  general version of the claim to port.
 """
 
 from __future__ import annotations
