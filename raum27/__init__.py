@@ -104,6 +104,22 @@ from raum27.kern_modul_v1 import (
     space_diagonal as kmv1_space_diagonal,
     tdoa_position as kmv1_tdoa_position,
 )
+from raum27.kern_modul_v2 import (
+    averaged_reading as kmv2_averaged_reading,
+    bisect_rays as kmv2_bisect_rays,
+    false_positive_counts as kmv2_false_positive_counts,
+    find_period as kmv2_find_period,
+    initial_rays as kmv2_initial_rays,
+    is_evenly_spaced as kmv2_is_evenly_spaced,
+    reconstruct_corners as kmv2_reconstruct_corners,
+    reconstruct_face_directions as kmv2_reconstruct_face_directions,
+    redundancy_corrected_reading as kmv2_redundancy_corrected_reading,
+    rotate_about_x as kmv2_rotate_about_x,
+    rotate_about_y as kmv2_rotate_about_y,
+    tdoa_position as kmv2_tdoa_position,
+    velocity_from_wavelength_and_frequency as kmv2_velocity_from_wavelength_and_frequency,
+    wavelength_from_velocity_and_frequency as kmv2_wavelength_from_velocity_and_frequency,
+)
 
 __all__ = [
     "involution",
@@ -183,4 +199,18 @@ __all__ = [
     "kmv1_redundancy_holds",
     "kmv1_space_diagonal",
     "kmv1_tdoa_position",
+    "kmv2_averaged_reading",
+    "kmv2_bisect_rays",
+    "kmv2_false_positive_counts",
+    "kmv2_find_period",
+    "kmv2_initial_rays",
+    "kmv2_is_evenly_spaced",
+    "kmv2_reconstruct_corners",
+    "kmv2_reconstruct_face_directions",
+    "kmv2_redundancy_corrected_reading",
+    "kmv2_rotate_about_x",
+    "kmv2_rotate_about_y",
+    "kmv2_tdoa_position",
+    "kmv2_velocity_from_wavelength_and_frequency",
+    "kmv2_wavelength_from_velocity_and_frequency",
 ]

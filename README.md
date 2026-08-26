@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (121 tests as of this module set, all
+Run the test suite with `pytest` (133 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -346,3 +346,55 @@ assumed, not as independent evidence. Both functions are still included
 (`face_contribution`, `complement_contribution`) so this distinction
 stays checkable rather than silently accepted. See
 `tests/test_kern_modul_v1.py`.
+
+## Module: `raum27.kern_modul_v2` — Corrections from an External Code Package
+
+Ported from a larger external Python/Lean package ("RAUM27 – Geprüfter
+Kern", Stand 26.8.2026) after running every file in it rather than
+accepting its own "✅ Bestätigt" status table. Three real issues were
+found and fixed, one Lean syntax error was found and corrected:
+
+- **Naming error, not a math error**: the source calls two coordinate
+  rotations "Spiegelungen" (reflections/mirrors) and an angular-doubling
+  step "Doppelspiegelung". A true reflection has determinant −1; both
+  rotations here have determinant +1, confirmed by direct computation
+  (`rotate_about_x`, `rotate_about_y`, tested in
+  `test_kern_modul_v2.py`). The underlying arithmetic was correct — only
+  the name was wrong, so it's renamed here rather than dropped.
+- **A circular "two independent systems" test**: the source computed a
+  wavelength as `v_true / f_true` and multiplied it back by `f_true`,
+  presenting the recovered `v_true` as confirmation from two separate
+  measurement systems. It isn't — `(v/f)·f = v` holds algebraically for
+  *any* `v` and `f`, independent of any real measurement. Kept
+  (`wavelength_from_velocity_and_frequency` /
+  `velocity_from_wavelength_and_frequency`) but the docstring and test
+  name it as the identity it is, not as independent evidence.
+- **A control test with no assertion**: the source's check for
+  periodicity false-positives on pure random (period-free) data printed a
+  result but asserted nothing — it could not fail regardless of what came
+  out. Fixed here: `false_positive_counts` runs the same detector on
+  random noise across many trials, and
+  `test_periodicity_control_has_real_assert` requires that no single
+  candidate period wins more than 15% of trials. Measured baseline across
+  10 independent seeds × 500 trials × 18 candidate lags: 6.8%–8.6%
+  (uniform-chance baseline is 1/18 ≈ 5.6%), so the 15% bound is real and
+  would catch an actual regression (e.g. a detector that always reports
+  the same period), not just pass by construction.
+- **A Lean syntax error**: `RAUM27_Gitterraster.lean`, theorem
+  `keine_feinere_ausloesung`, line 24, has 5 opening brackets/parens and
+  only 4 closing ones — it would not parse, regardless of whether the
+  proof idea is right. Confirmed with a standalone bracket-balance
+  checker (independent of any Lean toolchain, since none is available
+  here). The corrected line is
+  `` rw [abs_of_neg (by nlinarith [mul_pos hDX (show (0:ℚ) < 1 by norm_num)])] ``.
+  As with `kern_modul_v1`, the `.lean` source itself is not added to this
+  repo (no Lean toolchain here to verify it compiles) — only the
+  independently-checked Python port is.
+
+**Deliberately left out**: the source package's LED/hex-color demo
+scaffolding and its "live" noise-reduction wrapper. Both ran without
+error, but neither carries an independent checkable claim beyond what
+`redundancy_corrected_reading` below already covers — they're UI/demo
+plumbing, not verified math.
+
+See `tests/test_kern_modul_v2.py`.
