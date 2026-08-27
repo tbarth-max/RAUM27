@@ -411,3 +411,53 @@ assumed, not as independent evidence. Both functions are still included
 (`face_contribution`, `complement_contribution`) so this distinction
 stays checkable rather than silently accepted. See
 `tests/test_kern_modul_v1.py`.
+
+## Module: `raum27.optical_ring_register` — Cyclic RGB Register, and the Cost of Optical Storage
+
+A conversation about mirror photos proposed a "ring register": RGB LED
+states circulating through a mirror-reflection loop, each round trip a
+register position, the last position fed back into the first. Same
+approach as everywhere else in this package — split the idea into the part
+that is ordinary, checkable engineering and the part that is a physical
+claim needing a number, not prose.
+
+**The discrete part** (implemented directly): `RingRegister` is a
+fixed-capacity circular shift register of 24-bit RGB words, addressed mod
+N — the same family of cyclic structure as `debruijn_loop` and `q144`.
+`write`/`read` address any position; `rotate` shifts the whole register by
+n steps, the loop's feedback path. `total_capacity_bits(n)` is `n * 24`,
+identical to a linear array of the same length: the ring topology changes
+access pattern, not capacity (the same conclusion `debruijn_loop` already
+establishes for a different cyclic structure).
+
+**The optical part** (checked, and it does not hold up as-is): a real
+mirror has reflectivity R < 1, so after n round trips the signal amplitude
+is `R**n` (`mirror_attenuation`) — ordinary passive-cavity decay, the same
+law behind any optical cavity's finesse. `round_trips_until_below_quantization`
+computes exactly how many round trips a given reflectivity survives before
+the attenuated signal drops below one 8-bit quantization step. For
+realistic first-surface mirrors (R in 0.90–0.99) that boundary is **53 to
+552 round trips** — not long enough for a passive mirror loop alone to
+serve as durable storage.
+
+**What closes the gap**: `OpticalRingRegister` tracks round-trip age per
+cell and exposes `amplitude`/`is_still_resolvable` against that boundary,
+and `regenerate` resets a cell's age to zero without touching its stored
+value — the concrete implementation of "the loop needs periodic
+regeneration to stay stable," verified in
+`tests/test_optical_ring_register.py`: the digital value survives past the
+resolvability boundary as an integer even after the optical signal alone
+would no longer be resolvable, and only `regenerate` (not the optics) can
+reset the amplitude.
+
+**What this does NOT claim:**
+
+- That a mirror arrangement can be built to hit any chosen reflectivity or
+  capacity — those are free parameters here, not measurements of a built
+  device.
+- That regeneration happens optically. It is modeled as re-emitting the
+  already-known digital value at full amplitude — an electronic operation
+  on a measured/decoded value, not something the mirror loop does for
+  free.
+- Anything about "resonance," consciousness, or physical information
+  transfer beyond ordinary geometric attenuation of reflected light.
