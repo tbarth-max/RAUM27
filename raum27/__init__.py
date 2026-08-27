@@ -100,6 +100,14 @@ from raum27.cube_projection import (
     apply as apply_matrix,
     apply_driven as apply_driven_matrix,
 )
+from raum27.optical_ring_register import (
+    OpticalRingRegister,
+    RGBWord,
+    RingRegister,
+    mirror_attenuation,
+    round_trips_until_below_quantization,
+    total_capacity_bits as ring_register_total_capacity_bits,
+)
 from raum27.kern_modul_v1 import (
     all_corners as kmv1_all_corners,
     complement_contribution as kmv1_complement_contribution,
@@ -201,4 +209,10 @@ __all__ = [
     "kmv1_redundancy_holds",
     "kmv1_space_diagonal",
     "kmv1_tdoa_position",
+    "OpticalRingRegister",
+    "RGBWord",
+    "RingRegister",
+    "mirror_attenuation",
+    "round_trips_until_below_quantization",
+    "ring_register_total_capacity_bits",
 ]
