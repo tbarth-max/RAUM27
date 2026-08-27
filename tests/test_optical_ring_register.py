@@ -3,10 +3,16 @@ import math
 import pytest
 
 from raum27.optical_ring_register import (
+    SPEED_OF_LIGHT,
     OpticalRingRegister,
     RGBWord,
     RingRegister,
+    free_spectral_range,
+    is_resonant,
     mirror_attenuation,
+    nearest_mode_number,
+    resonant_frequency,
+    resonant_wavelength,
     round_trips_until_below_quantization,
     total_capacity_bits,
 )
@@ -171,3 +177,95 @@ def test_optical_ring_register_without_regeneration_eventually_loses_resolvabili
     # the register still holds the exact digital value: it is the optical
     # amplitude, not the stored word, that has become unresolvable.
     assert reg.read(0) == word
+
+
+def test_free_spectral_range_matches_earlier_bandwidth_calculation():
+    # 3 cm mirror spacing, vacuum: this is the same c/(2L) quantity as the
+    # "required source modulation rate" computed earlier in the discussion
+    # for a 10-position ring at this spacing -- both are ~5 GHz.
+    fsr = free_spectral_range(cavity_length=0.03)
+    assert fsr == pytest.approx(5e9, rel=1e-3)
+
+
+def test_free_spectral_range_scales_inversely_with_cavity_length():
+    short = free_spectral_range(cavity_length=0.01)
+    long = free_spectral_range(cavity_length=1.0)
+    assert short > long
+    assert short == pytest.approx(long * 100, rel=1e-9)
+
+
+def test_free_spectral_range_scales_inversely_with_refractive_index():
+    vacuum = free_spectral_range(cavity_length=0.03, refractive_index=1.0)
+    glass = free_spectral_range(cavity_length=0.03, refractive_index=1.44)
+    assert glass == pytest.approx(vacuum / 1.44)
+
+
+def test_free_spectral_range_rejects_invalid_inputs():
+    with pytest.raises(ValueError):
+        free_spectral_range(cavity_length=0.0)
+    with pytest.raises(ValueError):
+        free_spectral_range(cavity_length=-1.0)
+    with pytest.raises(ValueError):
+        free_spectral_range(cavity_length=1.0, refractive_index=0.0)
+
+
+def test_resonant_frequency_is_mode_number_times_fsr():
+    fsr = free_spectral_range(cavity_length=0.03)
+    for m in (1, 2, 3, 10, 100):
+        assert resonant_frequency(cavity_length=0.03, mode_number=m) == pytest.approx(m * fsr)
+
+
+def test_resonant_frequency_rejects_nonpositive_mode_number():
+    with pytest.raises(ValueError):
+        resonant_frequency(cavity_length=0.03, mode_number=0)
+    with pytest.raises(ValueError):
+        resonant_frequency(cavity_length=0.03, mode_number=-1)
+
+
+def test_resonant_wavelength_round_trip_satisfies_2nl_equals_m_lambda():
+    L = 0.03
+    n = 1.0
+    for m in (1, 2, 5, 50):
+        wl = resonant_wavelength(cavity_length=L, mode_number=m, refractive_index=n)
+        assert 2 * n * L == pytest.approx(m * wl)
+
+
+def test_resonant_wavelength_times_frequency_equals_speed_of_light():
+    # lambda_m (vacuum wavelength convention) * nu_m == c, independent of n.
+    for n in (1.0, 1.44):
+        wl = resonant_wavelength(cavity_length=0.03, mode_number=7, refractive_index=n)
+        freq = resonant_frequency(cavity_length=0.03, mode_number=7, refractive_index=n)
+        assert wl * freq == pytest.approx(SPEED_OF_LIGHT)
+
+
+def test_is_resonant_true_exactly_at_a_computed_resonant_wavelength():
+    L = 0.03
+    wl = resonant_wavelength(cavity_length=L, mode_number=42)
+    assert is_resonant(wavelength=wl, cavity_length=L)
+
+
+def test_is_resonant_false_for_a_half_mode_detuned_wavelength():
+    L = 0.03
+    n_modes_wl = resonant_wavelength(cavity_length=L, mode_number=42)
+    # detune by roughly half a free spectral range in frequency space
+    detuned_freq = resonant_frequency(cavity_length=L, mode_number=42) + free_spectral_range(L) / 2
+    detuned_wl = SPEED_OF_LIGHT / detuned_freq
+    assert not is_resonant(wavelength=detuned_wl, cavity_length=L)
+    assert detuned_wl != n_modes_wl
+
+
+def test_is_resonant_rejects_nonpositive_wavelength():
+    with pytest.raises(ValueError):
+        is_resonant(wavelength=0.0, cavity_length=0.03)
+
+
+def test_nearest_mode_number_recovers_the_mode_a_wavelength_was_built_from():
+    L = 0.03
+    for m in (1, 5, 100, 1000):
+        wl = resonant_wavelength(cavity_length=L, mode_number=m)
+        assert nearest_mode_number(wavelength=wl, cavity_length=L) == m
+
+
+def test_nearest_mode_number_rejects_nonpositive_wavelength():
+    with pytest.raises(ValueError):
+        nearest_mode_number(wavelength=0.0, cavity_length=0.03)

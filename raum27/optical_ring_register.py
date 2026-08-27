@@ -37,12 +37,33 @@ What this module does NOT claim:
   same length -- `total_capacity_bits` is the same either way, matching the
   conclusion already established in `debruijn_loop.shannon_capacity` for a
   different kind of cyclic structure.
+
+A second, separate physical regime -- a genuine two-mirror optical cavity
+with a coherent source (a laser, not an LED) between them -- is checked by
+`free_spectral_range`/`resonant_frequency`/`resonant_wavelength`/
+`is_resonant`. This is standard Fabry-Perot resonator physics: only
+wavelengths whose round trip accumulates a whole number of 2*pi of phase
+survive constructive interference over many round trips; every other
+wavelength interferes destructively and dies out. This is a real, different
+mechanism from `mirror_attenuation` above -- it requires a coherent,
+narrow-linewidth source and a cavity held to a fraction of a wavelength of
+alignment, neither of which an incoherent, broadband RGB LED in a decorative
+mirror box provides. It also does NOT by itself imply information storage:
+a resonant cavity selects and reinforces specific standing-wave field
+patterns, it does not hold distinguishable data values. Note the free
+spectral range formula collapses to exactly the same number as the
+modulation-bandwidth requirement in this module's earlier discussion (both
+are c / (2 * n * L)): the two are the same physical quantity seen from two
+directions -- "the fastest a source can be told apart from itself after one
+round trip" and "the spacing between a cavity's resonant frequencies."
 """
 
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+
+SPEED_OF_LIGHT = 299_792_458.0  # m/s, vacuum
 
 
 @dataclass(frozen=True)
@@ -177,3 +198,76 @@ class OpticalRingRegister(RingRegister):
         implementation of "periodic regeneration keeps the loop stable."
         """
         self._age[position % self.capacity] = 0
+
+
+def free_spectral_range(
+    cavity_length: float, refractive_index: float = 1.0, speed_of_light: float = SPEED_OF_LIGHT
+) -> float:
+    """Frequency spacing between consecutive resonant modes of a linear
+    two-mirror cavity of length `cavity_length` (m), FSR = c / (2 * n * L).
+
+    Requires a coherent source and a cavity aligned to a fraction of a
+    wavelength -- see the module docstring for why that is a different
+    regime from `mirror_attenuation`.
+    """
+    if cavity_length <= 0:
+        raise ValueError(f"cavity_length must be > 0, got {cavity_length}")
+    if refractive_index <= 0:
+        raise ValueError(f"refractive_index must be > 0, got {refractive_index}")
+    return speed_of_light / (2.0 * refractive_index * cavity_length)
+
+
+def resonant_frequency(
+    cavity_length: float,
+    mode_number: int,
+    refractive_index: float = 1.0,
+    speed_of_light: float = SPEED_OF_LIGHT,
+) -> float:
+    """Frequency (Hz) of cavity mode `mode_number` (m = 1, 2, 3, ...):
+    nu_m = m * c / (2 * n * L) = m * free_spectral_range(...).
+    """
+    if mode_number < 1:
+        raise ValueError(f"mode_number must be >= 1, got {mode_number}")
+    return mode_number * free_spectral_range(cavity_length, refractive_index, speed_of_light)
+
+
+def resonant_wavelength(
+    cavity_length: float,
+    mode_number: int,
+    refractive_index: float = 1.0,
+    speed_of_light: float = SPEED_OF_LIGHT,
+) -> float:
+    """Vacuum wavelength (m) of cavity mode `mode_number`, from the round
+    trip resonance condition 2 * n * L = m * lambda_m.
+    """
+    if mode_number < 1:
+        raise ValueError(f"mode_number must be >= 1, got {mode_number}")
+    return speed_of_light / resonant_frequency(cavity_length, mode_number, refractive_index, speed_of_light)
+
+
+def nearest_mode_number(
+    wavelength: float, cavity_length: float, refractive_index: float = 1.0
+) -> int:
+    """Mode number m whose resonant wavelength is closest to `wavelength`,
+    from 2 * n * L = m * lambda, i.e. m = round(2 * n * L / lambda).
+    """
+    if wavelength <= 0:
+        raise ValueError(f"wavelength must be > 0, got {wavelength}")
+    exact = 2.0 * refractive_index * cavity_length / wavelength
+    return max(1, round(exact))
+
+
+def is_resonant(
+    wavelength: float, cavity_length: float, refractive_index: float = 1.0, tolerance: float = 1e-9
+) -> bool:
+    """True iff `wavelength` satisfies the round trip resonance condition
+    2 * n * L = m * lambda for some integer m, within relative `tolerance`.
+
+    Off-resonance wavelengths accumulate a round trip phase that is not a
+    multiple of 2*pi and interfere destructively over repeated round trips;
+    only wavelengths passing this check survive as standing-wave modes.
+    """
+    if wavelength <= 0:
+        raise ValueError(f"wavelength must be > 0, got {wavelength}")
+    exact = 2.0 * refractive_index * cavity_length / wavelength
+    return math.isclose(exact, round(exact), rel_tol=tolerance, abs_tol=tolerance)

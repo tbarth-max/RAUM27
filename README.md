@@ -461,3 +461,26 @@ reset the amplitude.
   free.
 - Anything about "resonance," consciousness, or physical information
   transfer beyond ordinary geometric attenuation of reflected light.
+
+**A second, separate physical regime** came up while discussing whether the
+loop could instead be built as a genuine optical cavity — two mirrors with a
+coherent source (a laser, not an LED) between them. That is standard
+Fabry-Pérot resonator physics, not the geometric-attenuation regime above,
+and is checked separately: `free_spectral_range(L)` gives the frequency
+spacing between a cavity's resonant modes, c / (2·n·L); `resonant_frequency`
+and `resonant_wavelength` give the m-th mode from the round-trip condition
+2·n·L = m·λ; `is_resonant` checks whether a given wavelength satisfies it
+(off-resonance wavelengths interfere destructively over repeated round trips
+and die out, only resonant ones survive as standing waves). This requires a
+coherent, narrow-linewidth source and cavity alignment to a fraction of a
+wavelength — neither of which an incoherent, broadband LED in a decorative
+mirror box provides, so it does not apply to the register above; and a
+resonant cavity by itself selects and reinforces a standing-wave field
+pattern, it does not hold distinguishable RGB data. One quantitative note
+tying the two regimes together: `free_spectral_range` is exactly the same
+formula, c/(2L), as the "how fast would the source need to blink to make N
+mirror-round-trip positions show N different states" bandwidth requirement
+worked out earlier for this module — the two are the same physical
+quantity (a cavity's mode spacing and the fastest a source can be told apart
+from its own echo) seen from two different questions.
+See `tests/test_optical_ring_register.py`.
