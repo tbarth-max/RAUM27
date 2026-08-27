@@ -14,11 +14,14 @@ Every hypothesis must survive objective benchmarks before it becomes part of the
 
 ## Research Areas
 
-- Prediction Benchmarks
-- Pattern Recognition
-- Multi-Agent Systems
-- Information Geometry
-- Reproducible Experiments
+- **Prediction Benchmarks** — active, see below.
+- Pattern Recognition — not started.
+- Multi-Agent Systems — not started.
+- Information Geometry — not started.
+- Reproducible Experiments — not started.
+
+Listed for direction, not as a claim of coverage: per the principle below,
+nothing here counts until it has actual benchmarked work behind it.
 
 ## Research Principle
 
@@ -104,6 +107,47 @@ implementation — it is the mathematically expected outcome of applying
 any function of history to a process with provably zero mutual
 information between past and future draws, and the benchmark's job is to
 demonstrate that honestly rather than assume it.
+
+**Real data, not just synthetic:** `data/lotto_6aus49_since_2000.csv`
+holds 2724 real German Lotto 6-aus-49 draws, 2000-01-01 through
+2026-07-22 (source: [daowa89/lottery-archive](https://github.com/daowa89/lottery-archive),
+see `data/README.md`). `load_draws_from_csv` loads it;
+`scripts/run_real_data_benchmark.py` runs both `RandomPredictor` and
+`FingerprintKNNPredictor` over the full real history and reports the
+delta between them — the exact "Zufallsdurchlauf vs. Vorhersagedurchlauf"
+comparison this benchmark exists to make. It is a standalone script, not
+part of `pytest`, because the k-NN backtest over ~2700 real draws is
+O(n²) and takes several minutes; `tests/test_real_data_and_ztest.py`
+covers the same loading/statistics logic in milliseconds on a slice of
+the real data instead.
+
+Because a full permutation test on that much data would mean re-running
+the expensive predictor hundreds of times, real-data significance is
+assessed with `z_test_vs_theoretical_baseline` instead: under the null
+hypothesis, walk-forward match counts are i.i.d. Hypergeometric(49,6,6)
+*regardless of any correlation in the predictor's own picks* (proof in
+its docstring), so the Central Limit Theorem gives an exact-in-the-large-sample
+significance test without needing to re-run the predictor at all.
+
+**Actual result, run once on the full real history (`k=5`, `seed=1`, no
+tuning or cherry-picking — this is the exact specification from the
+source notes):**
+
+| | mean matches/draw | vs. theoretical baseline (0.7347) | p-value |
+|---|---|---|---|
+| `RandomPredictor` | 0.7384 | +0.0037 | 0.40 (not significant) |
+| `FingerprintKNNPredictor` | 0.7032 | **−0.0315** | 0.98 for "better than chance" |
+
+**Delta (Vorhersage − Zufall) = −0.0353 matches/draw.** The fingerprint/k-NN
+system did not show the requested measurable improvement over random —
+on this real dataset its point estimate is slightly *below* random
+guessing, not above it (z ≈ −2.17; treated as its own one-sided test for
+"significantly worse," that corresponds to p ≈ 0.015, though with no
+correction for having looked at this after the fact, so read that as
+suggestive rather than conclusive). The one claim this result does
+support without qualification: there is no evidence here of the
+algorithm doing better than chance, which is the bar this whole exercise
+was set up to test.
 
 **What this does and does not establish:**
 

@@ -39,8 +39,10 @@ from raum27.lotto_benchmark import (
     RandomPredictor,
     backtest,
     expected_matches,
+    load_draws_from_csv,
     match_probability,
     permutation_test,
+    z_test_vs_theoretical_baseline,
 )
 from raum27.autocorrelation_control import (
     PersistencePredictor,
@@ -156,6 +158,8 @@ __all__ = [
     "expected_matches",
     "match_probability",
     "permutation_test",
+    "load_draws_from_csv",
+    "z_test_vs_theoretical_baseline",
     "PersistencePredictor",
     "permutation_test_continuous",
     "simulate_ar1",
