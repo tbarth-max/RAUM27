@@ -7,6 +7,7 @@ from raum27.optical_ring_register import (
     RGBWord,
     RingRegister,
     mirror_attenuation,
+    round_trips_survived_near_ideal,
     round_trips_until_below_quantization,
     total_capacity_bits,
 )
@@ -157,6 +158,21 @@ def test_optical_ring_register_regenerate_resets_amplitude_without_changing_valu
     reg.regenerate(0)
     assert reg.amplitude(0) == pytest.approx(1.0)
     assert reg.read(0) == word
+
+
+def test_round_trips_survived_grows_without_bound_as_reflectivity_approaches_one():
+    """The Carnot-style idealized limit: as R -> 1, survived round trips
+    diverges. This is a genuine, calculable mathematical limit (like a
+    Carnot engine's 1 - Tc/Th), not a claim that any real mirror reaches
+    it -- every sampled R here is still strictly below 1."""
+    results = round_trips_survived_near_ideal(bit_depth=8)
+    reflectivities = [r for r, _ in results]
+    trips = [n for _, n in results]
+
+    assert reflectivities == sorted(reflectivities)
+    assert all(r < 1.0 for r in reflectivities)
+    assert trips == sorted(trips)
+    assert trips[-1] > 100_000  # unbounded growth, not a small fixed number
 
 
 def test_optical_ring_register_without_regeneration_eventually_loses_resolvability_but_digital_value_is_unaffected():

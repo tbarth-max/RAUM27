@@ -107,9 +107,12 @@ from raum27.optical_ring_register import (
     RGBWord,
     RingRegister,
     mirror_attenuation,
+    round_trips_survived_near_ideal,
     round_trips_until_below_quantization,
     total_capacity_bits as ring_register_total_capacity_bits,
 )
+from raum27.equilibrium_check import all_axes_balanced, equilibrium_ratio
+from raum27.bias_detection import ConstantBiasDetector
 from raum27.kern_modul_v1 import (
     all_corners as kmv1_all_corners,
     complement_contribution as kmv1_complement_contribution,
@@ -217,6 +220,10 @@ __all__ = [
     "RGBWord",
     "RingRegister",
     "mirror_attenuation",
+    "round_trips_survived_near_ideal",
     "round_trips_until_below_quantization",
     "ring_register_total_capacity_bits",
+    "all_axes_balanced",
+    "equilibrium_ratio",
+    "ConstantBiasDetector",
 ]
