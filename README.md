@@ -12,6 +12,34 @@ The objective is to break it.
 
 Every hypothesis must survive objective benchmarks before it becomes part of the framework.
 
+## What this repository does and doesn't claim
+
+Everything interpretive here — what a piece of geometry *means*, whether
+it connects to physics, prediction, or anything past the arithmetic
+itself — is the current, subjective reading of whoever wrote it down
+that day. None of it is asserted as settled science, established fact,
+or a final answer. *Alles kann, nichts muss:* nothing here is law,
+nothing is binding, and nothing should be taken as authoritative without
+checking it yourself.
+
+One distinction worth stating precisely, because it's easy to blur: a
+chain of reasoning can be locally valid — every individual step correct —
+while the overall conclusion still doesn't hold, because it rests on a
+premise that turns out to be wrong. Being right about each step in
+between (process-correct) does not guarantee the conclusion is right
+(system-correct), and it can go the other way too: a conclusion can end
+up right for reasons that don't actually support it. Verifying one
+computation in isolation is not the same as certifying everything built
+on top of it — that depends on assumptions which stay open to revision,
+same as the computation itself once did.
+
+This isn't a disclaimer to dodge scrutiny — it's the reason every claim
+here is meant to come with its own runnable check (`pytest`), so anyone
+can rerun it and challenge it directly instead of taking it on say-so.
+What's written here is a snapshot of current understanding, one step in
+an ongoing process (see `notes/`) — not a verdict, and not a claim that
+any of this is the last word on whatever it turns out to mean.
+
 ## Research Areas
 
 - **Prediction Benchmarks** — active, see below.
