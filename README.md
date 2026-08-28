@@ -505,3 +505,52 @@ reset the amplitude.
   free.
 - Anything about "resonance," consciousness, or physical information
   transfer beyond ordinary geometric attenuation of reflected light.
+
+**One idealization worth stating precisely rather than dismissing:** R = 1
+(a perfectly lossless mirror) is a genuine mathematical limit —
+`round_trips_survived_near_ideal` shows survived round trips growing
+without bound as R approaches 1, verified in
+`test_round_trips_survived_grows_without_bound_as_reflectivity_approaches_one`.
+This is the same logical status as a Carnot engine's efficiency
+`1 - Tc/Th`: a real, calculable theoretical upper bound that is never
+reached by an actual device — a real mirror's R < 1 is blocked by
+absorption, scattering, and imperfect coatings, the same way a real heat
+engine's efficiency is blocked by the second law of thermodynamics.
+Citing the ideal limit is legitimate; treating it as a design target for
+a real optical loop is not.
+
+## Corrections to the 2026-08-27 synthesis document
+
+A later pass synthesized everything confirmed that day into one document.
+Four claims in it didn't hold up as stated, corrected here and pinned
+down with tests in `tests/test_synthesis_corrections_2026_08_27.py` (plus
+a dedicated module for the fourth):
+
+1. **16/9 was claimed "four independent confirmations."** Two of the four
+   are the same fact stated twice — `C = 3/4` squared and `C = 4/3`
+   squared are reciprocals of each other, not independent derivations.
+   A third ("Lean proof at n=1") has no corresponding code in this repo
+   to check. Only one is actually verified here: `coupling_constant() ==
+   4/3` (from `cube_symmetry`, corners/faces) and its square `16/9`.
+2. **"6 face midpoints determine the 8 corners with no information
+   loss"** contradicts the already-verified eigenstructure of
+   `cube_projection`'s corner↔face round trip: `composed_kernel()` has a
+   proven 2-dimensional eigenvalue-0 eigenspace. Demonstrated directly:
+   `(1, 1, -1, -1, 0, 0)` (faces ordered +x,-x,+y,-y,+z,-z) is a nonzero
+   vector that `composed_kernel()` maps to exactly zero — information
+   about that mode is provably not recoverable from face values alone.
+3. **The "equilibrium formula"** `((((X+/X-)/(Y+/Y-)²)/(Z+/Z-)³)/(T+/T-)⁴)`
+   was claimed to detect whether all four axes are balanced. It's
+   necessary (balance ⟹ ratio = 1) but not sufficient (ratio = 1 ⇏
+   balance): `raum27.equilibrium_check` implements the formula exactly,
+   and `test_equilibrium_ratio_has_false_positives` gives a concrete
+   counterexample — `X+/X- = 2`, `Y+/Y- ≈ √2` (both clearly unbalanced)
+   still gives ratio ≈ 1, because the mismatch cancels across the
+   different exponents. Checking `all_axes_balanced` directly (comparing
+   each pair) is what the notes actually needed; the single-scalar
+   formula can't substitute for it.
+4. **"9⁹ ≈ 387 million crosses the speed of light (≈300 million)"** is a
+   unit artifact, not a structural fact: `c` is 299,792,458 **m/s**
+   specifically. In km/h it's ≈1.08 billion; in miles/s it's ≈186,282 —
+   nowhere near 9⁹ in either. A real relationship to `c` would survive a
+   change of units; this doesn't (`test_speed_of_light_threshold_is_not_unit_invariant`).

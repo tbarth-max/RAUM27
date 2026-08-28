@@ -37,6 +37,17 @@ What this module does NOT claim:
   same length -- `total_capacity_bits` is the same either way, matching the
   conclusion already established in `debruijn_loop.shannon_capacity` for a
   different kind of cyclic structure.
+
+One legitimate idealization is worth naming precisely rather than waving at:
+the R = 1 (perfectly lossless mirror) limit is a genuine mathematical limit
+-- `round_trips_survived_near_ideal` shows survived round trips growing
+without bound as R approaches 1 -- in the same sense that a Carnot engine's
+efficiency 1 - Tc/Th is a genuine, calculable limit. Both limits are real
+and useful as theoretical upper bounds. Neither is achievable: a Carnot
+engine's efficiency is blocked by the second law of thermodynamics, and a
+real mirror's R < 1 is blocked by absorption, scattering, and imperfect
+coatings. Citing the ideal limit is legitimate physics; treating it as a
+buildable target is not.
 """
 
 from __future__ import annotations
@@ -130,6 +141,26 @@ def round_trips_until_below_quantization(reflectivity: float, bit_depth: int = 8
     # integer up, since reflectivity**ratio == threshold there, not < threshold.
     ratio = math.log(threshold) / math.log(reflectivity)
     return math.floor(ratio) + 1
+
+
+def round_trips_survived_near_ideal(bit_depth: int = 8) -> list[tuple[float, int]]:
+    """round_trips_until_below_quantization evaluated at reflectivities
+    approaching 1, to make the R -> 1 limit concrete rather than asserted.
+
+    This is a Carnot-cycle-style idealization: R=1 (a perfectly lossless
+    mirror) is a genuine mathematical limit -- survived round trips grows
+    without bound as R -> 1, exactly as a heat engine's efficiency grows
+    toward 1 - Tc/Th as internal losses shrink toward zero. In both cases
+    the limit is real and well-defined, and in both cases no real physical
+    instance ever reaches it: a Carnot engine's efficiency is blocked by
+    the second law of thermodynamics, and a real mirror's reflectivity is
+    blocked by absorption, scattering, and imperfect coatings (R < 1
+    always). The limit is a valid theoretical upper bound, not a design
+    target: an ideal loop needs energy only to write and read data, never
+    to hold it, but nothing built ever reaches that ideal.
+    """
+    reflectivities = (0.9, 0.99, 0.999, 0.9999, 0.99999)
+    return [(r, round_trips_until_below_quantization(r, bit_depth)) for r in reflectivities]
 
 
 class OpticalRingRegister(RingRegister):
