@@ -29,6 +29,13 @@ Beweis: Wenn X⁻ = 1/X⁺, dann |X⁺|/|X⁻| = |X⁺|/|1/X⁺| = |X⁺|² · .
 [Praktisch verifiziert für X⁺=8,6,5,7,999 etc. — immer exakt 1, siehe
 Test "Verhältnis zweier Treffer"]
 
+> **⚠ Geprüft am 28.8., widerlegt — bleibt hier stehen, nicht entfernt.**
+> Der Beweis bricht selbst mittendrin ab ("= |X⁺|² · ..."), und das zu
+> Recht: |X⁺|/|X⁻| ist bei dieser Definition X⁺², nicht 1 (z. B. X⁺=8 →
+> Verhältnis 64, nicht 1). Nur das Produkt X⁺·X⁻=1 gilt, das steht
+> bereits richtig in Axiom 0 selbst. Details und lauffähiger Nachweis in
+> `2026-08-28-review.md`.
+
 **Ableitung 2 (Produkt-Quadrat):**
 ```
 |X⁺| · |X⁻| = X⁺²   (wenn X⁻ = X⁺, gleiche Richtung statt Kehrwert)
