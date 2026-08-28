@@ -554,3 +554,47 @@ a dedicated module for the fourth):
    specifically. In km/h it's ≈1.08 billion; in miles/s it's ≈186,282 —
    nowhere near 9⁹ in either. A real relationship to `c` would survive a
    change of units; this doesn't (`test_speed_of_light_threshold_is_not_unit_invariant`).
+
+## Module: `raum27.bias_detection` — A Different Question From `lotto_benchmark`
+
+A later proposal (from a separate brainstorming session, forwarded here
+for review) bundled a `GeometrieKern` restating already-verified
+constants — with two regressions worth naming rather than silently
+merging past: its `C_QUADRIERT` comment reverted to the already-corrected
+"vierfach unabhängig bestätigt" overclaim (see the corrections above —
+still just one verified derivation here), and its
+`sechs_flaechen_zu_acht_ecken` function claimed to show the face↔corner
+reconstruction is lossless "see today's clarification," which sounds like
+it addresses the proven 2D null space in `cube_projection` but doesn't:
+it only recombines the 6 fixed axis *direction vectors* into the 8
+corner directions (i.e. it reproduces `corner_directions()` from its own
+building blocks) — not a reconstruction of arbitrary *values* placed on
+the 6 faces, which is what the null space is actually about. Neither
+regression is carried into this repo.
+
+What *was* new and held up: a bias detector, now `ConstantBiasDetector`.
+It answers a different question than `lotto_benchmark` — not "does
+history predict the next draw" (no, confirmed), but "does the draw
+mechanism itself have a persistent, non-uniform bias" (e.g. a defective
+ball or unbalanced equipment — exactly what lottery regulators audit
+for). Detected by ordinary frequency analysis: sum how often each value
+appears across many events and flag the largest deviations from the
+uniform expectation. Verified here, not just asserted:
+
+- Reliably recovers a deliberately injected constant bias
+  (`test_detector_finds_a_deliberately_injected_constant_bias`), with
+  detection strength increasing as the injected bias grows
+  (`test_detection_strength_increases_with_bias_strength`).
+- **Its false-positive rate was checked, which the original proposal
+  didn't do:** with no injected bias, mean overlap with an arbitrary
+  fixed 5-number set across 20 seeds stays near the chance expectation
+  (5·5/49 ≈ 0.51), not near 5
+  (`test_false_positive_rate_matches_chance_when_there_is_no_bias`).
+
+**What this does not do:** detect cyclic or time-varying patterns, or
+say anything about whether history predicts a specific future draw — a
+biased-but-fair mechanism (same wrong distribution every time) is a
+different failure mode than the notes' original claim, and this module
+does not blur the two. On a real certified lottery there is no constant
+bias to find, so this tool would correctly find nothing there — it is
+not a way to route around the null result in `lotto_benchmark`.
