@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (235 tests as of this module set, all
+Run the test suite with `pytest` (246 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -489,3 +489,68 @@ stays an exact `Fraction`, including at fractional scale factors.
 functions, not against itself: 88 exact matches (11 quantities × 8 scale
 factors, including `1/3`, `9/8`, and `1/1000`), all in
 `tests/test_basisoperationen.py`.
+
+## Module: `raum27.hyperoperationen` — Addition, Multiplication, Power, Tetration
+
+Ported from a "RAUM27_Operatorkette_und_6_8_Gleichgewicht.py" submission
+after independently reproducing its own numeric example (`a=2, n=3` →
+`5, 6, 8, 16`) by direct execution. The hierarchy itself — each operation
+is repeated application of the one before it — is standard mathematics
+(Knuth's up-arrow notation), included here because it clarifies a point
+worth stating precisely: **roots and logarithms are not a separate rung
+of this ladder above exponentiation.** They are the two different
+inverses of the same operation `b**x = y` — a root solves for the base
+`b`, a logarithm solves for the exponent `x`. The real next rung above
+exponentiation is tetration.
+
+**One implementation choice corrected before shipping:** a first attempt
+tried to define every level purely recursively down to addition (the
+textbook-formal definition). It hung. At tetration, the argument passed
+into the exponentiation level is already an enormous tower, and
+simulating exponentiation as that many repeated multiplications is
+infeasible even for `a=3, b=3`. Redone with native `+`, `*`, `**` for the
+first three levels (exact and fast) and a manual loop only for tetration
+itself, which is inherently limited to tiny inputs regardless of
+implementation — `3^^3 = 7,625,597,484,987`, `4^^3` already has 155
+digits.
+
+## Module: `raum27.kubus_6_8_gleichgewicht` — Where 6^X = 8^(10-X)
+
+Also from the "Operatorkette" submission, reproduced and then
+strengthened before porting. `f(X) = 6^X - 8^(10-X)` has derivative
+`f'(X) = ln(6)·6^X + ln(8)·8^(10-X)` — a sum of two strictly positive
+terms for every real `X` — so `f` is strictly increasing everywhere. That
+means there is **exactly one** crossing point over all real numbers, not
+merely "a root was found inside the interval `[5,6]`, which is what the
+source checked. Verified here by confirming the root found in a wide
+bracket (`[-50,50]`) matches the one found in the narrow bracket exactly,
+and by sampling the derivative's sign directly across a wide range.
+Solved by plain bisection (standard library only — no new dependency
+added for one root-find).
+
+**Negative finding kept, not dropped:** the source also tried "raising
+the exponents themselves" — comparing `6**(X**N)` against `8**(N**X)` —
+hoping for a family of equilibria. It isn't one: both sides explode
+super-exponentially and diverge from each other rather than staying
+balanced (`X=N=2` already gives 1,296 vs 4,096, and the ratio only
+grows). `exploding_exponent_mismatch` exists so this stays a checkable
+"this doesn't work," not a silently-dropped idea.
+
+**Left out of both modules, from the same submission:**
+- The claim that `(1/8)/(1/9) = 9/8` "strengthens r=9/8 over r=4/3" —
+  arithmetically correct, but circular: nothing here independently
+  justifies "Raum-Gleichgewicht = 1/8" or "Eckenintensität = 1/9" in the
+  first place, so dividing two asserted numbers doesn't add evidence for
+  either one. The `9/8` vs `4/3` question stays open.
+- The "diameter-of-predecessor-equals-radius-of-successor" doubling rule
+  — defines `f(r) = 2r` and then observes that iterating `f` produces
+  powers of 2, which is restating the definition, not deriving it from
+  independent geometry.
+- The circle-area/sphere-volume scaling demo — correct, standard
+  geometry, but already covered by `raum27.scale_hierarchy`
+  (`area_scale`, `volume_scale`); nothing new to add.
+- The `X0`/`X1`/`X2` "Ausleseoperatoren" — `X0` is the identity function,
+  `X1` is division, `X2`'s "exact reversibility" is squaring and
+  square-rooting, which is invertible by construction for any positive
+  input. None of the three carries an independent claim beyond what
+  they're already named as.

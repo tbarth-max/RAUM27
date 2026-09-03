@@ -92,6 +92,17 @@ from raum27.cube_projection import (
     apply as apply_matrix,
     apply_driven as apply_driven_matrix,
 )
+from raum27.hyperoperationen import (
+    addition as hyperop_addition,
+    multiplication_as_repeated_addition as hyperop_multiplication,
+    power_as_repeated_multiplication as hyperop_power,
+    tetration_as_repeated_power as hyperop_tetration,
+)
+from raum27.kubus_6_8_gleichgewicht import (
+    exploding_exponent_mismatch as kubus68_exploding_exponent_mismatch,
+    find_equilibrium as kubus68_find_equilibrium,
+    is_strictly_increasing_on_sample as kubus68_is_strictly_increasing_on_sample,
+)
 from raum27.kern_modul_v1 import (
     all_corners as kmv1_all_corners,
     complement_contribution as kmv1_complement_contribution,
@@ -225,4 +236,11 @@ __all__ = [
     "kmv2_velocity_from_wavelength_and_frequency",
     "kmv2_wavelength_from_velocity_and_frequency",
     "basisoperationen_hole_wert",
+    "hyperop_addition",
+    "hyperop_multiplication",
+    "hyperop_power",
+    "hyperop_tetration",
+    "kubus68_exploding_exponent_mismatch",
+    "kubus68_find_equilibrium",
+    "kubus68_is_strictly_increasing_on_sample",
 ]
