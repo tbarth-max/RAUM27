@@ -562,3 +562,44 @@ grows). `exploding_exponent_mismatch` exists so this stays a checkable
   square-rooting, which is invertible by construction for any positive
   input. None of the three carries an independent claim beyond what
   they're already named as.
+
+## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
+
+For whoever picks this up next: these are points where the trail runs
+out because something specific is still missing, not because the
+underlying idea was shown wrong. Each one names exactly what's needed to
+move it forward.
+
+1. **Matroschka scaling factor: `r = 9/8` or `r = 4/3`?** Both appear
+   across the source material; neither is formally decided here.
+   `coupling_constant()` (`cube_symmetry.py`) independently establishes
+   `4/3` as corners/faces. A competing derivation for `9/8` also exists
+   (an octant's volume, `1/8`, divided by `kmv1_face_contribution()`,
+   `1/9`) — but *why division of specifically these two quantities*
+   should equal the correct scaling factor, rather than any other
+   combination, has never been derived, only asserted. Needed: an
+   independent argument for that specific operation, or a decision to
+   drop the claim.
+2. **`kern_modul_v1`'s "Weg B" for the 1/9 result**
+   (`complement_contribution`, `1 - 8/9`) is documented as NOT an
+   independent second derivation — it assumes the complement (`8/9`)
+   rather than deriving it from a model. If a genuinely independent
+   second path to `1/9` exists, it hasn't been supplied yet.
+3. **A weighted, full-rank cube↔octahedron mapping** (6 face-centers ↔ 8
+   corners, referenced in external notes as reaching rank 6 with
+   non-uniform edge weights, vs. rank 4 for uniform ones): no code for
+   this has ever been supplied here to verify, and "some weights work by
+   random search" isn't the same as a geometrically-motivated choice.
+   Needed: the actual weights, and a reason they're the right ones, not
+   just a working ones.
+4. **`raum27_kompressionskreis.py`** — named in an external status table,
+   never actually delivered here. Content unknown; nothing to evaluate
+   until it's supplied.
+5. **Forecasting/ML work (e.g. the Zindi financial-inclusion
+   competition, any multi-agent forecasting system)** is deliberately
+   kept OUT of this repo on purpose, not as an oversight: its correctness
+   is judged by an external leaderboard on held-out data, which is a
+   stronger, harder-to-game check than anything a code review here could
+   provide. Nothing to integrate unless the underlying *general-purpose
+   math* (not the forecasting claim itself) turns out to be reusable
+   elsewhere.
