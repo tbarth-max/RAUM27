@@ -38,8 +38,11 @@ from raum27.lotto_benchmark import (
     FingerprintKNNPredictor,
     RandomPredictor,
     backtest,
+    expected_any_repeat_years,
     expected_matches,
+    expected_specific_state_recurrence_years,
     match_probability,
+    n_draw_states,
     permutation_test,
 )
 from raum27.autocorrelation_control import (
@@ -104,6 +107,7 @@ from raum27.kern_modul_v1 import (
     space_diagonal as kmv1_space_diagonal,
     tdoa_position as kmv1_tdoa_position,
 )
+from raum27.basisoperationen import hole_wert as basisoperationen_hole_wert
 from raum27.kern_modul_v2 import (
     averaged_reading as kmv2_averaged_reading,
     bisect_rays as kmv2_bisect_rays,
@@ -152,8 +156,11 @@ __all__ = [
     "FingerprintKNNPredictor",
     "RandomPredictor",
     "backtest",
+    "expected_any_repeat_years",
     "expected_matches",
+    "expected_specific_state_recurrence_years",
     "match_probability",
+    "n_draw_states",
     "permutation_test",
     "PersistencePredictor",
     "permutation_test_continuous",
@@ -217,4 +224,5 @@ __all__ = [
     "kmv2_tdoa_position",
     "kmv2_velocity_from_wavelength_and_frequency",
     "kmv2_wavelength_from_velocity_and_frequency",
+    "basisoperationen_hole_wert",
 ]

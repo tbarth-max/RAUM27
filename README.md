@@ -59,7 +59,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (139 tests as of this module set, all
+Run the test suite with `pytest` (235 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -115,6 +115,18 @@ demonstrate that honestly rather than assume it.
   markets with real autocorrelation). Those have physical structure a
   certified lottery deliberately has none of; a result on one does not
   transfer to the other in either direction.
+
+**Two easily-conflated recurrence questions, kept separately checkable**
+(`n_draw_states`, `expected_specific_state_recurrence_years`,
+`expected_any_repeat_years`): "when does a specific draw repeat" and
+"when does any collision happen among draws made so far" sound like the
+same question but differ by a factor of roughly `sqrt(n_states)`, not a
+rounding error. For German 6-aus-49 at one draw a week:
+`expected_specific_state_recurrence_years` ≈ **268,920 years** (specific
+state), `expected_any_repeat_years` ≈ **90 years** (birthday-paradox
+asymptotics, `1.25·√n_states` draws to first collision) — about a
+**3000x** difference, verified as a ratio rather than as two isolated
+numbers so the relationship stays checkable if either formula changes.
 - **This is not a gambling tool.** An apparent "edge" on a small
   historical sample is expected sampling noise unless it survives
   permutation testing *and* replicates on data collected after the
@@ -449,3 +461,31 @@ docstring only claims what was actually proven, for reference = 1.
   trivial special case as a general resonance effect. Not ported.
 
 See `tests/test_kern_modul_v2.py`.
+
+## Module: `raum27.basisoperationen` — Scale a Cube Without Recomputing Its Geometry
+
+Ported from a separately-submitted "RAUM27 Kern-Release" package after
+independently reproducing its own claimed test count first (72/72,
+confirmed by direct execution before anything was ported — the correct
+order, given how many earlier submissions this session claimed passing
+tests that turned out not to hold up).
+
+The idea itself is real and useful: every cube quantity scales as `k^n`
+under a uniform scale factor `k`, where `n` depends only on the
+quantity's *type* — 0 for ratios/angles/combinatorics (corner count, face
+count, ...), 1 for lengths, 2 for areas, 3 for volumes — never on which
+specific quantity it is. `hole_wert(name, k)` looks this up in O(1) from
+the `k=1` value instead of re-deriving the geometry at every scale.
+
+**One change from the source:** it computed diagonal lengths with
+`math.sqrt` in floats, which are irrational and so lose exactness. Redone
+here with the SQUARED diagonal lengths instead — the same convention
+`cube_symmetry.py` already uses for `face_diagonal_squared` /
+`space_diagonal_squared`, and for the same reason (`√2`, `√3` are
+irrational; `2`, `3` are exact rationals) — so every value in this module
+stays an exact `Fraction`, including at fractional scale factors.
+
+`hole_wert` is checked against `cube_symmetry.py`'s independently-derived
+functions, not against itself: 88 exact matches (11 quantities × 8 scale
+factors, including `1/3`, `9/8`, and `1/1000`), all in
+`tests/test_basisoperationen.py`.

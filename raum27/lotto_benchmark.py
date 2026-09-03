@@ -58,6 +58,41 @@ def expected_matches(pool: int = 49, picks: int = 6, winning: int = 6) -> Fracti
     return Fraction(picks * winning, pool)
 
 
+def n_draw_states(pool: int = 49, picks: int = 6) -> int:
+    """Number of distinct possible draws, e.g. C(49,6) = 13,983,816."""
+    return comb(pool, picks)
+
+
+def expected_specific_state_recurrence_years(
+    draws_per_year: float, pool: int = 49, picks: int = 6
+) -> float:
+    """Years until one PARTICULAR draw (e.g. today's exact numbers) is
+    expected to come up again: n_states / draws_per_year. For German
+    6-aus-49 at 1 draw/week (52/year) this is about 268,920 years.
+
+    This is worth spelling out because it is routinely confused with the
+    much smaller birthday-paradox question below -- "when does some
+    collision happen among any draws so far" is a different question from
+    "when does this specific draw repeat", and the two answers differ by
+    a factor on the order of sqrt(n_states), not a rounding error."""
+    return n_draw_states(pool, picks) / draws_per_year
+
+
+def expected_any_repeat_years(
+    draws_per_year: float, pool: int = 49, picks: int = 6
+) -> float:
+    """Years until ANY draw repeats one seen before, among all draws made
+    so far -- the birthday-paradox question. Standard approximation:
+    expected number of draws until first collision is about
+    1.25*sqrt(n_states) (birthday problem asymptotics), not n_states.
+    For German 6-aus-49 at 1 draw/week (52/year) this is about 90 years,
+    roughly 3000x sooner than expected_specific_state_recurrence_years."""
+    import math
+
+    expected_draws_to_collision = 1.25 * math.sqrt(n_draw_states(pool, picks))
+    return expected_draws_to_collision / draws_per_year
+
+
 class RandomPredictor:
     """The baseline: a uniformly random pick, independent of history."""
 
