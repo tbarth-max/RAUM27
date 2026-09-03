@@ -43,6 +43,28 @@ def test_coupling_constant_is_four_thirds():
     assert c**2 == Fraction(16, 9)
 
 
+def test_coupling_constant_reciprocal_squared_is_nine_sixteenths():
+    """(1/coupling_constant())**2 = 9/16, exactly: coupling_constant is
+    corners/faces = 8/6 = 4/3 (already established above), so its
+    reciprocal is faces/corners = 6/8 = 3/4, and squaring that gives
+    9/16. Both 16/9 and 9/16 trace back to this one already-verified
+    ratio -- not to two separately-asserted "base values"."""
+    c = coupling_constant()
+    assert (1 / c) == Fraction(3, 4)
+    assert (1 / c) ** 2 == Fraction(9, 16)
+
+
+def test_coupling_constant_cubed_is_not_sixteen_ninths():
+    """SQUARING coupling_constant gives 16/9 exactly (see above).
+    CUBING it does not -- (4/3)**3 = 64/27, not 16/9. Worth pinning down
+    explicitly: an earlier claim in this project's history asserted
+    (4/3)**3 = 16/9 and was wrong (64/27 =/= 16/9); the exponent matters,
+    and only the square holds."""
+    c = coupling_constant()
+    assert c**3 == Fraction(64, 27)
+    assert c**3 != Fraction(16, 9)
+
+
 def test_axis_cross_products_recover_the_third_face_direction():
     ex, ey, ez = (1, 0, 0), (0, 1, 0), (0, 0, 1)
     assert axis_cross_product(ex, ey) == ez

@@ -52,14 +52,22 @@ ordinary, checkable mathematics:
   apex at the cube's center) — verified two independent ways, geometry
   (apex-to-corner distance matches half the space diagonal exactly) and
   volume (`6 * pyramid_volume(edge) == cube_volume(edge)`, exact
-  rational arithmetic for every edge length).
+  rational arithmetic for every edge length). One more relationship,
+  submitted separately and checked against this module's own
+  `coupling_constant` rather than against newly-asserted numbers:
+  **squaring** the coupling constant gives `(4/3)² = 16/9` exactly (its
+  reciprocal squared gives `9/16`) — both already traceable to the one
+  corners/faces ratio, not to two independently-asserted "base values."
+  **Cubing** it does not give `16/9` — `(4/3)³ = 64/27` — worth pinning
+  down explicitly because an earlier claim in this project's history
+  asserted the cube equals `16/9` and was wrong; only the square holds.
 - **`ifs_attractor`** — a general Iterated Function System engine (the
   Banach fixed-point theorem applied to contraction maps), instantiated
   as the 6-map cube-face system A = ∪ᵢ f_i(A).
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (246 tests as of this module set, all
+Run the test suite with `pytest` (248 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
