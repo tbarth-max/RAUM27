@@ -84,6 +84,15 @@ from raum27.phasor_resonanzfilter import (
     matched_detector as phasor_matched_detector,
     state_at as phasor_state_at,
 )
+from raum27.rotationsebenen import (
+    elementary_rotation,
+    rotation_plane_count,
+    rotation_planes,
+)
+from raum27.modulketten_zuverlaessigkeit import (
+    chain_success_probability,
+    simulate_greedy_chain,
+)
 from raum27.octahedron import (
     vertices as octahedron_vertices,
     faces as octahedron_faces,
@@ -207,6 +216,11 @@ __all__ = [
     "phasor_fires",
     "phasor_matched_detector",
     "phasor_state_at",
+    "elementary_rotation",
+    "rotation_plane_count",
+    "rotation_planes",
+    "chain_success_probability",
+    "simulate_greedy_chain",
     "octahedron_vertices",
     "octahedron_faces",
     "octahedron_edges",

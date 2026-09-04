@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (256 tests as of this module set, all
+Run the test suite with `pytest` (266 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -609,6 +609,64 @@ points near `t₀`.
   before, when an assumed-safe method turned out to need a real,
   measured threshold instead of an assumption
   (`kern_modul_v2`'s periodicity control test).
+
+## Module: `raum27.rotationsebenen` — How Many Rotation Planes Does a Space Need?
+
+From a "Tagesabschluss" summary with six claimed building blocks and no
+code attached. Most restated existing content or weren't independently
+checkable from the description alone — but two were, without needing any
+external code, so they were verified directly and are ported here.
+
+Standard mathematics: the rotation group SO(n) has dimension `n(n-1)/2`
+— one independent generator per pair of axes. Ordinary 3D space needs 3
+planes (XY, XZ, YZ); a 4th, genuinely *rotatable* axis needs 6 (XY, XZ,
+XT, YZ, YT, ZT), not 3. Checked here for `n = 2..5` against the closed
+form (`1, 3, 6, 10`), and — the actual point of the submission — with a
+concrete counterexample: two 4D rotation states built from *identical*
+XY, XZ, and XT angles, differing only in an added YZ rotation, act
+differently on the same test vector. So indexing a 4D rotation state by
+only its three axis-touching angles genuinely loses information; you
+need all six.
+
+**Said precisely, because this project has its own explicit principle
+that could otherwise get bent to fit:** "T = Matroschka-Skalierungsachse,
+keine 4. Raumdimension" (see the top of this README) — T is explicitly
+NOT treated as a rotatable spatial axis anywhere else in this codebase.
+This module verifies the general fact (*if* a 4th axis were rotatable,
+you'd need 6 planes), not a claim that T is one.
+
+## Module: `raum27.modulketten_zuverlaessigkeit` — Chained Modules Need a Hand-Off, Not Hope
+
+The other independently-checkable piece from the same submission:
+series-system reliability, applied to a chain of pipeline modules run
+"greedily" (continue until the first failure). Standard reliability
+engineering — a chain only succeeds if every link does, so the exact
+success probability is the *product* of the individual ones
+(`chain_success_probability`) — plus a Monte Carlo check
+(`simulate_greedy_chain`) of the specific claim in the submission: with
+10 modules at independently-drawn success rates between 70% and 95%,
+only about 15% of runs complete the whole chain
+(`E[rate]^10 = 0.825^10 ≈ 14.6%`, confirmed by simulation to within 1
+percentage point over 50,000 trials), and the average chain breaks after
+about 4 of 10 modules. That's not a marginal inefficiency — it's the
+quantitative case for why a hand-off mechanism ("the next module resumes
+from wherever the last one stopped") is structurally necessary for a
+chain this unreliable, not an optional nicety.
+
+**Left out of both modules, from the same submission:**
+- The reciprocal Y/X pair (`1/Y=X`, `1/X=Y`, avoiding `0×∞=1`) — already
+  exactly what `rational_space.py`'s `involution(x)=1/x` on Q+ does (Q+
+  excludes 0 by construction, which is precisely what sidesteps the
+  `0×∞` issue). Nothing new to add under a different variable name.
+- The angle-controlled coupling (`C²` at 0°, `-C²` at 180°, `0` at 90°,
+  continuous in between) is exactly `C²·cos(θ)`, the ordinary dot-product
+  formula between two unit vectors. Correct, but there's no independent
+  content beyond "cosine is continuous" to test.
+- The index notation (`XY-Süd-+`) and the encapsulation/`8^n`-growth
+  argument aren't mathematical claims with a specific checkable content
+  of their own — the general point ("independent choices compound
+  multiplicatively, not additively") is true but generic to
+  combinatorics, and the specific "8" was never derived from anything.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
