@@ -77,6 +77,13 @@ from raum27.phase_sync import (
     phase_angle,
     phase_difference,
 )
+from raum27.phasor_resonanzfilter import (
+    correlation as phasor_correlation,
+    energy as phasor_energy,
+    fires as phasor_fires,
+    matched_detector as phasor_matched_detector,
+    state_at as phasor_state_at,
+)
 from raum27.octahedron import (
     vertices as octahedron_vertices,
     faces as octahedron_faces,
@@ -195,6 +202,11 @@ __all__ = [
     "is_synchronized",
     "phase_angle",
     "phase_difference",
+    "phasor_correlation",
+    "phasor_energy",
+    "phasor_fires",
+    "phasor_matched_detector",
+    "phasor_state_at",
     "octahedron_vertices",
     "octahedron_faces",
     "octahedron_edges",

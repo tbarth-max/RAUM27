@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (248 tests as of this module set, all
+Run the test suite with `pytest` (256 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -562,6 +562,53 @@ grows). `exploding_exponent_mismatch` exists so this stays a checkable
   square-rooting, which is invertible by construction for any positive
   input. None of the three carries an independent claim beyond what
   they're already named as.
+
+## Module: `raum27.phasor_resonanzfilter` — A Matched Filter, Not a Metaphor
+
+Grew out of a late-night description — "ein Kreis als Masche um einen
+Knoten, Information rotiert als Schwingkreis-Spektrum, ein Ereignisvektor
+dockt via Impuls an" — that stayed pure metaphor through two earlier
+rounds (a "Thomas'sche Zahlenkugel" neural-net sketch, a vaguer "networks
+rotating around us" idea) before getting pinned down to three concrete,
+checkable answers. Once precise, it turned out to be exactly **matched
+filter / correlation receiver theory**, applied to a memory made of
+several independently-rotating complex phasors:
+
+- **State**: `s(t)_k = A_k · exp(i·(ω_k·t + φ_k))` — a bank of `K`
+  phasors, each rotating at its own frequency.
+- **Detector**: `e = s(t₀)/|s(t₀)|` — a unit vector "trained" on one
+  snapshot of the memory.
+- **Match**: `R(t) = Re[e^H · s(t)]` — real-valued correlation; fires
+  when `R(t) ≥ θ`.
+
+**What's provable, not just observed:** `|s(t)|² = Σ Aₖ²` is *exactly*
+constant over `t` (each phasor's own magnitude never changes, only its
+phase does). Combined with Cauchy–Schwarz, that constancy means `t₀` is
+a **global** maximum of `R(t)` — not just a nearby local one. Verified by
+scanning `R(t)` across a 1,000-point-wide range, not merely a handful of
+points near `t₀`.
+
+**Two things worth stating precisely rather than leaving implied by the
+"always available" framing:**
+
+- The match is a **moment**, not a persistent state. A fixed detector
+  does not stay "docked" to a rotating `s(t)` — `R(t)` falls off as `t`
+  moves away from `t₀`, because the phasors keep rotating apart. A
+  system built on this needs to keep re-evaluating `R(t)` over time
+  (exactly what a real correlation receiver does), not assume a match,
+  once found, holds.
+- Discrimination between two independently-generated patterns is a
+  **statistical tendency, not a guarantee**, and depends heavily on the
+  channel count `K`. There's a concrete, reproducible `K=4` example
+  where the detector's *own* pattern peak is lower than an unrelated
+  pattern's peak — different patterns don't automatically get told
+  apart. Measured over 150 random pattern pairs per `K`: a nonzero
+  failure fraction at `K=4`, a lower one and a bigger typical margin at
+  `K=32`. More channels help; no `K` tested makes it a certainty for a
+  single instance — the same kind of correction this project needed
+  before, when an assumed-safe method turned out to need a real,
+  measured threshold instead of an assumption
+  (`kern_modul_v2`'s periodicity control test).
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
