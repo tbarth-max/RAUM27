@@ -138,6 +138,7 @@ from raum27.basisoperationen import hole_wert as basisoperationen_hole_wert
 from raum27.kern_modul_v2 import (
     averaged_reading as kmv2_averaged_reading,
     bisect_rays as kmv2_bisect_rays,
+    central_inversion_angle as kmv2_central_inversion_angle,
     false_positive_counts as kmv2_false_positive_counts,
     find_period as kmv2_find_period,
     initial_rays as kmv2_initial_rays,
@@ -147,12 +148,19 @@ from raum27.kern_modul_v2 import (
     redundancy_corrected_reading as kmv2_redundancy_corrected_reading,
     redundancy_deviation as kmv2_redundancy_deviation,
     redundancy_state as kmv2_redundancy_state,
+    reflections_needed_for_full_circle as kmv2_reflections_needed_for_full_circle,
     rotate_about_x as kmv2_rotate_about_x,
     rotate_about_y as kmv2_rotate_about_y,
     tdoa_position as kmv2_tdoa_position,
     velocity_from_wavelength_and_frequency as kmv2_velocity_from_wavelength_and_frequency,
     wavelength_from_velocity_and_frequency as kmv2_wavelength_from_velocity_and_frequency,
 )
+from raum27.wellenformen import (
+    mean_square_energy,
+    square_wave_partial,
+    triangle_wave_partial,
+)
+from raum27.zahlensysteme import bits_per_digit, cube_scaling_count, rgb_color_count
 
 __all__ = [
     "involution",
@@ -247,6 +255,7 @@ __all__ = [
     "kmv1_tdoa_position",
     "kmv2_averaged_reading",
     "kmv2_bisect_rays",
+    "kmv2_central_inversion_angle",
     "kmv2_false_positive_counts",
     "kmv2_find_period",
     "kmv2_initial_rays",
@@ -256,6 +265,7 @@ __all__ = [
     "kmv2_redundancy_corrected_reading",
     "kmv2_redundancy_deviation",
     "kmv2_redundancy_state",
+    "kmv2_reflections_needed_for_full_circle",
     "kmv2_rotate_about_x",
     "kmv2_rotate_about_y",
     "kmv2_tdoa_position",
@@ -269,4 +279,10 @@ __all__ = [
     "kubus68_exploding_exponent_mismatch",
     "kubus68_find_equilibrium",
     "kubus68_is_strictly_increasing_on_sample",
+    "square_wave_partial",
+    "triangle_wave_partial",
+    "mean_square_energy",
+    "bits_per_digit",
+    "rgb_color_count",
+    "cube_scaling_count",
 ]

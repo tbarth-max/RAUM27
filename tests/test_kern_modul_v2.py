@@ -183,3 +183,36 @@ def test_redundancy_deviation_not_monotonic_in_plain_distance_from_reference():
     Documented here so this isn't silently mis-described as such later."""
     assert k.redundancy_deviation(Fraction(2)) == k.redundancy_deviation(Fraction(1, 2))
     assert abs(Fraction(2) - 1) != abs(Fraction(1, 2) - 1)
+
+
+def test_reflections_needed_matches_log2_of_the_arc_denominator():
+    for denominator, expected in ((4, 2), (8, 3), (16, 4), (32, 5), (64, 6)):
+        assert k.reflections_needed_for_full_circle(denominator) == expected
+
+
+def test_reflections_needed_matches_simulated_arc_doubling():
+    """Cross-checked against an actual simulation, not just the
+    closed-form log2 formula: starting from a single 360/denominator-
+    degree arc and doubling the covered angle by reflection each step
+    (a genuinely different operation from bisect_rays, which refines ray
+    DENSITY rather than extending angular COVERAGE) reaches the full
+    360 degrees in exactly reflections_needed_for_full_circle(denominator)
+    steps."""
+    for denominator in (4, 8, 16, 32):
+        covered_degrees = 360.0 / denominator
+        steps = 0
+        while covered_degrees < 360.0 - 1e-9:
+            covered_degrees *= 2  # reflecting the arc across its edge doubles coverage
+            steps += 1
+        assert steps == k.reflections_needed_for_full_circle(denominator)
+
+
+def test_central_inversion_derives_270_from_90():
+    assert k.central_inversion_angle(90) == 270
+    assert k.central_inversion_angle(270) == 90
+    assert k.central_inversion_angle(0) == 180
+
+
+def test_central_inversion_is_its_own_inverse():
+    for theta in (0, 45, 90, 135, 180, 225, 270, 315):
+        assert k.central_inversion_angle(k.central_inversion_angle(theta)) == theta

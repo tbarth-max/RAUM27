@@ -172,6 +172,29 @@ def is_evenly_spaced(rays: list[float], tolerance: float = 1e-9) -> bool:
     return all(abs(g - gaps[0]) < tolerance for g in gaps)
 
 
+def reflections_needed_for_full_circle(arc_fraction_denominator: int) -> float:
+    """How many doublings of bisect_rays it takes to go from a single arc
+    of 360/denominator degrees to a full 360-degree circle:
+    log2(denominator). E.g. a quarter arc (denominator=4) needs 2
+    doublings, an eighth arc needs 3 -- the same doubling this module
+    already implements in bisect_rays, made explicit as a plain formula.
+    Real, standard group theory (dihedral group reflection generation),
+    not new math -- just spelled out precisely since it came up again in
+    a submission that treated it as freshly discovered."""
+    import math
+
+    return math.log2(arc_fraction_denominator)
+
+
+def central_inversion_angle(theta_degrees: float) -> float:
+    """The angle you get by reflecting a point at theta_degrees THROUGH
+    THE CENTER (point inversion, v -> -v): theta + 180, mod 360.
+    Concretely, central_inversion_angle(90) == 270 -- if central
+    inversion is already an available operation, 270 degrees doesn't need
+    its own independent state; it's derived from 90."""
+    return (theta_degrees + 180) % 360
+
+
 def tdoa_position(L: Fraction, v: Fraction, dt: Fraction) -> Fraction:
     """Time-difference-of-arrival source position: x = (L - v*dt) / 2."""
     return (L - v * dt) / 2

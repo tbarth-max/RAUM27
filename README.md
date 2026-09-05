@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (266 tests as of this module set, all
+Run the test suite with `pytest` (277 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -468,6 +468,29 @@ docstring only claims what was actually proven, for reference = 1.
   restriction — the hypothesis is right there — but the name oversells a
   trivial special case as a general resonance effect. Not ported.
 
+**Two more additions**, from a "Farbspektrum, Spiegelung, Wellenform"
+submission that mostly restated existing content — `reflections_needed_for_full_circle`
+and `central_inversion_angle`:
+
+- Reconstructing a full circle from a single arc via repeated
+  reflection-doubling (already what `bisect_rays` does) needs
+  `log2(denominator)` steps for a starting arc of `360/denominator`
+  degrees — standard dihedral-group math, made explicit as a formula and
+  cross-checked against an actual doubling simulation, not just the
+  closed form.
+- `270°` doesn't need its own independent state if central inversion
+  (`v → -v`) is already available: `central_inversion_angle(90) == 270`
+  exactly — a real, verified reduction from 4 angle states to 3, not
+  asserted.
+
+**Left out from the same submission:** a claim that hexadecimal (16)
+is "geometrically derived" from `4` angle nodes applied independently to
+two axes (`4² = 16`). That's correct arithmetic for whichever number of
+nodes you start with — the same `bⁿ` fact holds for any base `b`, so it
+doesn't derive *why* 4 nodes specifically, only that 4×4=16 once 4 is
+already chosen. Same pattern as the `(1/8)/(1/9)=9/8` argument earlier in
+this module: a real operation applied to an unexplained starting choice.
+
 See `tests/test_kern_modul_v2.py`.
 
 ## Module: `raum27.basisoperationen` — Scale a Cube Without Recomputing Its Geometry
@@ -667,6 +690,40 @@ chain this unreliable, not an optional nicety.
   of their own — the general point ("independent choices compound
   multiplicatively, not additively") is true but generic to
   combinatorics, and the specific "8" was never derived from anything.
+
+## Module: `raum27.wellenformen` — Square and Triangle Waves Are Different Shapes, and Neither Sits Still
+
+From the same "Farbspektrum, Spiegelung, Wellenform" submission: a
+correction to an earlier "Energiegleichgewicht" (fixed energy
+equilibrium) framing of Fourier partial-sum approximation, plus a real
+distinction between two wave shapes that's easy to blur together.
+
+- **The correction, verified**: adding more sine terms to approximate a
+  square wave doesn't hold the total energy at some constant value — it
+  strictly *increases*, converging up towards the true signal's energy
+  (Parseval's theorem / Bessel's inequality). Checked over 1, 2, 3, 5,
+  10, 20, 50, 100 terms: strictly monotonic, reaching 99.8% of the full
+  energy at 100 terms, never sitting still along the way.
+- **Square and triangle waves are genuinely different target shapes**,
+  not the same curve at different levels of refinement. The square
+  wave's partial sums overshoot the jump by about 18% at 200 terms (the
+  Gibbs phenomenon — a real signature of approximating a discontinuous
+  function with finitely many continuous sines) and spend over 90% of
+  the period near ±1 (a plateau); the triangle wave's partial sums never
+  overshoot ±1 (it's continuous, so there's no jump for Gibbs to act on)
+  and spend under 10% of the period near the extremes (a ramp, not a
+  plateau).
+
+## Module: `raum27.zahlensysteme` — RGB and an "8-Cube" Are the Same Number, for the Same Reason
+
+Two small, correct facts, also from the same submission: `log2(9) ≈
+3.17` bits per digit sits strictly between binary (1 bit) and hex (4
+bits) — ordinary Shannon information content, not a discovery, but
+checked rather than assumed. And `16⁶ = 8⁸ = 2²⁴ = 16,777,216` exactly —
+because `16 = 2⁴` and `8 = 2³`, so `16⁶` (RGB: 3 channels × 2 hex digits)
+and `8⁸` (an "8-cube" to the 8th power) are the same number written two
+different ways, not an independent coincidence between color spaces and
+cube geometry.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
