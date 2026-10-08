@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (277 tests as of this module set, all
+Run the test suite with `pytest` (284 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -724,6 +724,32 @@ because `16 = 2⁴` and `8 = 2³`, so `16⁶` (RGB: 3 channels × 2 hex digits)
 and `8⁸` (an "8-cube" to the 8th power) are the same number written two
 different ways, not an independent coincidence between color spaces and
 cube geometry.
+
+## Module: `raum27.duplex_inversion` — Where Two Exponent Towers Actually Meet
+
+Ported from a Lean sketch (`RAUM27_Duplex.lean`) that stated four
+theorems about `r_out(x,n) = (1/2)^(x^n)` and `r_in(x,n) = (1/2)^(n^x)`
+and **proved none of them** — all four bodies were `sorry`, honestly
+marked but unproven. All four statements are in fact true (re-verified
+here in exact rational arithmetic), and all four are one-liners, so the
+`sorry`s weren't hiding anything hard. What the sketch *missed* is the
+interesting part:
+
+- **Its "Fokalpunkt" theorem (`r_out(1,1) = r_in(1,1)`) is a tautology.**
+  At `x = n = 1` both exponents are literally the same expression
+  (`1**1`), so the claim says a value equals itself. Any two functions
+  whatsoever agree wherever their arguments coincide.
+- **The general symmetry it never states**: `r_out(x,n) == r_in(n,x)` for
+  *every* pair, not just one point — true by definition, since
+  `r_in(n,x)` is `(1/2)^(x^n)` spelled differently. The stated theorem is
+  the weakest possible special case of this.
+- **The coincidence set is bigger than claimed and genuinely
+  non-obvious.** Where the two towers meet at the *same* arguments
+  (`x**n == n**x`) is the whole diagonal `x == n`, **plus exactly one
+  exceptional pair off it: `(2,4)` and `(4,2)`**, since `2⁴ = 4² = 16` —
+  the classical result on `x^y = y^x` over the naturals. At that point
+  both sides equal `(1/2)^16 = 1/65536`. Verified by exhaustive search up
+  to 12; nothing else off the diagonal exists.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 

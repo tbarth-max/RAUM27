@@ -161,6 +161,12 @@ from raum27.wellenformen import (
     triangle_wave_partial,
 )
 from raum27.zahlensysteme import bits_per_digit, cube_scaling_count, rgb_color_count
+from raum27.duplex_inversion import (
+    coincidence_points as duplex_coincidence_points,
+    off_diagonal_coincidences as duplex_off_diagonal_coincidences,
+    r_in as duplex_r_in,
+    r_out as duplex_r_out,
+)
 
 __all__ = [
     "involution",
@@ -285,4 +291,8 @@ __all__ = [
     "bits_per_digit",
     "rgb_color_count",
     "cube_scaling_count",
+    "duplex_coincidence_points",
+    "duplex_off_diagonal_coincidences",
+    "duplex_r_in",
+    "duplex_r_out",
 ]
