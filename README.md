@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (284 tests as of this module set, all
+Run the test suite with `pytest` (293 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -750,6 +750,38 @@ interesting part:
   the classical result on `x^y = y^x` over the naturals. At that point
   both sides equal `(1/2)^16 = 1/65536`. Verified by exhaustive search up
   to 12; nothing else off the diagonal exists.
+
+## Module: `raum27.waage` — A Balance Beam Reads a Ratio Off a Position
+
+Came out of a framing worth taking seriously: don't chase an exact 0 or
+100% — the logarithmic axes never reach those anyway — find the point
+where two weights balance and read the **ratio** off the beam. That
+intuition has an exact mathematical form, and it turns out to be the
+structure already sitting in `kern_modul_v2`'s reciprocal measure.
+
+- **The lever law is an exact, lossless ratio encoder.** Two weights
+  balance when `w1·d1 = w2·d2`, giving `d1 = L·w2/(w1+w2)`. The
+  fulcrum's *position* is the ratio — as an exact rational, no
+  measurement of the weights themselves needed. Verified for all 121
+  weight pairs up to 11, and `balance_point → ratio_from_balance_point`
+  recovers the original ratio exactly for all 81 pairs up to 9. Nothing
+  is lost in the encoding.
+- **On a logarithmic axis, balance is the geometric mean**,
+  `√(a·b)` — not the arithmetic one. For a reciprocal pair `b = 1/a`
+  that product is exactly 1, so **every** reciprocal pair balances at
+  exactly 1, whatever `a` is. Same fixed point as
+  `rational_space.involution`, and the same "1 means equilibrium, not 0"
+  convention the project uses throughout. Exposed as the *squared*
+  geometric mean so it stays an exact `Fraction` — the same convention
+  `cube_symmetry.py` uses for `face_diagonal_squared`, for the same
+  reason (`√(a·b)` is irrational in general).
+- **The cross-module connection that makes this more than a
+  restatement**: `kern_modul_v2.redundancy_deviation(x)` is already
+  mirror-symmetric under `x → 1/x`. In beam terms that symmetry *is* the
+  balance — straying by a factor `k` to one side costs exactly what
+  straying by factor `k` to the other side costs. Checked across both
+  modules in `tests/test_waage.py`, not asserted. The project's own
+  recurring `16/9 ↔ 9/16` pair falls out as one instance.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 

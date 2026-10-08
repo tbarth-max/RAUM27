@@ -161,6 +161,13 @@ from raum27.wellenformen import (
     triangle_wave_partial,
 )
 from raum27.zahlensysteme import bits_per_digit, cube_scaling_count, rgb_color_count
+from raum27.waage import (
+    balance_point,
+    balances_at_one,
+    geometric_mean_squared,
+    lever_law_holds,
+    ratio_from_balance_point,
+)
 from raum27.duplex_inversion import (
     coincidence_points as duplex_coincidence_points,
     off_diagonal_coincidences as duplex_off_diagonal_coincidences,
@@ -295,4 +302,9 @@ __all__ = [
     "duplex_off_diagonal_coincidences",
     "duplex_r_in",
     "duplex_r_out",
+    "balance_point",
+    "balances_at_one",
+    "geometric_mean_squared",
+    "lever_law_holds",
+    "ratio_from_balance_point",
 ]
