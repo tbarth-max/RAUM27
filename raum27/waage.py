@@ -40,6 +40,7 @@ tests/test_waage.py rather than asserted here.
 from __future__ import annotations
 
 from fractions import Fraction
+from math import gcd
 
 
 def balance_point(w1: Fraction, w2: Fraction, beam_length: Fraction = Fraction(1)) -> Fraction:
@@ -76,3 +77,26 @@ def balances_at_one(a: Fraction, b: Fraction) -> bool:
     i.e. their geometric mean is 1, i.e. a*b == 1 -- exactly the
     reciprocal-pair condition."""
     return geometric_mean_squared(a, b) == 1
+
+
+def is_lossless_encoding(w1: int, w2: int) -> bool:
+    """True iff the beam encodes this weight pair without loss, i.e. iff
+    gcd(w1, w2) == 1.
+
+    The beam only ever sees the RATIO, never the weights: (2,4) and (1,2)
+    both put the fulcrum at 2/3, so the position cannot tell them apart.
+    When the weights are coprime there is nothing to cancel -- the
+    balance point w2/(w1+w2) is already in lowest terms, since
+    gcd(w2, w1+w2) == gcd(w2, w1) == 1 -- so the pair is recoverable
+    from the position alone.
+
+    NEGATIVE RESULT, kept rather than dropped (checked in
+    tests/test_waage.py): the load-bearing property is coprimality, NOT
+    primality. Prime weights work because distinct primes are always
+    coprime, not because they are prime -- (16, 81) are both composite
+    and work exactly as well. And balance points of prime pairs land on
+    nothing special: the denominator is always w1+w2, and sums of two
+    primes are usually composite (3+5=8, 5+7=12, 11+13=24). There is no
+    "prime space" structure here beyond ordinary coprimality.
+    """
+    return gcd(int(w1), int(w2)) == 1

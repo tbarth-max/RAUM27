@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (293 tests as of this module set, all
+Run the test suite with `pytest` (298 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -782,6 +782,27 @@ structure already sitting in `kern_modul_v2`'s reciprocal measure.
   straying by factor `k` to the other side costs. Checked across both
   modules in `tests/test_waage.py`, not asserted. The project's own
   recurring `16/9 ↔ 9/16` pair falls out as one instance.
+
+**Closed question, with the negative result kept** (`is_lossless_encoding`):
+does the beam live in some "prime number space"? No. The load-bearing
+property is **coprimality**, not primality. Coprime weights make the
+balance point already irreducible (`gcd(w2, w1+w2) = gcd(w2, w1) = 1`),
+so the pair is recoverable from the position alone — verified for all
+132 ordered pairs of distinct primes up to 37, with no colliding
+positions. But primes are merely a convenient way to guarantee
+coprimality, not the reason it works: `(16, 81)` are both composite and
+encode just as losslessly. And prime balance points land on nothing
+special — the denominator is always `w1+w2`, and sums of two primes are
+usually composite (`3+5=8`, `5+7=12`, `11+13=24`). Conversely,
+non-coprime pairs genuinely collide: `(2,4)` and `(1,2)` both put the
+fulcrum at `2/3`, and the beam cannot tell them apart. That's a real
+limit of the method, archived rather than dropped.
+
+Incidentally this is the working form of something that failed earlier
+in the project: the DX/DT module wanted to preserve "unreduced fractions
+as fingerprints" and broke on an implementation detail. With coprime
+weights there is nothing to reduce, so the fingerprint survives by
+construction.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
