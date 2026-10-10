@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (430 tests as of this module set, all
+Run the test suite with `pytest` (447 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1475,6 +1475,60 @@ The ethos is question everything, benchmark everything, keep only what
 survives — and `4/3` survives. On two arguments rather than five, and
 better documented for having lost three.
 
+
+
+## Module: `raum27.spirale` — The Cycle That Can Actually Be Computed
+
+Circle, spiral and circularity are three different things, and the
+distinction is the whole point of this module. A **circular
+definition** has no ground — `A` because `B` because `A` — and nothing
+can be evaluated, because every step needs its own result as input.
+That is the defect flagged elsewhere in this file. A **closed cycle**
+is fine as a structure but stores no history: after one turn it cannot
+tell whether you have gone round once or a thousand times. A **spiral
+is a cycle with a ground** — turn `n` is computed from turn `n−1` and
+never from itself, so the recursion grounds out at turn 0, while the
+height records how many turns have passed. That is exactly why a
+process modelled as a spiral is computable where the same process
+modelled as a closed loop is not.
+
+**The construction, and it is exact.** Unroll one turn of a helix: the
+base is the circumference `B`, the rise is the pitch `h`, and the turn
+is the hypotenuse — `L² = B² + h²`, Pythagoras, no `π` anywhere.
+Cutting the cylinder at the helix's own angle gives a genuine ellipse,
+and two statements fall out that are exact and `π`-free provided the
+spiral is given by its circumference rather than its radius:
+
+    (a/b)² = 1 + (h/B)²          e² = h²/(B² + h²)
+
+**So the pitch alone decides the shape, and `h = 0` gives `e = 0` — a
+circle.** The height is the only thing that makes it an ellipse at all,
+which is precisely the claim. `a = L/(2π)` is the one place `π` enters,
+and only for an absolute size rather than a ratio.
+
+**Exactly rational when `(B, h, L)` is a Pythagorean triple:**
+`(4,3,5) → e = 3/5`, `(12,5,13) → e = 5/13`, `(8,15,17) → e = 15/17`,
+`(20,21,29) → e = 21/29`. For `B = h = 1`, `L² = 2` and the
+eccentricity is irrational, so `turn_length` and `eccentricity` **raise
+rather than round** — an earlier draft used `isqrt(2) = 1` and reported
+`e = 1`, and `is_rational_spiral` exists so that cannot recur.
+
+**What it computes.** A process given as `(circumference, pitch, turns)`
+has a fully determined exact state, with a per-turn invariant that does
+not drift — `L² = 25` after one turn and after a million, because the
+arithmetic is rational rather than floating point. And the eccentricity
+feeds `lichtgitter` directly: `e = 3/5` with `a = 25` gives integer
+focal radii 16 and 34, conserved sum exactly 50, and the position
+recoverable exactly from the focal difference.
+
+    turn | height |    arc   | invariant        x  |  r1  |  r2  | r1+r2
+       0 |      0 |        0 | 25                0 |  25  |  25  |  50
+       1 |      3 |        5 | 25                5 |  22  |  28  |  50
+       2 |      6 |       10 | 25               15 |  16  |  34  |  50
+     10⁶ | 3·10⁶  |   5·10⁶  | 25            25/2  | 35/2 | 65/2 |  50
+
+Cause to effect to the next cause, with nothing undefined and nothing
+needing itself as input. That is a closed loop in the useful sense.
 
 ## Is It Workable? — The System-Level Audit
 
