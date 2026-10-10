@@ -74,10 +74,10 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-481 tests as of this module set; all mathematical claims in this README
-are verified rather than asserted. `numpy` is the only third-party
-runtime dependency and `pytest` the only test dependency — both are
-declared in `pyproject.toml`.
+520 tests as of this module set, at 100% statement coverage; all
+mathematical claims in this README are verified rather than asserted.
+`numpy` is the only third-party runtime dependency and `pytest` the only
+test dependency — both are declared in `pyproject.toml`.
 
 A bare `pytest` used to fail at collection with an unimportable
 `raum27` package, so that only `PYTHONPATH=. python -m pytest` worked.
