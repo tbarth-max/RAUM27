@@ -190,6 +190,19 @@ from raum27.lichtgitter import (
     semi_minor_squared,
     ticks_per_round_trip,
 )
+from raum27.resonanztunnel import (
+    c_power_is_a_velocity,
+    dissipated_power,
+    film_area_fraction,
+    group_velocity_squared,
+    harmonic_index,
+    layered_flow_bracket,
+    phase_group_product_squared,
+    phase_velocity_squared,
+    shear_stress,
+    standing_wave_frequency,
+    two_layer_flow_gain,
+)
 from raum27.impakt_schwelle import (
     ballistic_limit_velocity,
     cohesive_energy_fraction,
@@ -395,4 +408,15 @@ __all__ = [
     "light_second_semi_major",
     "distance_gradient",
     "elliptic_coordinate_count",
+    "standing_wave_frequency",
+    "harmonic_index",
+    "shear_stress",
+    "layered_flow_bracket",
+    "film_area_fraction",
+    "two_layer_flow_gain",
+    "dissipated_power",
+    "phase_velocity_squared",
+    "group_velocity_squared",
+    "phase_group_product_squared",
+    "c_power_is_a_velocity",
 ]

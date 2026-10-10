@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (350 tests as of this module set, all
+Run the test suite with `pytest` (368 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1086,6 +1086,95 @@ of focal distances — with no reference to faces, corners, 4/3, 9/16 or
 `299792458 = 2 × 7 × 73 × 293339`: **not divisible by 6, 8, or 27.** The
 cube can order this material, and the ordering is useful; it does not
 generate the invariant, and the invariant does not point back at it.
+
+## Module: `raum27.resonanztunnel` — Pipe, Standing Wave, Nested Layers, and `c^X`
+
+Four claims, four different outcomes. Two hold exactly, one is real but
+**inverts** its own conclusion, and one is dimensionally dead — except
+the quantity it reaches for has an exact home, and that home is
+literally a pipe.
+
+**Exact: the standing wave gives integers.** A pipe resonates at
+`L = n·λ/2`, so `f_n = n·v/(2L)` — an exact rational and an exact
+integer multiple of the fundamental. Same structure `lichtgitter.py`
+found on the ellipse, for the same reason: a closed path with a
+conserved length admits only whole-number counts.
+
+**Exact, and the strongest claim here: the core carries no shear.** A
+force balance on a cylinder of radius `r` gives the shear stress from
+the pressure gradient alone:
+
+    τ(r) = G·r / 2
+
+Note what is *absent*: viscosity, layer structure, which fluid sits
+where. It follows from the pressure balance, so it holds for **any**
+nesting — and therefore `τ(0) = 0`, exactly. "The inner core flows
+without friction at the wall" is exactly right, it is exact rather than
+approximate, and it survives arbitrary layering. That one needed no
+weakening.
+
+Two things it does not mean. The pipe still dissipates — pressure drop
+times flow rate is strictly positive (24.5 W for a 10 m, 5 cm pipe at
+1 kPa/m). Zero shear *at the axis* and non-zero dissipation *in the
+pipe* are both true at once. And the core is frictionless only as
+`r → 0`; at finite radius the shear is linear in `r` and ordinary.
+
+**Real, but it inverts the conclusion: nesting works, *fractal* nesting
+is worse.** Lubricating the wall with a thin low-viscosity film is a
+genuine industrial technique (core-annular flow, for viscous crude).
+Integrating the shear law by parts gives the exact N-layer result
+
+    Q = (π·G/8) · Σᵢ (Rᵢ⁴ − Rᵢ₋₁⁴) / μᵢ
+
+and hence a two-layer gain of `(1−q⁴)·(μ_core/μ_film) + q⁴`. A 5% water
+film on an oil core multiplies the flow by exactly **186.31** — an
+exact rational, not a fitted number.
+
+**But self-similar nesting loses, provably.** At fixed film *volume*,
+splitting the film into 2, 3, 4 or 5 self-similar shells loses every
+time — checked exactly over `Fraction` across a systematic family of
+arrangements, worst case down by a factor of **1.61**, and not one
+beating the single wall film. The reason is visible in the two
+formulas: a layer's benefit is weighted `Rᵢ⁴ − Rᵢ₋₁⁴` while its volume
+cost is weighted `Rᵢ² − Rᵢ₋₁²`. The fourth power favours the outside far
+more steeply than the second, so for a fixed budget the entire film
+belongs at the wall. Nesting it inward spends it where `τ(r) = G·r/2` is
+small and buys almost nothing. Same failure mode as `optionsraum`, from
+the other side: the structure is already complete at its simplest, and
+subdividing is a loss, not a refinement.
+
+**Dimensionally dead: `c^X` is not a speed.** `c` is m/s;
+`c² = 89 875 517 873 681 764` is m²/s², which is not a velocity.
+Nothing travels at `c²`, and `c^X` is a speed only at `X = 1`. No amount
+of resonance changes units. As a *transport* speed the idea stops here.
+
+**But `c²` has an exact home, and it is a pipe.** A waveguide — a pipe
+carrying a wave above cutoff — obeys `ω² = ω_c² + c²k²`, giving
+`v_phase = ω/k` and `v_group = c²k/ω`, so
+
+    v_phase · v_group = c²,  exactly.
+
+Both halves deserve stating. **The phase velocity genuinely exceeds
+`c`**, without bound as frequency approaches cutoff — at `f = 1.01 f_c`
+it is 7.1 times `c`. So something in a resonant pipe really does move
+faster than light, and the exact invariant tying it down is `c²`. The
+reach for `c²` was not arbitrary, and this is the mathematical
+definition the idea was asking for. And the group velocity stays
+strictly below `c` at every frequency (scanned over 200 000: max
+`0.99887 c`). The phase velocity is the speed of a *pattern*, not a
+signal; it carries no information, which is why exceeding `c` costs
+nothing. The module exposes *squared* velocities so both are exact
+`Fraction`s with no roots: `v_p²·v_g² = c⁴` exactly.
+
+**On quantum tunnelling.** The Hartman effect is real — tunnelling delay
+becomes independent of barrier width, so apparent group velocity through
+a thick barrier can be made arbitrarily large. It does not transmit
+information faster than `c`: the signal *front*, the leading edge of a
+wave genuinely switched on, moves at exactly `c` in every medium. So
+tunnelling can be given a consistent mathematical description here, and
+the waveguide pair is a fair classical analogue — but the description
+that comes out says the barrier cannot be used to beat `c`. **Closed
+question, not an open one.**
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
