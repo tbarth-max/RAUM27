@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (304 tests as of this module set, all
+Run the test suite with `pytest` (317 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -836,6 +836,77 @@ each was computed rather than assumed:
   `shares` and `center_of_mass` both raise, at the same place
   `balance_point` already raised for `w1+w2 = 0`. Division by the total
   is undefined, and no convention rescues it.
+
+## Module: `raum27.optionsraum` — The Inversion: Everything Is the Centre, One Thing Is the Edge
+
+The beam says: wanting *nothing* puts you infinitely far out with a
+share of exactly 0. The natural next thought inverts it — wanting
+*everything* is the zero point in the space of all options, and wanting
+exactly *one* thing is the far outside. That inversion holds, but it
+happens in a **different space**, and keeping the two apart is what
+makes both statements true at once.
+
+**Two independent coordinates.** A wish vector over `N` options carries
+the total `Σw_i` (how much is wanted at all — the `waage.py`
+coordinate) and the direction `p = w/Σw_i` (*what* is wanted, a
+distribution on the probability simplex — this module's coordinate).
+They cannot be traded against each other, so "far out" means two
+different things and neither claim overrides the other. Where they
+meet is exact and already in the code: the direction is **undefined**
+precisely when the total is 0, which is where `waage.shares` already
+raises. *Wanting nothing is not a position in the option space at all* —
+it is the one place that coordinate fails to exist.
+
+- **The all-wanting point is literally the zero point.** `p = (1/N,…,1/N)`
+  is the centroid, and in centred coordinates `q = p − c` it is exactly
+  the origin. `squared_distance_from_centre` returns exactly 0 there.
+- **A single wish sits at exactly `(N−1)/N`.** For `N = 6`: `5/6`; for
+  `N = 8`: `7/8`; for `N = 27`: `26/27`. An exact rational, and
+  **strictly below 1 for every finite `N`** — the outer position is
+  approached, never reached. (Caveat, stated so it isn't over-read:
+  `26/27` arises for *any* 27-option space. Nothing cube-specific is
+  doing the work, and nothing here derives `N = 27`.)
+- **The identity doing all the work.** For every `p` on the simplex,
+  `|p − c|² = Σp_i² − 1/N` exactly, because `p·c = 1/N` for every `p`.
+  So "how far out you are" and "how concentrated your wishes are" are
+  the same number up to a constant — verified on 2100 random exact
+  rational points across `N = 2…8`. That converts the geometry into
+  algebra, and both extremes then follow with complete proofs:
+  `Σp² ≤ (max pᵢ)·Σpᵢ = max pᵢ ≤ 1` with equality iff some `pᵢ = 1`
+  (maximum **only** at the vertices), and `(Σpᵢ)² ≤ N·Σpᵢ²` by
+  Cauchy–Schwarz so `Σp² ≥ 1/N` with equality iff all equal (minimum
+  **only** at the centroid). Both uniqueness claims are additionally
+  brute-forced over every exact lattice point of the simplex with
+  denominator 12.
+- **`participation_number = 1/Σp²` reads the count back off the
+  distribution**: exactly `N` for the uniform wish, exactly `1` for a
+  single wish. How many things you effectively want, as an exact
+  rational.
+
+**The correction, kept rather than smoothed over.** The *maximal delta*
+in this space is **not** between "everything" and "one thing". It is
+between two **different** single wishes:
+`|p − q|² = Σp² + Σq² − 2(p·q) ≤ 1 + 1 − 0 = 2`, with equality iff both
+are vertices and `p·q = 0`. So the diameter is exactly **2**, and it is
+**independent of `N`** — adding options adds no reach (checked for all
+`N` from 2 to 39). Centre-to-vertex is `(N−1)/N < 1`, *less than half*
+the diameter for every `N`. Two single-minded positions wanting
+different things are more than twice as far apart as the all-wanting
+centre is from either of them.
+
+**So what the centre actually is** — not the far end of a maximal delta,
+but the unique minimiser of the worst case:
+`maxᵢ |p − eᵢ|² = Σp² + 1 − 2·minᵢ pᵢ ≥ 1/N + 1 − 2/N = (N−1)/N`, using
+both bounds above, and they are tight simultaneously *only* at the
+centroid. Brute-forced: over the full exact lattice for `N = 3, 4`,
+**nothing beats it and nothing ties it**. From the centre every single
+wish is equidistant. That is a sharper statement than "maximal delta"
+and, unlike it, provable.
+
+Cross-checked against the module it inverts: equal weights on the `N`
+single wishes give the uniform wish coordinate by coordinate via
+`waage.center_of_mass`. The two modules are one construction seen from
+two sides.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 

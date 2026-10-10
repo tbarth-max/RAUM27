@@ -172,6 +172,17 @@ from raum27.waage import (
     residual_torque,
     shares,
 )
+from raum27.optionsraum import (
+    concentration as optionsraum_concentration,
+    is_on_simplex as optionsraum_is_on_simplex,
+    participation_number as optionsraum_participation_number,
+    simplex_diameter_squared as optionsraum_simplex_diameter_squared,
+    single_wish as optionsraum_single_wish,
+    squared_distance as optionsraum_squared_distance,
+    squared_distance_from_centre as optionsraum_squared_distance_from_centre,
+    uniform_wish as optionsraum_uniform_wish,
+    worst_squared_distance_to_a_single_wish as optionsraum_worst_squared_distance,
+)
 from raum27.duplex_inversion import (
     coincidence_points as duplex_coincidence_points,
     off_diagonal_coincidences as duplex_off_diagonal_coincidences,
@@ -315,4 +326,13 @@ __all__ = [
     "shares",
     "center_of_mass",
     "residual_torque",
+    "optionsraum_concentration",
+    "optionsraum_is_on_simplex",
+    "optionsraum_participation_number",
+    "optionsraum_simplex_diameter_squared",
+    "optionsraum_single_wish",
+    "optionsraum_squared_distance",
+    "optionsraum_squared_distance_from_centre",
+    "optionsraum_uniform_wish",
+    "optionsraum_worst_squared_distance",
 ]
