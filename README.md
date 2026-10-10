@@ -67,8 +67,37 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (481 tests as of this module set, all
-mathematical claims in this README are verified, not asserted).
+## Running It
+
+On a clean machine:
+
+    pip install -e ".[test]"
+    pytest
+
+481 tests as of this module set; all mathematical claims in this README
+are verified rather than asserted. `numpy` is the only third-party
+runtime dependency and `pytest` the only test dependency — both are
+declared in `pyproject.toml`.
+
+A bare `pytest` used to fail at collection with an unimportable
+`raum27` package, so that only `PYTHONPATH=. python -m pytest` worked.
+That was an external review finding and it is fixed:
+`[tool.pytest.ini_options]` now sets `pythonpath = ["."]`, and the
+package carries a `[build-system]` so the editable install above works.
+Verified from a fresh virtual environment, and from a working directory
+outside the repository.
+
+Two further findings from the same review were checked and do not apply
+to this tree, recorded here so they are not re-raised:
+
+- **Test count.** The review read 121 in the README against 180 passing
+  in the archive it had. Both numbers are from an older snapshot; the
+  line above is kept current with the suite.
+- **Unsorted lottery dataset.** There is no lottery data file in this
+  repository at all — `raum27/lotto_benchmark.py` takes its history as a
+  function argument and reads nothing from disk, so there is no CSV to
+  normalise and no loader doing it. The draw and the mean-hits figures
+  the review quotes are not in this tree either.
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
 
