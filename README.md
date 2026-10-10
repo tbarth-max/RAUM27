@@ -87,8 +87,45 @@ package carries a `[build-system]` so the editable install above works.
 Verified from a fresh virtual environment, and from a working directory
 outside the repository.
 
-Two further findings from the same review were checked and do not apply
-to this tree, recorded here so they are not re-raised:
+### Coverage
+
+    pip install coverage
+    coverage run --source=raum27 -m pytest -q
+    coverage report --show-missing
+
+**99%, with exactly 2 uncovered statements out of 1383.** Both are in
+`impakt_schwelle.tate_interface_velocity` / `tate_penetration`, and both
+are deliberate: they guard against a state the solver cannot produce,
+since it constrains the interface velocity to `[0, v]` and erosion is
+therefore positive whenever a root exists. They are kept as tripwires in
+case that constraint is relaxed, and are not chased with contrived
+inputs — a test asserting the invariant that makes them unreachable
+stands in their place.
+
+Measuring this closed 38 previously uncovered statements. Most were
+`raise` guards documenting a contract that nothing exercised, but three
+were genuine logic, now tested:
+
+- **`tate_interface_velocity` with equal densities** takes a separate
+  *linear* path, because the quadratic's leading coefficient vanishes.
+  That is the most ordinary case physically — steel into steel — and was
+  the one real untested branch. Checked for correctness rather than
+  coverage: `u < v` at every velocity, the strengthless limit is exactly
+  the rod length, Tate approaches it from below, and the ballistic limit
+  is 798 m/s. No defect found.
+- `clockfree_scheduler.Schedule.average_waiting_time` had no caller.
+- `kern_modul_v2.find_period` returns `-1` for a series too short to
+  autocorrelate, and `FingerprintKNNPredictor` has a cold-start path and
+  a pad-with-random path when voting yields fewer than six numbers.
+
+One contract was documented wrongly in the first draft of those tests:
+`basisoperationen.hole_wert` raises `KeyError`, not `ValueError`. Fixed
+by reading the code rather than assuming it.
+
+### Findings checked and not applicable
+
+Three further findings from the same review were checked against this
+tree and do not apply, recorded here so they are not re-raised:
 
 - **Test count.** The review read 121 in the README against 180 passing
   in the archive it had. Both numbers are from an older snapshot; the
@@ -98,6 +135,20 @@ to this tree, recorded here so they are not re-raised:
   function argument and reads nothing from disk, so there is no CSV to
   normalise and no loader doing it. The draw and the mean-hits figures
   the review quotes are not in this tree either.
+- **`scale_selection.py`.** Listed among the modules reviewed; no such
+  file exists here. Scale work lives in `scale_hierarchy.py` and
+  `ifs_attractor.py`.
+
+### What the test run does and does not establish
+
+500 passing tests and 99% statement coverage are evidence about the
+conditions tested, not about every platform or every mathematical
+property. In particular, all three environments used to verify the
+import fix were the **same** platform — CPython 3.11.17 on Linux
+x86_64, NumPy 2.4.6 — so they establish reproducibility across working
+directories and a clean virtual environment, not across Python versions
+or operating systems. Statement coverage also says a line ran, not that
+its behaviour is pinned down.
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
 
