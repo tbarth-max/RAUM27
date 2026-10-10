@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (368 tests as of this module set, all
+Run the test suite with `pytest` (387 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1175,6 +1175,101 @@ tunnelling can be given a consistent mathematical description here, and
 the waveguide pair is a fair classical analogue — but the description
 that comes out says the barrier cannot be used to beat `c`. **Closed
 question, not an open one.**
+
+## Module: `raum27.rautenraum` — Where the Cube Is Derived Instead of Placed
+
+Two halves of one thought, and both hold. **This is the first place in
+this repository where the cube falls out of something rather than being
+asserted alongside it** — it comes from "three orthogonal axes plus a
+logarithmic field", with no cube assumed anywhere.
+
+### The cube as the four points of a rhombus
+
+Put a pyramid of height 1/2 on each face of a unit cube and you get the
+**rhombic dodecahedron**. Every claim below is exact over `Fraction`,
+not to a tolerance:
+
+- Each of the 12 faces is a genuine rhombus — four equal sides,
+  diagonals perpendicular and mutually bisecting. Checked for all 12.
+- Each rhombus is **exactly two cube corners plus two pyramid apexes**:
+  the four points, two from the cube and two from the surrounding
+  space. "The cube is the structure in between" *is* the construction.
+- The faces are in **bijection with the cube's 12 edges** — one rhombus
+  per edge, built from that edge plus the apexes of the two faces
+  sharing it. 12 and 12, no remainder.
+- The diagonals are 1 and √2 — squared, 1 and 2, i.e. exactly
+  `cube_symmetry.face_diagonal_squared`. The ratio that already runs
+  through this project *is the shape of the rhombus.*
+- Volume: cube 1 plus six pyramids of 1/6 = **exactly 2**. Twice the
+  cube, nothing left over. (It also tiles space — it is the Voronoi
+  cell of the face-centred cubic lattice.)
+- Euler: 14 − 24 + 12 = 2.
+
+### The logarithmic field around the axes
+
+Multiply the squared distances to the three coordinate axes:
+
+    P(x,y,z) = (y²+z²)(x²+z²)(x²+y²),    V = −½·log P
+
+`V` is the sum of three 2-D logarithmic potentials, one per axis.
+
+- **Singular exactly on the axes, nowhere else.** `P` is a product of
+  three factors and vanishes iff at least two coordinates do — which is
+  precisely the union of the three axes. So the axes are not points of
+  the domain at all; they are the singular support. "Nobody reaches the
+  axes" is exact — you cannot evaluate there, and approaching one the
+  field grows without bound while staying finite at every actual point.
+  And the converse is the sharper half: **the axes are recoverable from
+  the field** as the set where it blows up. If the field goes, the axes
+  go with it, because they are defined by it and not independently.
+- **Decreases outward at exactly the same rate in every direction:**
+  `V(t·u) = V(u) − 3·log t`, exactly, because `P` is homogeneous of
+  degree 6. Not approximately radial — the radial part separates
+  exactly, with rate 3.
+- **Harmonic away from the axes** (worst numerical Laplacian 7e-7 over
+  3000 random points), being a sum of harmonic functions.
+- Strongest at the centre in a precise sense: at the origin all three
+  factors vanish at once, so the singularity is of order 3 against
+  order 1 at a general axis point.
+
+### Where the cube comes from
+
+Ask where the field is strongest and weakest on a sphere. With
+`a = x²`, `b = y²`, `c = z²` and `a+b+c = 1`, the product is
+`P = (1−a)(1−b)(1−c)`, and AM–GM puts the maximum at `a = b = c = 1/3`,
+value exactly `(2/3)³ = 8/27`. Confirmed by brute force over 400 000
+random directions — none exceeds it. The full picture:
+
+| directions | count | `P` | character |
+|---|---|---|---|
+| face axes | **6** | 0 | singular, `V = +∞` |
+| edges | **12** | 1/4 | saddle points |
+| corners | **8** | 8/27 | maxima |
+
+So three orthogonal axes carrying a logarithmic field single out
+**6, 12 and 8** distinguished directions — the cube's faces, edges and
+corners — with `6 − 12 + 8 = 2`. Nothing about a cube was put in; only
+three axes and a logarithm. That is a genuine derivation, and it is the
+direct answer to the objection raised against the earlier modules here,
+where a cube ratio sat *next to* a result instead of following from it.
+
+### What this does not establish
+
+Stated because `8/27` would be easy to over-read:
+
+- **Both numbers come from the number of axes being three.** 8 is `2³`,
+  the sign choices; 27 is `3³`, from AM–GM at `a = b = c = 1/3`. In `n`
+  dimensions the same computation gives `((n−1)/n)^n` at `2^n`
+  directions — `1/4` in 2-D, `81/256` in 4-D, tending to `1/e`. The 27
+  here is `3³` because space is 3-dimensional, and it coincides with
+  this project's 27 only because that is also `3³`. The coincidence is
+  real; it is not evidence, and a test pins that down.
+- The derivation gives the cube's *directions* — the 6/12/8
+  combinatorics and the symmetry group. It gives no cube of any
+  particular size, and produces no `4/3`, no `9/16`, no coupling
+  constant.
+- `V` is a static potential. Nothing in it moves, propagates or
+  predicts; it is a field in the mathematical sense, not a force law.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
