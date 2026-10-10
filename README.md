@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (317 tests as of this module set, all
+Run the test suite with `pytest` (333 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -907,6 +907,100 @@ Cross-checked against the module it inverts: equal weights on the `N`
 single wishes give the uniform wish coordinate by coordinate via
 `waage.center_of_mass`. The two modules are one construction seen from
 two sides.
+
+## Module: `raum27.impakt_schwelle` — The Compression Threshold, and What It Isn't
+
+The question was precise: define the function at which a local impulse
+on a minimal `Δx` breaks the lattice and triggers the flow into a new
+structure. That function exists, it is standard mechanics, and it is
+computable — so this module implements it. The surrounding
+interpretation contained one correct insight and two claims that are
+quantitatively false; both halves are kept, because knowing which is
+which is the point.
+
+*Unit note:* unlike the rest of the package this module uses SI floats,
+not exact `Fraction`s — densities and yield strengths are measured
+properties, so exactness would be false precision. The one genuinely
+exact statement is verified symbolically over rationals in the tests.
+
+**Correct, and mainstream: it is not melting, it is stress-driven
+flow.** The mechanism is that inertial stress overwhelms strength, so
+strength drops out of the balance and both bodies behave like fluids.
+The threshold is a dimensionless number, Johnson's damage number
+`D = ρv²/Y` — `D ≪ 1` elastic, `D ≈ 1` plastic onset, `D ≫ 1` strength
+irrelevant. Setting `D = 1` gives `v = √(Y/ρ)`: **357 m/s for steel**,
+149 m/s for copper, 33 m/s for lead. That is the "strukturelle
+Haltekraft" being exceeded, as a number. At 2 km/s the dynamic pressure
+is **15.7 GPa against a 1 GPa yield strength** — that ratio, not any
+heat, is why the lattice stops holding.
+
+**Correct, and better than an analogy: the `dx`/`dt` framing *is* the
+derivation.** Balancing stagnation pressure across the interface,
+`½ρ_j(v−u)² = ½ρ_t·u²`, gives `u = v/(1+√(ρ_t/ρ_j))`; a rod of known
+length is consumed in `t = L/(v−u)`; the depth is `P = u·t`. That
+collapses to
+
+    P / L = √(ρ_j / ρ_t)
+
+exactly and **independently of impact velocity** (Birkhoff, MacDougall,
+Pugh & Taylor 1948). Knowing the length and the traversal time really
+does give the penetration velocity. Verified both ways: the
+step-by-step `u·t` route reproduces the closed form for every material
+pairing and speed, and the algebra is re-checked symbolically over
+exact rationals so no float rounding can hide a mismatch. Published
+ratios come out right: copper into steel 1.068, tungsten into steel
+1.568, aluminium into steel 0.587.
+
+**False: "keine thermische Entropie", "kalter Phasenübergang".** Shock
+compression is the textbook *irreversible* process — the entropy jump
+is what distinguishes a shock from an isentropic compression. The
+Hugoniot energy jump `Δe = ½u_p²` gives `ΔT ≈ u_p²/(2c_p)`: for steel,
+278 K at 500 m/s particle velocity, **1111 K at 1000 m/s, and past
+steel's melting point at about 1160 m/s on shock heating alone.** The
+process is emphatically hot and emphatically dissipative.
+
+**False: "die Energie geht restlos in die Überwindung der
+Gitterbindung".** Breaking *all* iron lattice bonds costs its cohesive
+energy, **7.39 MJ/kg**. Kinetic energy per mass is `½v²`, so at 1700 m/s
+an impact brings 1.45 MJ/kg — **19.5%** of that. Only above about
+**3.8 km/s** does it even reach break-even, and most of it goes into
+bulk plastic work and heat rather than bond-breaking. At ordnance
+velocity the lattice is not dismantled; a thin layer at the crater wall
+is sheared apart while the bulk stays a solid crystal.
+
+**Also not a phase transition.** "Flow" here is a change of
+*constitutive regime* — strength negligible against inertial stress —
+not of phase. The material stays crystalline throughout.
+
+**The recrystallisation, though, is real — for the opposite reason.**
+Dynamic recrystallisation in adiabatic shear bands at high strain rate
+is well documented in steel. It is driven by exactly the local
+adiabatic *heating* the "cold" framing denies. The conclusion survives;
+the mechanism inverts.
+
+**Validated against reality, including a bug found doing it.** The
+strengthless limit overshoots at ordinary velocity. Retaining strength
+(Tate/Alekseevskii, `½ρ_j(v−u)² + Y_p = ½ρ_t·u² + R_t`) gives `P/L =
+1.21` at 1700 m/s for a 0.6 m tungsten rod into steel — the band real
+long-rod penetrators actually sit in — against a strengthless 1.57. The
+first implementation had a sign error in the quadratic's constant term
+and reported *more* penetration with strength than without; the test
+`test_strength_always_reduces_penetration_never_increases_it` exists to
+pin that down. The corrected model rises monotonically and approaches
+the hydrodynamic ceiling from below without crossing it out to 100 km/s,
+and it predicts a **ballistic limit** (~455 m/s for tungsten into
+steel) that the strengthless formula structurally cannot express — that
+formula has no velocity in it and so "penetrates" at walking pace.
+
+**Where this is *not* RAUM27**, stated plainly because this project has
+a recurring failure mode of dropping a number into a conceptually
+waiting slot: **nothing here derives from cube geometry.** The threshold
+is `ρv²/Y`, the depth ratio `√(ρ_j/ρ_t)`. Neither contains 6, 8, 4/3,
+9/16 or 27, and no step uses a lattice of faces and corners — they use
+momentum and mass conservation across an interface. This is real,
+verified mechanics that answers the question that was asked. It is not
+evidence for the RAUM27 architecture, and reading the agreement as
+support would be exactly the circularity flagged elsewhere here.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 

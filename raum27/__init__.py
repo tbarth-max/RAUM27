@@ -172,6 +172,20 @@ from raum27.waage import (
     residual_torque,
     shares,
 )
+from raum27.impakt_schwelle import (
+    ballistic_limit_velocity,
+    cohesive_energy_fraction,
+    dynamic_pressure,
+    erosion_time,
+    flow_threshold_velocity,
+    hydrodynamic_penetration,
+    interface_velocity,
+    johnson_damage_number,
+    penetration_from_time,
+    shock_temperature_rise,
+    tate_interface_velocity,
+    tate_penetration,
+)
 from raum27.optionsraum import (
     concentration as optionsraum_concentration,
     is_on_simplex as optionsraum_is_on_simplex,
@@ -335,4 +349,16 @@ __all__ = [
     "optionsraum_squared_distance_from_centre",
     "optionsraum_uniform_wish",
     "optionsraum_worst_squared_distance",
+    "ballistic_limit_velocity",
+    "cohesive_energy_fraction",
+    "dynamic_pressure",
+    "erosion_time",
+    "flow_threshold_velocity",
+    "hydrodynamic_penetration",
+    "interface_velocity",
+    "johnson_damage_number",
+    "penetration_from_time",
+    "shock_temperature_rise",
+    "tate_interface_velocity",
+    "tate_penetration",
 ]
