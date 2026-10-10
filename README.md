@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (333 tests as of this module set, all
+Run the test suite with `pytest` (350 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1001,6 +1001,91 @@ momentum and mass conservation across an interface. This is real,
 verified mechanics that answers the question that was asked. It is not
 evidence for the RAUM27 architecture, and reading the agreement as
 support would be exactly the circularity flagged elsewhere here.
+
+## Module: `raum27.lichtgitter` — Cause and Effect on an Ellipse, in Integer Light-Ticks
+
+The claim: the cube doesn't *produce* the physics, it *orders* it —
+turning cause and effect into a long ellipse that can be rolled back
+and forth, everything defined on whole-number steps of a light-speed
+delta. Most of this holds. One part holds **more strongly than it was
+stated**, one part doesn't hold, and one part turns out not to need
+what it asked for.
+
+**Stronger than claimed: `c` already *is* an exact integer.** Not as an
+idealisation. Since 1983 the metre is *defined* as the distance light
+travels in `1/299792458` s, so `c = 299792458 m/s` is exact in SI by
+definition, not a measurement that rounds nicely. The whole-number
+instinct is literally right and needs no idealising — **which is why
+idealising to 300 000 000 throws away the exactness it was meant to
+supply.** The error is 207 542 m/s, a relative 0.0692%:
+
+| Range | Timing error | Position error |
+|---|---|---|
+| GPS satellite | 46.6 µs | **14 km** |
+| Earth–Moon | 887 µs | 266 km |
+| Earth–Sun | 345 ms | 103 494 km |
+
+**Exact: the ellipse is an isochrone with an integer invariant.** The
+focal radii obey an exact identity, rational whenever the parameters
+are: `r1 = a − e·x`, `r2 = a + e·x`. Verified on 4000 exact rational
+points of random ellipses against the raw geometric distance in squared
+form — **zero violations**. Two consequences:
+
+- `r1 + r2 = 2a` **exactly, for every boundary point**. Every route
+  from cause to effect has the same total length, so at fixed `c` the
+  ellipse is an isochrone: same total flight time whichever way round.
+  Rolling it back and forth conserves something exactly.
+- On a lattice of `Δx = 1 m`, `Δt = 1/c s`, the **tick count is `2a`, an
+  exact integer, for every route**. A one-light-second ellipse
+  (`a = 149 896 229 m`) counts exactly 299 792 458 ticks, and the flight
+  time `2a/c` is an exact rational with no rounding anywhere. That is
+  "whole numbers of a light-speed delta", achieved exactly.
+
+**It connects to code already in this repo, and explains a gap in it.**
+The same two radii give the other conic for free: the *sum* `2a` is the
+ellipse, the *difference* `2e·x` is the TDOA hyperbola that
+`kern_modul_v{1,2}.tdoa_position` already computes. The ellipse isn't
+bolted on — it is the sum counterpart of the difference already
+implemented, and the difference inverts exactly (`x = (r2−r1)/(2e)`)
+over `Fraction`, i.e. time-difference localisation without a single
+float. Better: `tdoa_position(L, v, dt) = (L − v·dt)/2` assumes the two
+distances sum to `L`, and on an ellipse that sum is the conserved `2a`,
+**not** the focal baseline `2c`. Fed `2a` it returns the focal radius
+exactly; fed `2c` it is wrong for every off-axis point. *The ellipse's
+invariant is precisely the input that function was missing* — found by
+a failing test, not by inspection.
+
+Superposing the two families gives **elliptic coordinates, orthogonal
+everywhere**, with a one-line proof: the gradient of a distance
+function is a unit vector, so
+`∇(r1+r2)·∇(r1−r2) = |∇r1|² − |∇r2|² = 1 − 1 = 0`. Checked numerically
+on 20 000 random points (worst dot product 5.6e-16) and then **exactly
+over `Fraction`** on 2738 rational points where both unit gradients are
+themselves rational — every dot product exactly 0. The smallest fully
+integral case: `a = 25, e = 3/5` puts `(15, 16)` on the ellipse with
+focal radii exactly 16 and 34.
+
+**Does not hold: 300 million overlays add nothing.** The confocal family
+is complete with **two** parameters — one sum value, one difference
+value — and that pair already addresses every point of the plane.
+Superposing 300 million cause–effect pairs doesn't build a richer
+structure; it resamples the same two-parameter family more finely.
+There is no accumulation threshold at which new structure appears, and
+nothing supports "perfect". The honest count is 2, not 3×10⁸ — and that
+is a *better* result than the one asked for: the model is already
+complete, so the 300 million aren't needed.
+
+**Where the cube actually stands.** Stated fairly, because "the cube
+only orders it" is a much weaker and more defensible claim than the
+ones rejected elsewhere here, and as an *organising frame* it is
+legitimate — a coordinate choice can genuinely be what makes a
+structure computable. But it is not what makes it *true*. The conserved
+quantity `2a` follows from the definition of an ellipse — constant sum
+of focal distances — with no reference to faces, corners, 4/3, 9/16 or
+27. And the integer the lattice counts is `c` itself, which factors as
+`299792458 = 2 × 7 × 73 × 293339`: **not divisible by 6, 8, or 27.** The
+cube can order this material, and the ordering is useful; it does not
+generate the invariant, and the invariant does not point back at it.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
