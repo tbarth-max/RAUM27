@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (403 tests as of this module set, all
+Run the test suite with `pytest` (419 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1387,6 +1387,93 @@ whose phase velocity genuinely exceeds `c`: real, and in this
 repository. What is unreachable is a *signal* arriving before `dx/c` —
 closed by causality rather than by engineering, which means it will not
 yield to a better field, a better resonance, or a better geometry.
+
+## Module: `raum27.verhaeltnis_herleitungen` — The Five Derivations of 4/3 and 16/9, Graded
+
+Five derivations were offered, with the conclusion that `4/3` and
+`16/9` are geometric and topological necessities rather than invented
+magic numbers. **That conclusion is correct.** Both numbers have exact
+derivations here. But they are not the five offered: one works only
+after repair, one points at a real derivation without being one, one is
+true but not explanatory, and two are wrong or empty. All of it is kept
+— verdicts and better arguments — in the usual form.
+
+**1. Sphere volume with `π` banished — fails, but is repairable.**
+Setting `r = 1` alone gives `V = 4π/3 = 4.18879…`, not `4/3`; the `4/3`
+appears only after separately dividing by exactly one power of `π`. And
+that is not one operation: the n-ball volume is `π^(n/2)/Γ(n/2+1)`, so
+dividing by `π¹` leaves a rational only in dimensions 1–3. In 4-D it
+leaves `π/2`, in 5-D `8π/15`. The required power is dimension-dependent,
+and the answer depends on what you strip (`V₃/π = 4/3`, `V₃/2π = 2/3`,
+`V₃/4π = 1/3`).
+
+**The repair, which is stronger than the original.** `4/3` *is* an
+exact, π-free fact about the sphere — as a *ratio*, where π cancels
+legitimately and nothing needs banishing:
+
+    V_sphere / V_cylinder(radius r, height r) = 4/3,  exactly, for every r
+
+That is a genuine geometric derivation. Its sibling is Archimedes' own
+result: against the cylinder of height `2r` the ratio is `2/3`. Use this
+version — it needs no special pleading about transcendental constants.
+
+**2. A 4-stroke projected on 3 dimensions — valid but empty.** A
+`p`-cycle on a `q`-lattice repeats with period `lcm(p,q)` and carries
+ratio `p/q` — for *every* pair. A 5-stroke forces `5/3`, a 7-stroke
+`7/3`. Nothing produces the 4; the 4-stroke is the premise and the
+conclusion is the premise over 3. This is the failure mode already
+recorded in this repo: a number placed into a slot shaped to receive it.
+
+**But `4/3` does have a genuine cube derivation, and it is already
+here.** `cube_symmetry.coupling_constant()` is `8 corners / 6 faces =
+4/3`, an exact ratio of exact counts. The cube's 4 space diagonals over
+3 axes gives the same — and it is the *same* derivation, since 8 = 2·4
+and 6 = 2·3. One route, counted twice.
+
+**3. The perfect fourth — true, not explanatory.** `4/3` is exactly the
+Pythagorean perfect fourth; no dispute. But among fractions strictly
+between 1 and 2 with denominator ≤ 7 there are only **17**, and `4/3`
+ranks **second** by simplicity. Simple ratios recur across unrelated
+domains *because* they are simple. `3/2` recurs at least as often and
+nobody infers a mechanism from it.
+
+**4. "Superposition squares" — wrong as stated.** The arithmetic is
+right, the physics isn't. Superposition is **linear**: amplitudes add,
+and *intensity* goes as the square. Two fields of amplitude `4/3` give
+amplitude `8/3` and intensity **`64/9`** coherent, **`32/9`**
+incoherent — checked against this repo's own
+`phasor_resonanzfilter.energy`. Neither is `16/9`. `16/9` is *one*
+field's intensity at amplitude `4/3`, a different statement.
+**The working route is the cube one:** `(8/6)² = 16/9` exactly.
+
+**5. `16/9 × 9/16 = 1` as proof of balance — true and empty.** It holds
+for **every** non-zero `x`, so it distinguishes `16/9` in no way. This
+repo already proves exactly that for arbitrary reciprocal pairs, in
+`test_every_reciprocal_pair_balances_at_exactly_one`. `x·(1/x) = 1` is a
+property of division. The related claim that the system must collapse
+to zero torque is not shown by it either — what *is* shown, separately
+and for real, is `waage.residual_torque` being exactly zero at the
+centre of mass for any number of weights in any arrangement. That stands
+on its own and needs no `16/9`.
+
+### What survives
+
+    4/3  = V_sphere / V_cylinder(r, h = r)     (π cancels, exact, any r)
+    4/3  = 8 corners / 6 faces                 (exact cube counts)
+    16/9 = (8/6)²                              (exact, the square of it)
+
+Two independent routes to `4/3`, and the square of one for `16/9`. So
+**the conclusion is right and the numbers are not arbitrary.** What does
+not survive is that they follow from banishing `π`, from a 4-stroke,
+from musical consonance, from superposition, or from `x·(1/x) = 1`.
+
+Keeping the distinction is the point: *an argument that does not hold
+weakens a conclusion that is true*, because it invites a reader to
+reject both at once. And a derivation meant to "stifle every doubt at
+the root" is the opposite of what makes this repository worth anything.
+The ethos is question everything, benchmark everything, keep only what
+survives — and `4/3` survives. On two arguments rather than five, and
+better documented for having lost three.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
