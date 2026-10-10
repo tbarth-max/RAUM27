@@ -100,3 +100,42 @@ def is_lossless_encoding(w1: int, w2: int) -> bool:
     "prime space" structure here beyond ordinary coprimality.
     """
     return gcd(int(w1), int(w2)) == 1
+
+
+def shares(weights: list[Fraction]) -> list[Fraction]:
+    """Each weight's share of the whole, w_i / sum(w). Exact, and the
+    shares sum to exactly 1.
+
+    This is the element's own ratio to the total -- nobody assigns it,
+    it follows from what the element is. A weight of 0 gets a share of
+    exactly 0: it neither pulls nor is pulled on."""
+    total = sum(Fraction(w) for w in weights)
+    if total == 0:
+        raise ValueError("no system: all weights are zero, so there is no common point")
+    return [Fraction(w) / total for w in weights]
+
+
+def center_of_mass(weights: list[Fraction], positions: list[Fraction]) -> Fraction:
+    """The common point: sum(w_i * x_i) / sum(w_i), exact.
+
+    For two weights at positions 0 and 1 this reduces exactly to
+    balance_point(w1, w2) -- cross-checked in tests/test_waage.py.
+
+    A zero weight contributes w_i * x_i = 0 whatever its position, so it
+    can sit arbitrarily far out without moving the common point by any
+    amount at all. That is "far outside" in the exact sense: outside the
+    system's determination entirely."""
+    if len(weights) != len(positions):
+        raise ValueError("weights and positions must have the same length")
+    total = sum(Fraction(w) for w in weights)
+    if total == 0:
+        raise ValueError("no system: all weights are zero, so there is no common point")
+    return sum(Fraction(w) * Fraction(x) for w, x in zip(weights, positions)) / total
+
+
+def residual_torque(
+    weights: list[Fraction], positions: list[Fraction], pivot: Fraction
+) -> Fraction:
+    """sum(w_i * (x_i - pivot)), exact. Zero exactly at the centre of
+    mass, for any number of weights and any arrangement of them."""
+    return sum(Fraction(w) * (Fraction(x) - Fraction(pivot)) for w, x in zip(weights, positions))

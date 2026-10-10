@@ -8,6 +8,9 @@ import pytest
 from raum27.kern_modul_v2 import redundancy_deviation
 from raum27.rational_space import involution
 from raum27.waage import (
+    center_of_mass,
+    residual_torque,
+    shares,
     is_lossless_encoding,
     balance_point,
     balances_at_one,
@@ -129,3 +132,58 @@ def test_prime_balance_points_land_on_nothing_special():
                     for a in (3, 5, 7, 11) for b in (5, 7, 11, 13) if a != b]
     prime_denominators = [d for d in denominators if d in primes]
     assert len(prime_denominators) < len(denominators) / 2
+
+
+def test_shares_are_exact_and_sum_to_one():
+    s = shares([Fraction(2), Fraction(3), Fraction(5)])
+    assert s == [Fraction(1, 5), Fraction(3, 10), Fraction(1, 2)]
+    assert sum(s) == 1
+
+
+def test_n_weights_reduce_exactly_to_the_two_weight_balance_point():
+    """The general centre of mass is the same function as the two-weight
+    lever law, not a separate construction."""
+    for w1 in range(1, 10):
+        for w2 in range(1, 10):
+            general = center_of_mass([Fraction(w1), Fraction(w2)], [Fraction(0), Fraction(1)])
+            assert general == balance_point(Fraction(w1), Fraction(w2))
+
+
+def test_individual_places_are_free_but_the_common_point_is_exact():
+    """Three weights: infinitely many arrangements balance, and the
+    residual torque about the centre is exactly zero for every one of
+    them. Freedom in the parts, exactness in the whole."""
+    w = [Fraction(2), Fraction(3), Fraction(5)]
+    for pos in (
+        [Fraction(0), Fraction(1, 2), Fraction(4, 5)],
+        [Fraction(1, 10), Fraction(0), Fraction(9, 10)],
+        [Fraction(1, 4), Fraction(1), Fraction(2, 5)],
+        [Fraction(-7), Fraction(3), Fraction(11, 3)],
+    ):
+        centre = center_of_mass(w, pos)
+        assert residual_torque(w, pos, centre) == 0
+
+
+def test_two_different_arrangements_can_share_the_same_centre():
+    w = [Fraction(2), Fraction(3), Fraction(5)]
+    a = center_of_mass(w, [Fraction(0), Fraction(1, 2), Fraction(4, 5)])
+    b = center_of_mass(w, [Fraction(1, 4), Fraction(1), Fraction(2, 5)])
+    assert a == b == Fraction(11, 20)
+
+
+def test_a_zero_weight_sits_arbitrarily_far_out_and_moves_nothing():
+    """Wanting nothing means a share of exactly 0: the common point does
+    not shift by any amount, however far out the zero weight sits."""
+    w = [Fraction(2), Fraction(3), Fraction(5), Fraction(0)]
+    base = [Fraction(0), Fraction(1, 2), Fraction(4, 5)]
+    reference = center_of_mass(w[:3], base)
+    for far_out in (Fraction(0), Fraction(100), Fraction(-1000), Fraction(10**6)):
+        assert center_of_mass(w, base + [far_out]) == reference
+    assert shares(w)[3] == 0
+
+
+def test_if_nobody_wants_anything_there_is_no_system():
+    with pytest.raises(ValueError):
+        center_of_mass([Fraction(0), Fraction(0)], [Fraction(0), Fraction(1)])
+    with pytest.raises(ValueError):
+        shares([Fraction(0), Fraction(0)])

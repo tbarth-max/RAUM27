@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (298 tests as of this module set, all
+Run the test suite with `pytest` (304 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -803,6 +803,39 @@ in the project: the DX/DT module wanted to preserve "unreduced fractions
 as fingerprints" and broke on an implementation detail. With coprime
 weights there is nothing to reduce, so the fingerprint survives by
 construction.
+
+### From two weights to n: the common point is exact, the individual places are free
+
+The two-weight beam generalizes without any new machinery. For `n`
+weights at positions `x_i` the common point is the centre of mass
+`Σ(w_i·x_i) / Σ(w_i)` — these are barycentric coordinates (Möbius,
+1827), standard mathematics, correctly applied here. Three things in it
+are worth stating because they are exact, not approximate, and because
+each was computed rather than assumed:
+
+- **It is the same function, not a second construction.** For two
+  weights at positions 0 and 1, `center_of_mass` returns bit-for-bit
+  what `balance_point` returns — verified for all 81 pairs up to 9. The
+  lever law is the n=2 case.
+- **The individual places are free; the common point is not.** Three
+  weights `(2, 3, 5)` at `[0, 1/2, 4/5]` and at `[1/4, 1, 2/5]` give the
+  same centre, exactly `11/20`. There are infinitely many such
+  arrangements. In every one of them the residual torque about the
+  centre, `Σ w_i·(x_i − pivot)`, is **exactly 0** — that is what makes
+  the centre the centre, and it holds for negative positions too
+  (`[−7, 3, 11/3]`). Freedom in the parts, exactness in the whole.
+- **A weight of 0 has a share of exactly 0, at any distance.** Its
+  contribution is `w_i·x_i = 0` whatever `x_i` is, so a zero weight
+  placed at 0, 100, −1000 or 10⁶ leaves the common point at exactly
+  `11/20`, unchanged by any amount. "Far outside" is literal here:
+  outside the system's determination entirely. And `shares` are exact
+  rationals summing to exactly 1 (`(2,3,5) → 1/5, 3/10, 1/2`), so the
+  share is the element's own ratio to the whole — it follows from what
+  the element is, nothing assigns it.
+- **All weights zero means there is no system**, not a degenerate one:
+  `shares` and `center_of_mass` both raise, at the same place
+  `balance_point` already raised for `w1+w2 = 0`. Division by the total
+  is undefined, and no convention rescues it.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 

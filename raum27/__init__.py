@@ -163,11 +163,14 @@ from raum27.wellenformen import (
 from raum27.zahlensysteme import bits_per_digit, cube_scaling_count, rgb_color_count
 from raum27.waage import (
     balance_point,
-    is_lossless_encoding,
     balances_at_one,
+    center_of_mass,
     geometric_mean_squared,
+    is_lossless_encoding,
     lever_law_holds,
     ratio_from_balance_point,
+    residual_torque,
+    shares,
 )
 from raum27.duplex_inversion import (
     coincidence_points as duplex_coincidence_points,
@@ -309,4 +312,7 @@ __all__ = [
     "geometric_mean_squared",
     "lever_law_holds",
     "ratio_from_balance_point",
+    "shares",
+    "center_of_mass",
+    "residual_torque",
 ]
