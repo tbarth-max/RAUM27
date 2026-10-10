@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (447 tests as of this module set, all
+Run the test suite with `pytest` (463 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1476,6 +1476,81 @@ survives — and `4/3` survives. On two arguments rather than five, and
 better documented for having lost three.
 
 
+
+
+## Module: `raum27.viertakt` — The Four-Stroke on Index 0, as Powers of `i`
+
+The proposal: start the rhythm at index 0 and read it as powers of `i`,
+so it begins at rest rather than already deflected. `i⁰ = 1` (ground),
+`i¹ = i` (deflection), `i² = −1` (inversion), `i³ = −i` (mirror),
+`i⁴ = 1` (closes — one turn higher).
+
+**Attribution first.** When `spirale.py` says "the recursion grounds out
+at turn 0", that sentence was about the formal termination of a
+recursion and nothing more. `i⁰` as the start of a four-stroke was not
+behind it. The reading is a genuine addition, not a recovery of
+something already meant.
+
+**Exact, with no floating point anywhere.** For integer `n`, both
+`cos(nπ/2)` and `sin(nπ/2)` land in `{0, ±1}`, so the cosine and sine
+never have to be *evaluated* — the states are exact Gaussian integers
+and one tick is the integer map `(c, s) → (−s, c)`. A million ticks
+accumulate no error. The "über Kosinus Sinus" route is right, and that
+is precisely why it is computable.
+
+**Period exactly 4**, confirmed twice: by exact integer iteration, and
+by feeding the real and imaginary series to this repo's own
+`kern_modul_v2.find_period`, which returns 4 for both.
+
+**`i² = −1` really is the unique maximum of tension.** Squared
+distances from the ground, as exact integers:
+
+| n | 0 | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|---|
+| `\|iⁿ − 1\|²` | 0 | 2 | **4** | 2 | 0 |
+
+`n = 2` is the only maximum, at squared distance exactly 4 — the
+diameter. "Exakter Gegenpol zum Ursprung" is provable, not imagery.
+
+**And the central claim is exactly right.** `i⁰` and `i⁴` are the same
+complex number and *not* the same state, because the height differs.
+The phasor repeats every four ticks; the pair `(iⁿ, height)` never
+repeats — over 40 ticks: 4 distinct phasors, 40 distinct states. That
+is `spirale.py`'s cycle-with-a-ground applied correctly: phasor carries
+the rhythm, height carries the memory, neither alone is the state. With
+pitch set to zero the 40 states collapse to 4 — the memory is lost,
+which is the formal reason the pitch must not be zero.
+
+### Three corrections
+
+1. **The pitch is not zero at `n = 0`; the *height* is.** Different
+   quantities: the pitch is a property of the spiral, constant for every
+   turn. A genuinely zero pitch gives `e² = 0` — a circle, and the
+   ellipse the construction depends on would not exist.
+2. **`n = 3` does not pull back toward the centre — it mirrors `n = 1`.**
+   Both sit at squared distance exactly 2. The sequence is 0, 2, 4, 2, 0,
+   so the return happens in one step at `n = 4`, not gradually.
+3. **A power tower is a different object and is not 4-periodic.** `iⁿ`
+   with integer `n` is exactly 4-periodic. A tower `i^i^i^…` is
+   transcendental at the first step (`i^i = e^(−π/2) = 0.207879…`) and
+   converges to the fixed point `0.438282936727 + 0.360592471871i`
+   instead of cycling — verified as a fixed point to 2.8e-16. It needs
+   roughly 500 levels to settle; at 80 it has not converged, which is
+   easy to misread as a mismatch (it was, once, here). The exact
+   four-cycle and the tower are alternatives, not a combination.
+
+### One scope point
+
+`iⁿ` lives in a single complex plane, so one cycle orders **one**
+rotation plane. Three-space has exactly three
+(`rotationsebenen.rotation_plane_count(3) = 3`), so ordering 3-space
+with this rhythm takes three four-strokes — the complexity of the three
+dimensions does not collapse into one cycle.
+
+Three planes × four ticks = 12, and the cube also has 12 edges.
+**Noted, not claimed**: both are `3 × 4`, nothing here derives either
+from the other, and a test asserts that so the number cannot quietly
+become evidence.
 
 ## Module: `raum27.spirale` — The Cycle That Can Actually Be Computed
 
