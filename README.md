@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (387 tests as of this module set, all
+Run the test suite with `pytest` (403 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1270,6 +1270,123 @@ Stated because `8/27` would be easy to over-read:
   constant.
 - `V` is a static potential. Nothing in it moves, propagates or
   predicts; it is a field in the mathematical sense, not a force law.
+
+## Module: `raum27.tunnelgrenze` — The Idealisation Granted in Full
+
+The question, taken at face value: *idealise*. Grant completely
+frictionless inner flow inside some energetic field — magnetic,
+electric, gravitational, or one entirely unknown. Whatever it is, it
+still consists of geometric definitions and defined interactions, cause
+and effect. Grant all of it. Then push to the shortest measurable `dt`
+so the path becomes `dx` rather than `Δx`. Is that the perfect quantum
+tunnel from resonance?
+
+No — and the reason matters more than the answer: **the premise granted
+in the question is what forbids the conclusion.** "Defined
+interactions" and "cause and effect" are precisely the two assumptions
+the limits follow from. Nothing about the field's identity is needed,
+which is exactly why calling it unknown does not help.
+
+### Two halves are already achieved, and not as idealisations
+
+- **Completely frictionless inner flow exists.** Superfluid helium-4
+  below its critical velocity dissipates *exactly* nothing — measured,
+  not idealised. With `resonanztunnel.shear_stress`, where `τ(0) = 0`
+  holds exactly for any layering, the frictionless core is real.
+- **Transmission with minimal energy loss exists.** Superconducting RF
+  cavities reach quality factors above 10¹¹ — fractional loss per cycle
+  below 10⁻¹¹. That is engineering, not speculation.
+
+So the idealisation is not the problem. Both of its physical halves are
+done.
+
+### Block 1: a lossless resonance is not hard, it is empty
+
+The decisive one, because resonance is the proposed mechanism. For a
+Lorentz medium the absorption obeys an exact sum rule:
+
+    ∫₀^∞ ω·Im χ(ω) dω = π·wp²/2
+
+**independent of the damping `γ` and the resonance frequency `ω₀`** —
+verified numerically to within 0.3% across six decades of `γ` and two
+resonance frequencies (the residual drift is quadrature tail
+truncation, not physics). Total absorption is a *fixed constant* set by
+the oscillator strength alone. Reducing the damping does not reduce it;
+it makes it narrower and taller, peak going as `wp²/(γω₀)` — a
+thousandfold smaller `γ` gives a thousandfold taller peak and the same
+integral.
+
+And `wp²` is exactly what creates the resonance. Set it to zero and the
+absorption vanishes along with all dispersion and all resonance.
+Kramers–Kronig says the same from the other side: zero `Im χ`
+everywhere forces zero `Re χ`, i.e. vacuum. (The relation is itself
+checked against the Lorentz oscillator, so the premise in use is the
+real one.) **A lossless resonance is an empty set, not a difficult
+target.**
+
+### Block 2: the shortest `dt` costs the most energy
+
+`ΔE ≥ ℏ/(2Δt)` — the shorter the time, the *more* energy the event must
+carry. At the Planck time the minimum is **9.78×10⁸ J**: about 234
+tonnes of TNT equivalent in a single quantum event, and exactly half a
+Planck mass in energy. "Minimal energy loss" and "shortest measurable
+`dt`" are opposite ends of one inequality; they cannot both be
+optimised.
+
+### Block 3: the medium's own excitations cap the frictionless speed
+
+Landau's criterion needs no knowledge of the medium, only that it has
+excitations — which "defined interactions" already grants:
+`v_c = minₚ ε(p)/p`. Below it dissipation is exactly zero, above it
+exactly not. Helium-4's roton minimum gives **59.3 m/s** (measured
+~58), i.e. `2.0×10⁻⁷·c` — seven orders short, in the best frictionless
+medium known.
+
+The general form answers the unknown-field move:
+
+| spectrum | critical velocity |
+|---|---|
+| `ε = c_s·p` (phonon) | `c_s`, the sound speed |
+| `ε = p²/2m` (free) | **0 — no frictionless regime at all** |
+| `ε = Δ + p²/2m` (gapped) | `√(2Δ/m)` |
+
+A gap is what *creates* a frictionless regime; a fast one needs a large
+gap. Pushing `v_c` to `c` requires `Δ = mc²/2` — 255 keV for an
+electron, a gap of order the rest energy. At that point pair production
+is open, the medium is creating particles, and **the no-interaction
+premise has destroyed itself.** The requirement defeats its own
+assumption.
+
+### Block 4: causality alone fixes the front at `c`
+
+This is what makes the unknown-field argument fail outright.
+Titchmarsh: if the response is causal — no output before input, which
+*is* "cause and effect" as granted — then `χ` is analytic in the upper
+half plane, so `χ → 0` and `n → 1` at high frequency. Checked on a
+Lorentz medium: `n` deviates from 1 by 5×10⁻³ at `ω = 10ω₀` and
+5×10⁻¹³ at `ω = 10⁶ω₀`. The signal *front* therefore moves at exactly
+`c` in every causal medium, whatever it is made of — from causality
+alone, with no reference to the field's nature. Group velocity can
+exceed `c` (`resonanztunnel` has a pipe where the phase velocity does);
+the front cannot.
+
+### And the `dx → 0` move itself
+
+`v = dx/dt` with the front capped at `c` gives `dt ≥ dx/c` — 3.34 ns for
+a 1 m pipe, 1.28 s to the Moon. Letting `dx → 0` does not escape this,
+it empties it: the transmitted distance *is* `dx`, so `dx = 0` is not a
+fast transfer but no transfer. **The quantity being minimised and the
+quantity that makes the transfer useful are the same quantity.**
+
+### What is left, which is not nothing
+
+Everything in the request except the superluminal part is reachable,
+and much of it is built. Zero-dissipation flow: real. Loss below 10⁻¹¹
+per cycle: real. Group velocity arbitrarily close to `c`: real. A pipe
+whose phase velocity genuinely exceeds `c`: real, and in this
+repository. What is unreachable is a *signal* arriving before `dx/c` —
+closed by causality rather than by engineering, which means it will not
+yield to a better field, a better resonance, or a better geometry.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
