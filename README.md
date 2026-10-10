@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (419 tests as of this module set, all
+Run the test suite with `pytest` (430 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1474,6 +1474,46 @@ the root" is the opposite of what makes this repository worth anything.
 The ethos is question everything, benchmark everything, keep only what
 survives — and `4/3` survives. On two arguments rather than five, and
 better documented for having lost three.
+
+
+## Is It Workable? — The System-Level Audit
+
+The question that matters for using this at all is not whether a number
+is "true about the universe" but whether the definitions are sharp
+enough to compute with and yield results within their own scope. That
+is testable, and `tests/test_system_arbeitsfaehigkeit.py` tests it
+rather than asserting it — because all four properties can break
+silently as modules are added.
+
+- **Closed.** Every core ratio follows from five integer primitives —
+  6 faces, 8 corners, 12 edges, 4 space diagonals, 3 axes — by exact
+  rational arithmetic: `4/3`, `16/9`, `3/4`, `9/16`, Euler's 2, and the
+  squared diagonals 2 and 3. Nothing is smuggled in.
+- **Acyclic.** 32 modules, checked mechanically by walking the import
+  graph: **zero cycles**. No definition depends on itself, directly or
+  through a chain — the failure mode flagged repeatedly in this file is
+  verified absent rather than assumed. `cube_symmetry` imports nothing
+  internal, so the primitives really are primitive.
+- **Consistent.** Where independent routes meet, they agree exactly.
+  `4/3` from cube counts equals `4/3` from the sphere-to-cylinder ratio,
+  and nothing links those two but the answer. Euler's 2 comes out of
+  three separate modules — cube counts, the octahedron, and the rhombic
+  dodecahedron's 14 − 24 + 12. The rhombus diagonal ratio equals
+  `face_diagonal_squared`.
+- **Productive.** The definitions return things nobody put in: the
+  cube's 6/12/8 out of three logarithmic axes that contained no cube,
+  `8/27` as the field maximum, `29809321/160000` (= 186.31×) as a flow
+  gain, a one-light-second tick count equal to `c` exactly, `26/27`,
+  and the root of `6^X = 8^(10−X)` located rather than assumed.
+- **68% of the typed numeric surface is exact** (102 functions returning
+  `Fraction`/`int` against 49 returning `float`), and the floats sit
+  exactly where measured physical constants do.
+
+**Verdict: workable, within a stated scope.** It is an exact rational
+geometry of the cube and the structures derived from it, and inside
+that scope it computes and produces. What it does not do is predict
+measurements — no module claims to, and the audit does not test for it.
+That boundary is a scope statement, not a defect.
 
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
