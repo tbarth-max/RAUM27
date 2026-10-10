@@ -67,7 +67,7 @@ ordinary, checkable mathematics:
 - **`taylor`** — a rational (exact-fraction) truncated Taylor
   approximation of sine.
 
-Run the test suite with `pytest` (463 tests as of this module set, all
+Run the test suite with `pytest` (481 tests as of this module set, all
 mathematical claims in this README are verified, not asserted).
 
 ## Module: `raum27.lotto_benchmark` — Null-Hypothesis Forecast Benchmark
@@ -1477,6 +1477,100 @@ better documented for having lost three.
 
 
 
+
+
+## Module: `raum27.kugelkoordinaten` — Spherical Coordinates With No Floating Point
+
+A forwarded script computed a distance and a spherical conversion, and
+diagnosed it correctly: squares stay exact as `Fraction`, the square
+root is the first rounding, and the angles are floats because `cos` and
+`sin` are not rational. Its proposed next step was to carry the angles
+as fractions and evaluate the trigonometry at the end. **There is a
+better fix, and it removes the floating point rather than postponing
+it.**
+
+### Don't carry angles — carry what is already rational
+
+For any point with rational coordinates, all three pieces of spherical
+information are *already* exact rationals, with no trigonometry
+evaluated anywhere:
+
+    r² = x² + y² + z²        cos²θ = z²/r²        tan φ = y/x
+
+For `(1, 2, 3)`: `r² = 14`, `cos²θ = 9/14`, `tan φ = 2`. The float
+versions agree to 1e-12 (checked), but are never needed.
+
+**And it is lossless.** From `(r², cos²θ, tan φ)` plus three sign bits
+the point comes back exactly: `z² = r²cos²θ`, `x²+y² = r² − z²`,
+`x² = (x²+y²)/(1+tan²φ)`. Verified on negative and fractional points and
+on the `x = 0` axis. So refusing the square root gives nothing up — the
+representation carries the same information as the point.
+
+The script's own example was exact **only by luck**: 25 is a perfect
+square. Move one endpoint to `(1,1,1)` and the squared distance is 5
+with an irrational root. The squared form stays exact either way — the
+same reason `cube_symmetry.face_diagonal_squared` keeps the square.
+
+### Which angles can be exact at all — a theorem, not a limitation
+
+**Niven's theorem**: if `cos(r·π)` is rational for rational `r`, it is
+one of `0, ±1/2, ±1`. So in `[0,1)` there are **exactly 8** turn
+fractions with a rational cosine:
+
+| q | 0 | 1/6 | 1/4 | 1/3 | 1/2 | 2/3 | 3/4 | 5/6 |
+|---|---|---|---|---|---|---|---|---|
+| cos | 1 | 1/2 | 0 | −1/2 | −1 | −1/2 | 0 | 1/2 |
+
+Denominators only 1, 2, 3, 4, 6 — and `viertakt`'s quarter turns are
+four of these eight. Everything else returns `None` rather than a
+rounded value.
+
+**The project's squared convention doubles the set to 16.** Since
+`cos² = (1+cos 2x)/2`, `cos²` is rational exactly when the doubled
+angle's cosine is, which adds the halves: `1/8 → 1/2` and `1/12 → 3/4`,
+*even though both cosines are themselves irrational*. Keeping the square
+is not a workaround here — it genuinely enlarges what can be computed
+without rounding.
+
+### The fourth dimension is a hard obstruction, not a drawing problem
+
+Leaving it out is right, and for a stronger reason than "it can't be
+pictured". The Cayley–Menger determinant of `m` points is non-zero
+exactly when they span `m−1` dimensions, and for `m` mutually
+equidistant points it is `±m`:
+
+| m | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| CM det | 2 | −3 | 4 | **−5** | 6 |
+| spans | 1 | 2 | 3 | **4** | 5 |
+
+So **5 mutually equidistant points span 4 dimensions**, and to sit in
+3-space their determinant would have to vanish. It is −5. Computed
+exactly over `Fraction` and cross-checked against configurations that
+genuinely *are* flat (four corners of a square give 0; a tetrahedron
+gives 8, so the test is not reading an artefact). The maximum number of
+mutually equidistant points in `Rⁿ` is `n+1` — there is a configuration
+that exists in four dimensions and provably cannot be realised in three
+at all.
+
+What *can* be done is exactly what was described: stack 3-D slices and
+let the fourth parameter be the index running through them. That index
+is not a spatial coordinate, so **no embedding obstruction applies to
+it** — and the package already works this way. A `viertakt` state is
+`(phasor, height)`: three spatial degrees of freedom plus one index,
+where the height is the flow. The fourth thing emerges from the sequence
+of slices rather than being a direction inside any of them.
+
+### Two small confirmations
+
+**Indexing 0,1,2,3 is still four places** — that was never in dispute.
+The shift moves only where the count starts, from the ground rather than
+the first deflection; `period()` is 4 either way.
+
+**"Normalise onto one axis"** has an exact form here: the radius is the
+single ray (`r²`, exact) and the direction is carried separately
+(`cos²θ`, `tan φ`, exact). Nothing is projected away and nothing is
+rounded.
 
 ## Module: `raum27.viertakt` — The Four-Stroke on Index 0, as Powers of `i`
 
