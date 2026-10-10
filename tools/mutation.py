@@ -73,9 +73,28 @@ USAGE
     python tools/mutation.py --all --sample 60 --scope all
     python tools/mutation.py --module waage --scope file
 
-The source file is restored in a `finally` block, so an interrupted run
-leaves the tree clean. Verify with `git status` if a run is killed
-mid-flight.
+SAFETY: THE TOOL MUST NOT MUTATE THE TREE IT IS MEASURING
+---------------------------------------------------------
+
+An earlier version wrote mutants straight into `raum27/` and restored
+them in a `finally` block. That is sound against an exception and
+useless against a kill: `pkill` ends the process without running
+`finally`, and the mutant stays on disk. It happened -- a run was
+stopped and left a mutated `lotto_benchmark.py` behind, 18 lines
+replacing 46, because `ast.unparse` re-prints the whole file. With a
+commit hook asking for uncommitted changes to be pushed, the next
+careless `git add -A` would have committed a deliberately broken
+operator, with a green test run to vouch for it.
+
+So this version mutates **a throwaway `git worktree`** and never touches
+the working tree at all. Kill it at any point and the main checkout is
+untouched; the worst outcome is a leftover directory under
+`.mutation-worktree/`, which the next run removes.
+
+The general rule, since it recurs: *a tool that modifies its subject in
+order to measure it needs its own copy of the subject.* Restoring
+afterwards is not a substitute, because "afterwards" is exactly what a
+kill removes.
 """
 
 from __future__ import annotations
@@ -85,6 +104,7 @@ import ast
 import copy
 import os
 import random
+import shutil
 import subprocess
 import sys
 
@@ -200,19 +220,61 @@ def all_modules() -> list[str]:
     ]
 
 
-def run_suite(scope: str, module: str) -> bool:
+WORKTREE = os.path.join(REPO, ".mutation-worktree")
+
+
+def make_worktree() -> str:
+    """A throwaway checkout of HEAD to mutate, so the real tree is never
+    written to. Replaces any leftover from an earlier interrupted run."""
+    remove_worktree()
+    subprocess.run(
+        ["git", "worktree", "add", "--detach", "--quiet", WORKTREE, "HEAD"],
+        cwd=REPO, check=True, capture_output=True,
+    )
+    return WORKTREE
+
+
+def remove_worktree() -> None:
+    subprocess.run(
+        ["git", "worktree", "remove", "--force", WORKTREE],
+        cwd=REPO, capture_output=True,
+    )
+    if os.path.isdir(WORKTREE):
+        shutil.rmtree(WORKTREE, ignore_errors=True)
+    subprocess.run(["git", "worktree", "prune"], cwd=REPO, capture_output=True)
+
+
+def require_clean_tree() -> None:
+    """Refuse to start on a dirty tree.
+
+    Not fussiness: the worktree is created from HEAD, so uncommitted work
+    would be silently absent from what gets measured, and the score would
+    describe a different program than the one on disk."""
+    result = subprocess.run(
+        ["git", "status", "--porcelain", "--", "raum27", "tests"],
+        cwd=REPO, capture_output=True, text=True, check=True,
+    )
+    if result.stdout.strip():
+        raise SystemExit(
+            "refusing to run: raum27/ or tests/ have uncommitted changes.\n"
+            "The worktree is built from HEAD, so the score would not describe "
+            "the code you are looking at. Commit or stash first:\n"
+            + result.stdout
+        )
+
+
+def run_suite(root: str, scope: str, module: str) -> bool:
     """True if the suite failed, i.e. the mutant was caught."""
     target = ["-x", "-q"]
     if scope == "file":
-        test_file = os.path.join(REPO, "tests", f"test_{module}.py")
-        if not os.path.exists(test_file):
+        if not os.path.exists(os.path.join(root, "tests", f"test_{module}.py")):
             return False
         target.append(f"tests/test_{module}.py")
     environment = dict(os.environ)
     environment.pop("PYTHONPATH", None)
     result = subprocess.run(
         [PYTHON, "-m", "pytest", *target],
-        cwd=REPO,
+        cwd=root,
         capture_output=True,
         env=environment,
         timeout=1800,
@@ -220,9 +282,10 @@ def run_suite(scope: str, module: str) -> bool:
     return result.returncode != 0
 
 
-def mutate_and_test(module: str, site, scope: str) -> tuple[str, str]:
-    """Returns (outcome, original source line). Restores the file always."""
-    path = os.path.join(PACKAGE, module + ".py")
+def mutate_and_test(root: str, module: str, site, scope: str) -> tuple[str, str]:
+    """Mutate inside the worktree and judge. The real tree is untouched,
+    so a kill at any moment costs nothing but a leftover directory."""
+    path = os.path.join(root, "raum27", module + ".py")
     source = open(path).read()
     lines = source.split("\n")
     index = site[1] - 1
@@ -239,7 +302,7 @@ def mutate_and_test(module: str, site, scope: str) -> tuple[str, str]:
 
     try:
         open(path, "w").write(mutated)
-        caught = run_suite(scope, module)
+        caught = run_suite(root, scope, module)
     finally:
         open(path, "w").write(source)
     return ("killed" if caught else "survived"), original_line
@@ -262,6 +325,8 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=11)
     arguments = parser.parse_args()
 
+    require_clean_tree()
+
     pool: list[tuple[str, tuple]] = []
     for module in all_modules() if arguments.all else [arguments.module]:
         pool.extend((module, site) for site in collect_sites(module))
@@ -270,21 +335,26 @@ def main() -> int:
     sample = pool[: arguments.sample]
     print(
         f"{len(pool)} mutation sites; testing {len(sample)} "
-        f"with scope={arguments.scope}\n"
+        f"with scope={arguments.scope}"
     )
 
     killed = survived = invalid = 0
     survivors: list[tuple[str, tuple, str]] = []
-    for position, (module, site) in enumerate(sample, 1):
-        outcome, line = mutate_and_test(module, site, arguments.scope)
-        if outcome == "killed":
-            killed += 1
-        elif outcome == "survived":
-            survived += 1
-            survivors.append((module, site, line))
-        else:
-            invalid += 1
-        print(f"  [{position}/{len(sample)}] {module:<26} {outcome}")
+    root = make_worktree()
+    print(f"mutating a throwaway worktree at {os.path.relpath(root, REPO)}\n")
+    try:
+        for position, (module, site) in enumerate(sample, 1):
+            outcome, line = mutate_and_test(root, module, site, arguments.scope)
+            if outcome == "killed":
+                killed += 1
+            elif outcome == "survived":
+                survived += 1
+                survivors.append((module, site, line))
+            else:
+                invalid += 1
+            print(f"  [{position}/{len(sample)}] {module:<26} {outcome}", flush=True)
+    finally:
+        remove_worktree()
 
     total = killed + survived
     print(f"\nkilled {killed}, survived {survived}, invalid {invalid}")
