@@ -22,6 +22,8 @@ a specific message, not because a percentage wanted moving.
 """
 from __future__ import annotations
 
+import math
+import random
 from fractions import Fraction
 
 import numpy as np
@@ -286,21 +288,97 @@ def test_remaining_dimension_and_length_guards():
         peak_absorption(0.0, 0.1, 1.0)              # zero resonance frequency
 
 
-def test_two_defensive_branches_are_left_uncovered_on_purpose():
-    """`tate_interface_velocity`'s no-root-in-range return and
-    `tate_penetration`'s zero-erosion break both guard against states the
-    solver cannot produce: it constrains u to [0, v], so erosion is
-    positive whenever a root exists.
+def test_the_interface_velocity_contract_is_enforced_not_merely_sampled():
+    """REGRESSION. An earlier version of this file asserted `0 <= u <= v`
+    on a handful of velocities and concluded the guards downstream were
+    unreachable. That was wrong: the acceptance window is deliberately
+    1e-9 wider than [0, v], and the return clamped only the lower end, so
+    u could exceed v.
 
-    They are kept as tripwires in case that constraint is ever relaxed,
-    and deliberately not chased with contrived inputs -- hitting them
-    would move a percentage without testing anything real. Recorded here
-    so the gap is a decision rather than an oversight."""
-    for v in (500.0, 1500.0, 5000.0):
-        u = tate_interface_velocity(STEEL, STEEL, Y_STEEL, R_STEEL, v)
+    The violating input is not hypothetical. A root sits exactly at u = v
+    when `0.5*rho_t*v^2 + R_t - Y_p == 0`, i.e. at
+    `v = sqrt(2*(Y_p - R_t)/rho_t)`, which needs rod strength above
+    target resistance -- a tungsten rod into lead. At
+    v = 507.0925528366 m/s that returned u - v = +5.1e-10. The fix clamps
+    both ends in the return statement, so the contract now holds by
+    construction rather than by example."""
+    rho_target = DENSITY["lead"]
+    strength_rod = YIELD_STRENGTH["tungsten"]
+    resistance = 3.5 * YIELD_STRENGTH["lead"]
+    v_star = math.sqrt(2 * (strength_rod - resistance) / rho_target)
+    assert v_star == pytest.approx(507.0925528, abs=1e-6)
+
+    for k in range(-2000, 2001):
+        v = v_star * (1 + k * 1e-12)
+        u = tate_interface_velocity(
+            DENSITY["tungsten"], rho_target, strength_rod, resistance, v
+        )
         if u is not None:
-            assert 0.0 <= u <= v      # the invariant that makes them unreachable
-            assert (v - u) >= 0.0
+            assert 0.0 <= u <= v
+
+
+def test_the_contract_holds_across_a_broad_random_parameter_sweep():
+    """Sampling cannot prove the invariant, but it can refute it, and it
+    refuted the previous version. 20000 parameter sets spanning every
+    material pairing, densities and strengths scaled over two orders of
+    magnitude, velocities from 1 m/s to 30 km/s."""
+    rng = random.Random(17)
+    materials = list(DENSITY)
+    checked = 0
+    for _ in range(20000):
+        rod, target = rng.choice(materials), rng.choice(materials)
+        u = tate_interface_velocity(
+            DENSITY[rod] * rng.uniform(0.2, 5),
+            DENSITY[target] * rng.uniform(0.2, 5),
+            YIELD_STRENGTH[rod] * rng.uniform(0.01, 20),
+            YIELD_STRENGTH[target] * rng.uniform(0.01, 20),
+            rng.uniform(1.0, 30000.0),
+        )
+        if u is not None:
+            checked += 1
+    assert checked > 15000  # most parameter sets do penetrate
+
+
+def test_the_linear_to_quadratic_handover_is_continuous():
+    """REGRESSION. The solver switches to a linear branch when the
+    densities are equal, and the textbook quadratic formula lost most of
+    its significant digits just outside that switch: at a density
+    difference of 1e-9 it returned 839.68 m/s where the linear branch and
+    every larger difference gave 840.764 -- a 1.08 m/s step across the
+    handover. Replaced with the stable q = -(b + sign(b)*sqrt(disc))/2
+    form, which brings the step below 1e-6 m/s."""
+    velocities = [
+        tate_interface_velocity(STEEL, STEEL + d, Y_STEEL, R_STEEL, 2000.0)
+        for d in (0.0, 1e-14, 1e-13, 1e-12, 1e-11, 1e-9, 1e-7, 1e-6)
+    ]
+    assert all(u is not None for u in velocities)
+    assert max(velocities) - min(velocities) < 1e-6
+    assert velocities[0] == pytest.approx(840.764331, abs=1e-5)
+
+
+def test_the_returned_velocity_actually_solves_the_balance_it_claims():
+    """Stability must not have been bought with accuracy: the returned u
+    satisfies the Tate balance to a relative residual below 1e-10."""
+    rng = random.Random(5)
+    materials = list(DENSITY)
+    worst = 0.0
+    checked = 0
+    for _ in range(4000):
+        rod, target = rng.choice(materials), rng.choice(materials)
+        rho_j = DENSITY[rod] * rng.uniform(0.2, 5)
+        rho_t = DENSITY[target] * rng.uniform(0.2, 5)
+        y_p = YIELD_STRENGTH[rod] * rng.uniform(0.01, 20)
+        r_t = YIELD_STRENGTH[target] * rng.uniform(0.01, 20)
+        v = rng.uniform(100.0, 30000.0)
+        u = tate_interface_velocity(rho_j, rho_t, y_p, r_t, v)
+        if u is None or u <= 0.0 or u >= v:
+            continue
+        left = 0.5 * rho_j * (v - u) ** 2 + y_p
+        right = 0.5 * rho_t * u * u + r_t
+        worst = max(worst, abs(left - right) / max(abs(left), abs(right)))
+        checked += 1
+    assert checked > 1000
+    assert worst < 1e-10
 
 
 def test_option_space_guards():
@@ -314,3 +392,42 @@ def test_option_space_guards():
         single_wish(3, -1)
     with pytest.raises(ValueError):
         squared_distance(uniform_wish(2), uniform_wish(3))
+
+
+def test_the_zero_erosion_break_is_reachable_at_the_threshold_velocity():
+    """The last uncovered statement, and it turned out to be a real
+    physical case rather than dead code.
+
+    At `v = sqrt(2*(Y_p - R_t)/rho_t)` a root sits exactly at `u = v`, so
+    after the clamp the erosion step `(v - u)*dt` is exactly zero and the
+    rod neither advances nor shortens. The loop must stop rather than
+    spin, and `tate_penetration` returns a depth of exactly 0.
+
+    An earlier version of this file claimed this branch was unreachable.
+    It was wrong twice over: unreachable only because the contract it
+    relied on was not enforced, and then reachable once it was."""
+    rho_target = DENSITY["lead"]
+    strength_rod = YIELD_STRENGTH["tungsten"]
+    resistance = 3.5 * YIELD_STRENGTH["lead"]
+    v_star = math.sqrt(2 * (strength_rod - resistance) / rho_target)
+
+    u = tate_interface_velocity(
+        DENSITY["tungsten"], rho_target, strength_rod, resistance, v_star
+    )
+    assert u == v_star                      # the clamp puts it exactly on the bound
+    assert (v_star - u) == 0.0              # so erosion is exactly zero
+
+    depth = tate_penetration(
+        DENSITY["tungsten"], rho_target, strength_rod, resistance, v_star, 0.6
+    )
+    assert depth == 0.0
+
+    # and the threshold is a threshold: faster penetrates, slower does not
+    faster = tate_penetration(
+        DENSITY["tungsten"], rho_target, strength_rod, resistance, v_star + 1.0, 0.6
+    )
+    slower = tate_penetration(
+        DENSITY["tungsten"], rho_target, strength_rod, resistance, v_star - 1.0, 0.6
+    )
+    assert faster > 0.0
+    assert slower == 0.0

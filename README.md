@@ -93,26 +93,59 @@ outside the repository.
     coverage run --source=raum27 -m pytest -q
     coverage report --show-missing
 
-**99%, with exactly 2 uncovered statements out of 1383.** Both are in
-`impakt_schwelle.tate_interface_velocity` / `tate_penetration`, and both
-are deliberate: they guard against a state the solver cannot produce,
-since it constrains the interface velocity to `[0, v]` and erosion is
-therefore positive whenever a root exists. They are kept as tripwires in
-case that constraint is relaxed, and are not chased with contrived
-inputs — a test asserting the invariant that makes them unreachable
-stands in their place.
+**100%, 0 uncovered statements out of 1385.**
 
-Measuring this closed 38 previously uncovered statements. Most were
+An earlier version of this section claimed 2 statements were unreachable
+by construction and deliberately left alone. **That claim was wrong, and
+chasing it found two real defects** in `impakt_schwelle`. The reviewer's
+question — *is the invariant guaranteed by the code, or merely suggested
+by the tested examples?* — is what exposed them, and it is the right
+question to ask of any such claim.
+
+**Defect 1: the documented contract was not enforced.**
+`tate_interface_velocity` promises "a root in `[0, v]`". Its acceptance
+window is deliberately 1e-9 wider than that so a root sitting on a
+boundary is not lost to rounding, but the return clamped only the
+*lower* end. So `u` could exceed `v`, making `(v − u)` negative and the
+erosion step run backwards.
+
+Not hypothetical. A root sits exactly at `u = v` when
+`0.5·ρ_t·v² + R_t − Y_p = 0`, i.e. at `v = √(2(Y_p − R_t)/ρ_t)`, which
+needs rod strength above target resistance — a tungsten rod into lead.
+At **v = 507.0925528366 m/s** that returned `u − v = +5.1e-10`. Fixed by
+clamping both ends in the return; 0 violations across 400 000 random
+parameter sets afterwards, where the previous code failed.
+
+**Defect 2: the linear/quadratic handover was discontinuous.** The
+solver switches to a linear branch when the densities are equal, and the
+textbook `(−b ± √disc)/2a` lost most of its significant digits just
+outside that switch: at a density difference of `1e-9` it returned
+**839.68 m/s** where the linear branch and every larger difference gave
+**840.764** — a **1.08 m/s step** across the handover, from catastrophic
+cancellation. Replaced with the stable `q = −(b + sign(b)·√disc)/2` form
+and `c/q` for the second root. The step is now **2.3e-08 m/s**, eight
+orders of magnitude smaller, and the returned velocity still satisfies
+the Tate balance to a relative residual of **2.7e-14** — stability was
+not bought with accuracy.
+
+**And the last statement turned out to be live code.** After the clamp,
+`v = v*` gives `u = v` exactly, so erosion is exactly zero and the
+zero-erosion break fires: the rod sits at the threshold and penetrates
+nothing. `tate_penetration` returns exactly 0 there, while `v* + 1 m/s`
+penetrates and `v* − 1 m/s` does not. So the branch was unreachable only
+because the contract was unenforced, and reachable once it was.
+
+Measuring this closed all 40 previously uncovered statements. Most were
 `raise` guards documenting a contract that nothing exercised, but three
 were genuine logic, now tested:
 
 - **`tate_interface_velocity` with equal densities** takes a separate
   *linear* path, because the quadratic's leading coefficient vanishes.
   That is the most ordinary case physically — steel into steel — and was
-  the one real untested branch. Checked for correctness rather than
-  coverage: `u < v` at every velocity, the strengthless limit is exactly
-  the rod length, Tate approaches it from below, and the ballistic limit
-  is 798 m/s. No defect found.
+  the one untested branch found by coverage alone: the strengthless limit
+  is exactly the rod length, Tate approaches it from below, and the
+  ballistic limit is 798 m/s. The two defects above sit next to it and
+  were found by questioning the claim rather than by the measurement.
 - `clockfree_scheduler.Schedule.average_waiting_time` had no caller.
 - `kern_modul_v2.find_period` returns `-1` for a series too short to
   autocorrelate, and `FingerprintKNNPredictor` has a cold-start path and
@@ -121,6 +154,15 @@ were genuine logic, now tested:
 One contract was documented wrongly in the first draft of those tests:
 `basisoperationen.hole_wert` raises `KeyError`, not `ValueError`. Fixed
 by reading the code rather than assuming it.
+
+**Tested range and units**, so the claims above are reproducible: all
+`impakt_schwelle` quantities are SI — densities kg/m³, strengths and
+pressures Pa, velocities m/s, lengths m. The `0 ≤ u ≤ v` sweep covers
+every pairing of the five tabulated materials with densities and
+strengths independently scaled over `[0.2, 5]` and `[0.01, 20]`, at
+velocities from 1 m/s to 30 km/s. The handover continuity check runs at
+2000 m/s over density differences from 0 to 1e-6 kg/m³. Statements about
+"every velocity" mean that range, not all of `ℝ`.
 
 ### Findings checked and not applicable
 

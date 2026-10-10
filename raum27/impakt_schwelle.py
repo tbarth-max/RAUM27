@@ -242,11 +242,30 @@ def tate_interface_velocity(
     if disc < 0.0:
         return None
     root = math.sqrt(disc)
-    candidates = [r for r in ((-b + root) / (2 * a), (-b - root) / (2 * a))
-                  if -1e-9 <= r <= velocity + 1e-9]
+    # Numerically stable roots, not the textbook (-b +- root)/(2a). One of
+    # those two forms is a difference of nearly equal numbers divided by a
+    # small 2a, so it loses most of its significant digits as the densities
+    # approach each other -- which is exactly where this function hands over
+    # to the linear branch. Measured before this change: at a density
+    # difference of 1e-9 the textbook form returned 839.68 m/s where both
+    # the linear branch and every larger difference gave 840.764, a 1.08 m/s
+    # discontinuity across the handover. Computing one root via
+    # q = -(b + sign(b)*root)/2 and the other as c/q keeps both accurate.
+    q = -0.5 * (b + math.copysign(root, b if b != 0.0 else 1.0))
+    roots = [q / a] if q == 0.0 else [q / a, c / q]
+    candidates = [r for r in roots if -1e-9 <= r <= velocity + 1e-9]
     if not candidates:
         return None
-    return max(0.0, min(candidates))
+    # Clamp BOTH ends, not just the lower one. The acceptance window above
+    # is deliberately 1e-9 wider than [0, v] so a root sitting exactly on a
+    # boundary is not lost to rounding, but without clamping the upper end
+    # the returned value could exceed v by up to that tolerance -- and then
+    # (v - u) is negative and the erosion step in tate_penetration runs
+    # backwards. Reachable, not hypothetical: a tungsten rod into lead at
+    # v = 507.0925528366 m/s produced u - v = +5.1e-10 before this clamp.
+    # With it the documented contract "a root in [0, v]" is enforced by the
+    # return statement rather than merely asserted in the docstring.
+    return min(float(velocity), max(0.0, min(candidates)))
 
 
 def tate_penetration(
