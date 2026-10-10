@@ -1768,6 +1768,91 @@ Three planes × four ticks = 12, and the cube also has 12 edges.
 from the other, and a test asserts that so the number cannot quietly
 become evidence.
 
+
+## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
+
+Two versions of a rational state machine arrived: the first presented as
+*"mathematisch unangreifbar"*, the second a critique of it offered as the
+better core. **Both run, both pass their own tests, and both have
+defects their tests do not reach.** The critique's own distinction is
+what found them, including in the critique itself: *a test that confirms
+an invariant and a proof that it holds for all admissible inputs are
+different things.*
+
+### What the first version got wrong
+
+- **`invertiere()` returned a cached copy of the predecessor**, not a
+  reconstruction. Shown by replacing the successor with nonsense
+  (`ebene=99, h=10⁹`) — it still returned the correct predecessor. A
+  function that answers correctly regardless of what the forward step did
+  cannot establish reversibility.
+- **Binary floats were accepted silently.** `schritt(0.1, 0)` stored
+  `3602879701896397/36028797018963968`, which is not `1/10`. The
+  arithmetic stays formally exact and becomes substantively worthless.
+- **The revolution count vanished from the state's own output.** Two
+  states two full turns apart gave identical `als_tripel()`.
+
+### What the critique got wrong
+
+- **Its runtime consistency checks are tautologies.** `schritt` asserts
+  `rueckwaerts(vorwaerts(s)) == s`, but one adds and the other subtracts
+  the same exact `Fraction`s. Across **188 865 valid random cases the
+  assertion fired 0 times** — it cannot fire. That is precisely the
+  objection the critique raised against the cached `invertiere()`, one
+  level up: it looks like a safety net and proves nothing at runtime. The
+  statement is a theorem about `Fraction` arithmetic, and belongs in a
+  property test, not an `assert` in the hot path.
+- **A delta is never checked against its context.** A delta recorded at
+  the origin, applied to `(100, 100)`, returned `(shell=1, 101, 103)`
+  with no complaint.
+- **A delta is not a function of its arguments alone.** At the top shell
+  an ascent is silently demoted, so the same `(dn, dh)` gives `de = +1`
+  with four shells and `de = 0` with one. Replay is defined only from the
+  exact originating state — which the critique's round-trip test happens
+  to satisfy without saying so.
+- **The float ban has a hole.** `rational()` rejects `float` and
+  `numpy.float64` but accepts `Decimal` and `str` unchecked, so
+  `Decimal(0.1)` — built from a float — smuggles the binary fraction
+  straight through.
+
+### What the threshold actually is
+
+Both kept `e² = dh²/(dn² + dh²) > 1/2`. That is exactly `dh > dn`:
+
+    e² > 1/2  ⟺  2dh² > dn² + dh²  ⟺  dh² > dn²  ⟺  dh > dn
+
+**300 000 exact random pairs, 0 disagreements.** So the eccentricity form
+is not a metric doing hidden work — it is the comparison "climbs more
+than it turns", and this module says so in the function name. It does
+have an exact geometric reading, though: this `e²` *is*
+`spirale.eccentricity_squared(dn, dh)`, so the threshold means the
+helix's pitch exceeds its circumference — the climb angle passing 45°.
+Cross-checked against that module, and at exactly 45° the threshold is
+correctly *not* crossed.
+
+### What this module does differently
+
+- **Only exact inputs.** `int` and `Fraction`; everything else refused
+  with a message to convert explicitly. No digit-count heuristic, which
+  would only move the hole.
+- **A real inverse plus a check that can fail.** The predecessor is
+  *recomputed* from the successor, and the delta carries the state it was
+  recorded from so misapplication is detected instead of silently
+  returning a wrong answer. The tautological assertion is gone.
+- **Saturation is recorded, not swallowed** — a denied ascent says so.
+- **The theorem is a property test** over 20 000 random transitions,
+  where it belongs.
+
+### What is still not established
+
+The shell index is bookkeeping. No frequency, scale factor or physical
+meaning is attached, because none has been derived — attaching one would
+be the unsupported extra assumption the critique rightly warned about.
+Reversibility is a property of the **delta log**, not of the state
+sequence: different histories reach the same state, so the log carries
+the difference. And nothing here compresses data, establishes consensus,
+or touches cryptography.
+
 ## Module: `raum27.spirale` — The Cycle That Can Actually Be Computed
 
 Circle, spiral and circularity are three different things, and the

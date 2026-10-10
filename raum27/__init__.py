@@ -226,6 +226,15 @@ from raum27.viertakt import (
     tick_state,
     tower_is_periodic,
 )
+from raum27.zustandsmaschine import (
+    TICKS_PER_TURN,
+    Delta as zm_Delta,
+    Machine as zm_Machine,
+    State as zm_State,
+    climbs_more_than_it_turns,
+    exact as zm_exact,
+    step_eccentricity_squared,
+)
 from raum27.spirale import (
     arc_after,
     axis_ratio_squared,
@@ -619,4 +628,11 @@ __all__ = [
     "squared_distance",
     "squared_radius",
     "tan_azimuth",
+    "zm_State",
+    "zm_Delta",
+    "zm_Machine",
+    "zm_exact",
+    "TICKS_PER_TURN",
+    "climbs_more_than_it_turns",
+    "step_eccentricity_squared",
 ]
