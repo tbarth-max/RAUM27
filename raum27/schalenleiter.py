@@ -274,3 +274,47 @@ def nearest_exact_bounds(target: int, stages: int) -> tuple[int, int]:
             break
         ratio += 1
     return below, above
+
+
+def cluster_bound(ratio: int, stages: int, cluster: int) -> int:
+    """The top of cluster `m`, when each cluster's top becomes the next
+    cluster's 1: `ratio ** (stages * cluster)`.
+
+    Cluster 0 is the origin, 1."""
+    if ratio < 2:
+        raise ValueError("ratio must be at least 2")
+    if stages < 1 or cluster < 0:
+        raise ValueError("stages must be >= 1 and cluster >= 0")
+    return ratio ** (stages * cluster)
+
+
+def clusters_stay_exact(ratio: int, stages: int, clusters: int = 8) -> bool:
+    """True iff every cluster boundary still admits an exact ladder of the
+    same stage count.
+
+    This is what decides the indexing question. Repeating a ladder whose
+    top is `r ** stages` gives boundaries `r ** (stages * m)`, which is
+    `(r ** m) ** stages` -- a perfect `stages`-th power for every `m`, so
+    the repetition never loses exactness.
+
+    Repeating one whose top is `r ** (stages - 1)` does not: for ratio 8
+    and nine stages the boundaries are `2 ** (24 m)`, and 24m is divisible
+    by 9 only for m = 3, 6, ... So the cluster plan only works if "nine"
+    counts the *steps*, with the ladder running `r**0 ... r**9`."""
+    return all(
+        admits_exact_ladder(cluster_bound(ratio, stages, m), stages)
+        for m in range(1, clusters + 1)
+    )
+
+
+def ladder_contains(ratio: int, stages: int, value: int) -> bool:
+    """True iff the value is one of the ladder's rungs.
+
+    A ratio-8 ladder holds only `2 ** (3k)`, so a 6-bit pattern (64 = 8²)
+    sits on it and an 8-bit pattern (256 = 2⁸) does not. A ratio-2 ladder
+    holds both."""
+    if ratio < 2:
+        raise ValueError("ratio must be at least 2")
+    if stages < 0:
+        raise ValueError("stages must be >= 0")
+    return any(ratio ** k == value for k in range(stages + 1))

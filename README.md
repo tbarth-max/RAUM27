@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-538 tests as of this module set, at 100% statement coverage; all
+543 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -1834,6 +1834,54 @@ gcd is 24, exact ladders exist for **every stage count dividing 24**:
 
 For **nine** stages the two nearest exact bounds bracket the stated one
 without being it: `8⁹ = 134 217 728 = 2²⁷` and `9⁹ = 387 420 489 = 3¹⁸`.
+
+
+### The indexing question decides it, and the cluster plan settles the indexing
+
+Asked: *if we start at 1 rather than 0, can we not reach 9⁹?* Yes — and
+the question turns out to be the one that matters, because whether
+"nine" counts **values** or **steps** decides the top of the ladder:
+
+| reading | top | factorisation | exact 9-stage ladder? |
+|---|---|---|---|
+| 9 values, ratio 8 (`k = 0…8`) | 16 777 216 | 2²⁴ | **no** |
+| 9 **steps**, ratio 8 (`k = 0…9`) | 134 217 728 | **2²⁷** | **yes** |
+| 9 values, ratio 9 | 43 046 721 | 3¹⁶ | no |
+| 9 **steps**, ratio 9 | 387 420 489 | **3¹⁸** | **yes** |
+
+So `9⁹` is reachable exactly; it needs ratio 9 instead of 8.
+
+**And the decision to cluster forces the steps reading.** Repeating a
+ladder whose top is `r^stages` gives boundaries `r^(stages·m) =
+(r^m)^stages` — a perfect `stages`-th power for *every* `m`, so the
+repetition never loses exactness. Repeating one whose top is
+`r^(stages−1)` does not: for ratio 8 the boundaries would be `2^(24m)`,
+and `24m` is divisible by 9 only at `m = 3, 6, …`. Verified for eight
+clusters in each case.
+
+    8⁹ clusters:  2²⁷, 2⁵⁴, 2⁸¹, 2¹⁰⁸, …   all 9-stage exact
+    8⁸ clusters:  2²⁴, 2⁴⁸, 2⁷²,  …        exact only at every third
+
+Both candidate ratios cluster consistently under the steps reading, so
+**exactness does not decide between `8⁹` and `9⁹`** — that choice still
+rests on other grounds. Ratio 8 has the more direct standing (it is
+`corner_directions()`'s count, and `8⁸` lands on a number this package
+already holds for an unrelated reason); 9 is `3²` and the modulus of
+`scale_hierarchy.digital_root`.
+
+### One tension in the navigation, worth knowing before building on it
+
+A ratio-8 ladder holds only `2^(3k)`. So of the stated 6-bit and 8-bit
+patterns:
+
+    6 bit  =  64 = 8²    on the ratio-8 ladder
+    8 bit  = 256 = 2⁸    NOT on it
+    6+8 as one word = 2¹⁴   not on it either
+
+If the navigation needs both patterns as rungs, ratio 8 cannot supply
+them and a ratio-2 ladder (24 stages to 2²⁴) can — it contains every
+power of two. That is a real constraint between the shell choice and the
+bit-pattern choice, not a preference.
 
 ### Three caveats, each pinned by a test
 

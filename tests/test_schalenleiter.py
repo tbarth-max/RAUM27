@@ -17,7 +17,10 @@ from raum27.schalenleiter import (
     geometric_ladder,
     has_constant_difference,
     has_constant_ratio,
+    cluster_bound,
+    clusters_stay_exact,
     inner_ladder,
+    ladder_contains,
     integer_nth_root,
     nearest_exact_bounds,
     nine_stage_bounds,
@@ -257,3 +260,70 @@ def test_root_guards():
         integer_nth_root(16, 0)
     assert integer_nth_root(0, 3) == 0
     assert integer_nth_root(1, 7) == 1
+
+
+# ------------------------------------------------- clustering the ladder
+
+def test_cluster_boundaries_are_powers_of_the_ladder_top():
+    assert cluster_bound(8, 9, 0) == 1
+    assert cluster_bound(8, 9, 1) == 8 ** 9 == 2 ** 27
+    assert cluster_bound(8, 9, 2) == 8 ** 18 == 2 ** 54
+    assert cluster_bound(8, 9, 3) == 2 ** 81
+
+
+def test_the_cluster_plan_requires_counting_steps_not_values():
+    """THE DECISIVE POINT for the indexing question. Repeating a ladder
+    whose top is r**stages keeps every boundary a perfect stages-th
+    power, because r**(stages*m) = (r**m)**stages. Repeating one whose
+    top is r**(stages-1) does not."""
+    # nine STEPS: 8**9 = 2**27, every cluster boundary 2**(27m)
+    assert clusters_stay_exact(8, 9)
+    assert clusters_stay_exact(9, 9)
+    assert clusters_stay_exact(2, 24)
+    # nine VALUES: top 8**8 = 2**24, boundaries 2**(24m) -- 24m divisible
+    # by 9 only for m = 3, 6, ...
+    assert not admits_exact_ladder(8 ** 8, 9)
+    assert not admits_exact_ladder(8 ** 16, 9)
+    assert admits_exact_ladder(8 ** 24, 9)        # m = 3 happens to work
+    assert exponent_gcd(8 ** 8) == 24
+    assert 24 % 9 != 0
+
+
+def test_both_candidate_ratios_cluster_consistently():
+    """So exactness does not decide between 8**9 and 9**9 -- both work,
+    and the choice has to be made on other grounds."""
+    for ratio in (8, 9):
+        for m in range(1, 6):
+            top = cluster_bound(ratio, 9, m)
+            assert admits_exact_ladder(top, 9)
+            assert exact_ratio(top, 9) == ratio ** m
+
+
+# --------------------------------- which bit patterns sit on the ladder
+
+def test_a_ratio_eight_ladder_misses_the_eight_bit_pattern():
+    """A real tension worth knowing: the ratio-8 ladder holds only
+    2**(3k), so a 6-bit pattern is a rung and an 8-bit pattern is not."""
+    assert ladder_contains(8, 9, 2 ** 6)      # 64 = 8**2
+    assert not ladder_contains(8, 9, 2 ** 8)  # 256 = 2**8
+    assert ladder_contains(8, 9, 2 ** 24)
+    assert ladder_contains(8, 9, 2 ** 27)
+    # a ratio-2 ladder holds both
+    assert ladder_contains(2, 24, 2 ** 6)
+    assert ladder_contains(2, 24, 2 ** 8)
+    # and the combined 6+8 bit word is on neither power-of-eight rung
+    assert not ladder_contains(8, 9, 2 ** 14)
+    assert ladder_contains(2, 24, 2 ** 14)
+
+
+def test_cluster_guards():
+    with pytest.raises(ValueError):
+        cluster_bound(1, 9, 1)
+    with pytest.raises(ValueError):
+        cluster_bound(8, 0, 1)
+    with pytest.raises(ValueError):
+        cluster_bound(8, 9, -1)
+    with pytest.raises(ValueError):
+        ladder_contains(1, 9, 64)
+    with pytest.raises(ValueError):
+        ladder_contains(8, -1, 64)

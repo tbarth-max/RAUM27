@@ -227,6 +227,10 @@ from raum27.viertakt import (
     tower_is_periodic,
 )
 from raum27.schalenleiter import (
+    cluster_bound,
+    clusters_stay_exact,
+    integer_nth_root,
+    ladder_contains,
     STATED_OUTER_BOUND,
     admits_exact_ladder,
     exact_ratio,
@@ -663,4 +667,8 @@ __all__ = [
     "nine_stage_bounds",
     "prime_exponents",
     "survives_inversion",
+    "cluster_bound",
+    "clusters_stay_exact",
+    "integer_nth_root",
+    "ladder_contains",
 ]
