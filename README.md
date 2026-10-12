@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-561 tests as of this module set, at 100% statement coverage; all
+578 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -1975,6 +1975,45 @@ in 0.96 ± 0.02 of runs; adding inertia 3 gave 0.95 ± 0.02 and lowered
 direction changes per path from 1.41 to 1.16. **Inertia makes paths
 straighter, not shorter** — useful for a turn-coded word, not for
 distance.
+
+## Module: `raum27.rueckprojektion` — Four Circles and the Negative Inside Radius 1
+
+The picture: one circle pushes out, one presses in; eight vectors leave
+the centre and return on the same path; the square's corners meet the
+next circle; and the interactions, projected back through radius 1, form
+the body's negative at the centre — circle 2 at 1/2, circle 3 at 1/3,
+circle n at 1/n — which radiates out again unchanged.
+
+What each part is, exactly:
+
+- **Out and in** are multiplication by `1 + i` and by `(1 − i)/2`. Their
+  product is exactly 1. Each outward step doubles the squared radius and
+  advances the direction 1 → 8; eight steps give `(1 + i)⁸ = 16`, the
+  carry to the next level. Turn count and direction recover the circle
+  number exactly, so states are stored, not numbers. Radius 2²⁸ (circle
+  56) is the last full turn below 300 million.
+- **Four deltas.** From an axis point the outward delta is axial and the
+  inward one diagonal; from a diagonal point it is the reverse. Outward
+  deltas keep the squared length, inward ones halve it.
+- **Three dimensions have a hard limit**: an integer rotation-with-scaling
+  exists in 3D only for a perfect-square squared scale, since
+  `det(M)² = m³`. There is no 3D `1 + i` with factor √2 or √3 (exhaustive
+  search: none), while factor 3 exists. So axis → corner is built as a
+  sum of unit deltas, squared length 1 → 2 → 3, and the eight octant
+  vectors retrace to the centre with zero net displacement.
+- **The hologram** is sphere inversion `r → 1/r`, direction kept. It is
+  an involution and commutes with point reflection; the photographic
+  negative (complement) is a separate involution.
+- **Frequency and wavelength** are the two sides of that inversion
+  (`λ = 1/f`): two frequencies meet on the surface at `lcm(f, g)`, their
+  wavelengths repeat after `1/gcd(f, g)`. Checked for all f, g ≤ 60 in
+  the tests (≤ 300 by hand). Frequencies 1–9 first meet together at
+  2520, and adding 10 changes nothing.
+
+Two limits stay attached. The negative carries exactly the body's
+information — a bijection, no more and no less. And with equally spaced
+circles 1…300 it crowds toward the centre (innermost gap 1/89 700); only
+a geometric ladder, such as the `1 + i` circles, maps onto itself.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
