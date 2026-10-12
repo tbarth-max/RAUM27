@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-578 tests as of this module set, at 100% statement coverage; all
+587 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2014,6 +2014,27 @@ Two limits stay attached. The negative carries exactly the body's
 information — a bijection, no more and no less. And with equally spaced
 circles 1…300 it crowds toward the centre (innermost gap 1/89 700); only
 a geometric ladder, such as the `1 + i` circles, maps onto itself.
+
+## Module: `raum27.abtastung` — Scanning Against a Stored Hologram
+
+The procedure: store a picture of the current state (the hologram), let
+only scanning impulses run through, record where they differ from the
+stored state, and take a change into the internal state **only when its
+pattern is recognised uniquely**; everything else — unknown or
+ambiguous — goes to a second store for analysis.
+
+A state maps `(plane, circle, direction)` to an exact value, directions
+1–8 around each circle. `scan` keeps only non-zero differences, so
+storage scales with what changed; `apply` and `revert` reconstruct both
+ways exactly. Recognition is per circle on the eight-direction ring, up
+to the ring's eight symmetries (four 90° turns, four mirrorings), so a
+known pattern is recognised in any orientation. A 45° shift is *not*
+one of those symmetries: the diagonal cross is not the axis cross, and
+the tests pin that it is routed to analysis rather than guessed.
+
+The saving is `1 − stored/scanned` and depends on the object, not the
+method: one change in a thousand values stores 1/1000; if most values
+change, deltas save nothing.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
