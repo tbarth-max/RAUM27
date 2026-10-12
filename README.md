@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-520 tests as of this module set, at 100% statement coverage; all
+538 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -1768,6 +1768,96 @@ Three planes × four ticks = 12, and the cube also has 12 edges.
 from the other, and a test asserts that so the number cannot quietly
 become evidence.
 
+
+
+## Module: `raum27.schalenleiter` — How the Shells Are Spaced, Derived Not Chosen
+
+A precise question was put: the reciprocal map `I(r) = 1/r` is already
+exactly defined, but it **does not determine the spacing** of the shells
+between the central 1 and the outer bound. Linear, logarithmic and a
+ratio sequence are mathematically different — which does the model
+already fix?
+
+It already fixes it, and not by preference. The answer follows from two
+laws that were already stated, with nothing new laid on top.
+
+### Law 4 forces geometric spacing
+
+The stated requirement is that inner and outer are one structure under
+the same reference and the **same transformation rules**. So ask which
+spacing *survives the inversion*:
+
+| outer | inner | still the same kind? |
+|---|---|---|
+| `1, 2, 3, 4, 5` (linear) | `1, 1/2, 1/3, 1/4, 1/5` | **no** — differences `−1/2, −1/6, −1/12, −1/20` |
+| `1, 8, 64, 512` (geometric) | `1, 1/8, 1/64, 1/512` | **yes** — ratio `1/8` throughout |
+
+Checked on 4000 random ladders of each kind: **0 linear ladders stay
+linear**, **every geometric ladder stays geometric**. So the spacing has
+to be geometric. That is a derivation — linear spacing breaks Law 4 on
+its own, before anyone argues about taste.
+
+### And geometric spacing excludes 300 000 000
+
+A geometric ladder from 1 to `N` in `n` steps needs `N = rⁿ` with `r`
+rational, which for integer `N` means `N` is a perfect `n`-th power —
+i.e. `n` divides the gcd of `N`'s prime exponents. And
+
+    300 000 000 = 2⁸ · 3 · 5⁸,    gcd(8, 1, 8) = 1
+
+so **300 000 000 is a perfect `n`-th power only for `n = 1`.** Candidate
+ratios are all irrational: `17320.5…` for two stages, `669.43…` for
+three, `11.47…` for eight, `8.75…` for nine.
+
+**Therefore the stated outer bound is incompatible with Law 4 for more
+than a single shell.** Either the bound moves, or the shells are not
+exact, or inner and outer stop sharing a rule. There is no fourth
+option. The same holds for the exact speed of light,
+`299 792 458 = 2 · 7 · 73 · 293339`, whose exponent gcd is also 1 —
+neither the round number nor the exact one carries a ladder.
+
+The shell list submitted in code was already inconsistent with itself
+here: `(1, 100, 10 000, 300 000 000)` has ratios `100, 100, 30 000`, and
+three stages of a ratio-100 ladder end at `10⁶`.
+
+### What does work — and it is already in this package
+
+    16 777 216 = 2²⁴,    exponent gcd = 24
+
+which is `zahlensysteme.cube_scaling_count()` *and*
+`rgb_color_count()` — `8⁸` and `16⁶`, already tested equal. Because the
+gcd is 24, exact ladders exist for **every stage count dividing 24**:
+
+| stages | 1 | 2 | 3 | 4 | 6 | 8 | 12 | 24 |
+|---|---|---|---|---|---|---|---|---|
+| ratio | 16777216 | 4096 | 256 | 64 | 16 | **8** | 4 | 2 |
+
+For **nine** stages the two nearest exact bounds bracket the stated one
+without being it: `8⁹ = 134 217 728 = 2²⁷` and `9⁹ = 387 420 489 = 3¹⁸`.
+
+### Three caveats, each pinned by a test
+
+- **The 27 in `2²⁷` is not the project's 27.** It is forced by `8 = 2³`
+  and `3·9 = 27`. Other ratios give other exponents — `4⁹ = 2¹⁸`,
+  `16⁹ = 2³⁶`. Real coincidence, recorded as one.
+- **The ratio 8 is a choice, not a result.** Eight being the cube's
+  corner count makes it attractive, and `8⁸` landing on a number this
+  package already holds for an unrelated reason is a genuine
+  cross-check — but seven other ratios reach the same bound exactly.
+- **This module does not say what the shells mean.** No frequency, no
+  physical scale, no claim about what a transition does — same scope
+  line as `zustandsmaschine`.
+
+### One correction made while building it
+
+`exact_ratio` first computed the root as `round(value ** (1/stages))` and
+searched ±1 around it. That is a float in a module whose entire point is
+exactness, and for large values its error exceeds 1, so the search was
+correct by luck. Replaced with Newton's method on integers, verified
+against the bracketing property `rᵈ ≤ v < (r+1)ᵈ` by brute force and
+exact out to `2⁴⁰⁹⁶`. Two defensive branches that only existed to catch
+the float's mistakes were then dead, and were removed rather than left
+as decoration.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
