@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-587 tests as of this module set, at 100% statement coverage; all
+599 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2035,6 +2035,24 @@ the tests pin that it is routed to analysis rather than guessed.
 The saving is `1 − stored/scanned` and depends on the object, not the
 method: one change in a thousand values stores 1/1000; if most values
 change, deltas save nothing.
+
+## Module: `raum27.zustandshologramm` — Wavelength Steps Recorded as 1 + 6 + 8 Bits
+
+The step is not chosen freely: it is the wavelength, `dx = v / f`, and
+each step takes the period `1 / f`. Each step is recorded under its
+frequency key as a 15-bit state: 1 bit for "an impulse left a delta",
+6 bits for the active sextant directions, 8 bits for the active octant
+directions. The delta vector is `dx` times the sum of the active
+directions, so for rational speed and integer frequency every position
+is exact; an octant direction is a cube diagonal with lattice
+components, and no root is computed.
+
+Grouped by frequency the records form the hologram. Its superposition
+keeps the **end point** exactly — vector addition ignores order — but
+not the **path**, which needs the sequence; the tests pin both. The way
+back is the records reversed with every direction mirrored, and returns
+to the start exactly, here with the speed of light in mm/ms as the
+rational speed.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
