@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-599 tests as of this module set, at 100% statement coverage; all
+616 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2053,6 +2053,35 @@ not the **path**, which needs the sequence; the tests pin both. The way
 back is the records reversed with every direction mirrored, and returns
 to the start exactly, here with the speed of light in mm/ms as the
 rational speed.
+
+## Module: `raum27.biegelinie` — The Bending Line From Chained Arcs, Exactly
+
+Engineering mechanics normally gets the bending line by integrating the
+curvature twice. Here the beam is cut into pieces `dx` (the wavelength
+along the beam), each piece gets its own radius from mechanics —
+curvature `κ = M/EI`, the frequency of the piece — and the arcs are set
+end to end. Beams on two supports are started flat and turned rigidly
+onto the far support; turning a chain changes no arc.
+
+| Chain | Result against the closed forms |
+|---|---|
+| true circular arcs, curvature read mid-piece | error falls with 1/n² |
+| same in exact rationals (small deflection) | error falls with 1/n², never exact |
+| **curvature read at start, middle, end of each piece** | **exact at every piece end, for any n** |
+
+The exactness holds whenever the curvature is a polynomial of degree ≤ 2
+on each piece, which covers the cantilever (`PL³/3EI`), the centre load
+(`PL³/48EI`, with a piece boundary at the load) and the uniform load
+(`5qL⁴/384EI`). A kink inside a piece breaks it — boundaries belong on
+the load points. Example pinned by a test: a 100 m steel bridge
+(`EI = 210 GPa · 1 m⁴`, 100 kN/m) sags exactly `5qL⁴/384EI ≈ 0.620 m`
+with only ten pieces.
+
+Load duration enters as the dynamic amplification of a rectangular
+pulse on an undamped oscillator: a load held at least half a natural
+period, including a permanent load put on suddenly, deflects **twice**
+the static value; a short impulse much less; a slowly applied permanent
+load (the standing test) exactly the static value.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
