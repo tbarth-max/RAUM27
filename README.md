@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-548 tests as of this module set, at 100% statement coverage; all
+561 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -1944,6 +1944,37 @@ against the bracketing property `rᵈ ≤ v < (r+1)ᵈ` by brute force and
 exact out to `2⁴⁰⁹⁶`. Two defensive branches that only existed to catch
 the float's mistakes were then dead, and were removed rather than left
 as decoration.
+
+## Module: `raum27.pfadwort` — Reaching the Same Two Points Again, Exactly
+
+The idea: navigate by sextants (six axis directions) and octants (eight
+sign patterns), record direction changes and step lengths, and reach the
+same two points on the same path every time — optimised for 6 and 8
+bits, with inertia favouring straight continuation.
+
+On the 27-cell lattice this needs no float at all. A step is one of six
+directions, **3 bits** with two codes spare. A path is a word over those
+six letters; replaying it from the same start reaches the same cells by
+construction. The way back is the **inverse word** — reversed, each
+direction flipped — and returns to the start exactly, the discrete
+counterpart of the delta log in `raum27.zustandsmaschine`. Corner to
+opposite corner has exactly **90** shortest paths (the multinomial
+6!/(2!·2!·2!)), so choosing among them fits in 7 bits; the count formula
+is checked against a breadth-first count for all 27 × 27 cell pairs.
+
+The distinction worth keeping: **repeatability is free** — a
+deterministic replay always lands on the same cells — while a bit
+budget buys **accuracy** once headings are continuous. With b bits the
+worst heading rounding is 1/2^(b+1) of a turn: 1/128 at 6 bits, 1/512
+at 8. That error repeats identically on every replay; it moves where the
+path goes, not whether it is the same path.
+
+Measured with the submitted insect model (`raum27_insekt.py`, 10 seeds ×
+12 cell pairs): pheromone plus goal direction reached the shortest path
+in 0.96 ± 0.02 of runs; adding inertia 3 gave 0.95 ± 0.02 and lowered
+direction changes per path from 1.41 to 1.16. **Inertia makes paths
+straighter, not shorter** — useful for a turn-coded word, not for
+distance.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
