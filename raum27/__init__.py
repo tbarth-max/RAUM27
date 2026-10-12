@@ -227,6 +227,10 @@ from raum27.viertakt import (
     tower_is_periodic,
 )
 from raum27.schalenleiter import (
+    dual_ladder,
+    dual_ladders_cover,
+    shared_rung_condition,
+    shared_rungs,
     cluster_bound,
     clusters_stay_exact,
     integer_nth_root,
@@ -671,4 +675,8 @@ __all__ = [
     "clusters_stay_exact",
     "integer_nth_root",
     "ladder_contains",
+    "dual_ladder",
+    "dual_ladders_cover",
+    "shared_rung_condition",
+    "shared_rungs",
 ]

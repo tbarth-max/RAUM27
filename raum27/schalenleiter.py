@@ -318,3 +318,74 @@ def ladder_contains(ratio: int, stages: int, value: int) -> bool:
     if stages < 0:
         raise ValueError("stages must be >= 0")
     return any(ratio ** k == value for k in range(stages + 1))
+
+
+def dual_ladder(exponent: int, stages: int) -> list[int]:
+    """The other ladder: `k ** exponent` for k = 0..stages.
+
+    Expansion and compression are not one map. `x ** n` reaches the unit
+    when the *exponent* is zero -- `x**0 = 1` for every x -- while
+    `n ** x` reaches it when the *base* is zero, since `0**0 = 1`. So the
+    unit sits on a different axis in each, and one map alone reaches it
+    along one axis only. That asymmetry is why both are needed, and it is
+    the same structure `duplex_inversion` already carries.
+
+    Practically, the two ladders cover different rungs. With ratio 8 the
+    first holds only `2**(3k)`, so a 6-bit pattern (64 = 8²) is a rung and
+    an 8-bit pattern (256) is not -- but 256 = 2⁸ *is* a rung of this one.
+    Together they supply both."""
+    if exponent < 1:
+        raise ValueError("exponent must be at least 1")
+    if stages < 0:
+        raise ValueError("stages must be >= 0")
+    return [k ** exponent for k in range(stages + 1)]
+
+
+def dual_ladders_cover(ratio: int, stages: int, value: int) -> bool:
+    """True iff the value is a rung of `ratio**k` or of `k**ratio`."""
+    return ladder_contains(ratio, stages, value) or value in dual_ladder(ratio, stages)
+
+
+def shared_rung_condition(ratio: int) -> tuple[int, int] | None:
+    """For `ratio = p**a`, the pair (ratio, a) such that `ratio**j` is also
+    a rung of `k**ratio` exactly when `ratio` divides `a*j`.
+
+    Derivation: `r**j = k**r` means `k = r**(j/r) = p**(a*j/r)`, which is
+    an integer exactly when `r | a*j`. Returns None when the ratio is not
+    a prime power, where this does not apply.
+
+    Recorded because it took three attempts. The first guess was that the
+    shared rungs were the `x**n = n**x` coincidences from
+    `duplex_inversion` -- wrong; for ratio 2 the shared rungs are
+    `1, 4, 16, 64`, a whole family, not the single exceptional pair. The
+    second was that they are the powers of `r**r` -- right for 2, 3, 8
+    and 9 but wrong for 4, where `16` and `4096` are shared and are not
+    powers of `256`. Only the third is derived rather than pattern-matched,
+    and it holds for every prime power tested up to 27."""
+    remaining, prime = ratio, 2
+    while prime * prime <= remaining:
+        if remaining % prime == 0:
+            exponent = 0
+            value = remaining
+            while value % prime == 0:
+                exponent += 1
+                value //= prime
+            return (ratio, exponent) if value == 1 else None
+        prime += 1
+    return (ratio, 1)
+
+
+def shared_rungs(ratio: int, stages: int) -> list[int]:
+    """The values that are rungs of both ladders, by the condition above."""
+    factored = shared_rung_condition(ratio)
+    if factored is None:
+        # Not a prime power: fall back to intersecting the two ladders.
+        return sorted(
+            {ratio ** k for k in range(stages + 1)} & set(dual_ladder(ratio, stages))
+        )
+    _, a = factored
+    dual = set(dual_ladder(ratio, stages))
+    return sorted(
+        ratio ** j for j in range(stages + 1)
+        if (a * j) % ratio == 0 and ratio ** j in dual
+    )

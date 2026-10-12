@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-543 tests as of this module set, at 100% statement coverage; all
+548 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -1882,6 +1882,44 @@ If the navigation needs both patterns as rungs, ratio 8 cannot supply
 them and a ratio-2 ladder (24 stages to 2²⁴) can — it contains every
 power of two. That is a real constraint between the shell choice and the
 bit-pattern choice, not a preference.
+
+
+### Expansion and compression are two ladders, and that resolves the tension
+
+The asymmetry named in the notes is exact: `x**n` reaches the unit when
+the **exponent** is zero (`x**0 = 1` for every `x`), while `n**x` reaches
+it when the **base** is zero (`0**0 = 1`, but `0**x = 0` for `x > 0`). So
+the unit sits on a different axis in each map, and one map alone reaches
+it along one axis only. That is why both are needed — the same structure
+`duplex_inversion` already carries.
+
+And it fixes the bit-pattern problem above. With ratio 8:
+
+    A = 8**k   holds 2**(3k):   6 bit = 64 = 8²   yes    8 bit = 256   no
+    B = k**8   holds k**8:      6 bit = 64        no     8 bit = 256   yes
+
+**Together they cover both.** Neither alone does, so the navigation does
+not have to choose between the shell ratio and the bit patterns — it
+needs the dual pair, which the model already specified.
+
+**Shared rungs, after two wrong guesses.** Where the ladders overlap took
+three attempts and the first two are pinned as regressions:
+
+1. *Wrong:* that the shared rungs are the `x**n = n**x` coincidences from
+   `duplex_inversion`. For ratio 2 the shared rungs are `1, 4, 16, 64` —
+   a whole family, not the single exceptional pair.
+2. *Wrong:* that they are the powers of `r**r`. Right for 2, 3, 8 and 9,
+   wrong for 4, where `16` and `4096` are shared and neither is a power
+   of `256`.
+3. *Derived:* `r**j = k**r` means `k = r**(j/r) = p**(a·j/r)` for
+   `r = p**a`, which is an integer exactly when **`r | a·j`**. Verified
+   against a direct intersection for every prime power up to 27, and the
+   function reports `None` rather than guessing for a ratio that is not a
+   prime power.
+
+For ratio 8 the condition `8 | 3j` reduces to `8 | j` since
+`gcd(3, 8) = 1`, so the shared rungs are the powers of `8⁸ = 2²⁴` — the
+number this package already held for an unrelated reason.
 
 ### Three caveats, each pinned by a test
 

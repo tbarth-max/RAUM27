@@ -18,6 +18,8 @@ from raum27.schalenleiter import (
     has_constant_difference,
     has_constant_ratio,
     cluster_bound,
+    dual_ladder,
+    dual_ladders_cover,
     clusters_stay_exact,
     inner_ladder,
     ladder_contains,
@@ -25,6 +27,8 @@ from raum27.schalenleiter import (
     nearest_exact_bounds,
     nine_stage_bounds,
     prime_exponents,
+    shared_rung_condition,
+    shared_rungs,
     survives_inversion,
 )
 from raum27.zahlensysteme import cube_scaling_count, rgb_color_count
@@ -327,3 +331,66 @@ def test_cluster_guards():
         ladder_contains(1, 9, 64)
     with pytest.raises(ValueError):
         ladder_contains(8, -1, 64)
+
+
+# ----------------------------- expansion and compression are two ladders
+
+def test_the_unit_sits_on_a_different_axis_in_each_map():
+    """x**0 = 1 for every x; 0**0 = 1 but 0**x = 0 for x > 0. So one map
+    reaches the unit along the exponent axis and the other along the base
+    axis -- which is why both are needed."""
+    for x in range(5):
+        assert x ** 0 == 1
+    assert 0 ** 0 == 1
+    for x in range(1, 5):
+        assert 0 ** x == 0
+    assert dual_ladder(8, 9)[0] == 0        # k = 0 gives 0, not 1
+    assert geometric_ladder(Fraction(8), 9)[0] == 1
+
+
+def test_the_two_ladders_together_cover_both_bit_patterns():
+    """The tension the single ladder had: ratio 8 holds only 2**(3k), so
+    a 6-bit rung exists and an 8-bit one does not. The dual ladder
+    supplies it."""
+    assert ladder_contains(8, 9, 2 ** 6)
+    assert not ladder_contains(8, 9, 2 ** 8)
+    assert 2 ** 8 in dual_ladder(8, 9)
+    assert 2 ** 6 not in dual_ladder(8, 9)
+    assert dual_ladders_cover(8, 9, 2 ** 6)
+    assert dual_ladders_cover(8, 9, 2 ** 8)
+    # and the top is a rung of both
+    assert dual_ladders_cover(8, 9, 2 ** 24)
+
+
+def test_the_shared_rung_condition_is_derived_and_holds_for_prime_powers():
+    """REGRESSION against two wrong guesses of mine. The shared rungs are
+    not the duplex_inversion coincidences, and not the powers of r**r --
+    they are the r**j with r | a*j for r = p**a."""
+    for ratio in (2, 3, 4, 8, 9, 16, 27):
+        stages = 12
+        direct = sorted(
+            {ratio ** k for k in range(stages + 1)} & set(dual_ladder(ratio, stages))
+        )
+        assert shared_rungs(ratio, stages) == direct
+
+    # the two wrong guesses, pinned so they cannot come back
+    assert shared_rungs(2, 12) == [1, 4, 16, 64]        # a family, not just 16
+    assert shared_rungs(4, 12) == [1, 16, 256, 4096]    # 16 and 4096 are not powers of 256
+    assert 16 not in (256 ** m for m in range(4))
+    # ratio 8: the condition 8 | 3j reduces to 8 | j since gcd(3, 8) = 1
+    assert shared_rung_condition(8) == (8, 3)
+    assert shared_rungs(8, 12) == [1, 2 ** 24]
+
+
+def test_a_non_prime_power_ratio_is_reported_rather_than_mis_handled():
+    assert shared_rung_condition(6) is None
+    # and the fallback still intersects correctly
+    direct = sorted({6 ** k for k in range(13)} & set(dual_ladder(6, 12)))
+    assert shared_rungs(6, 12) == direct
+
+
+def test_dual_ladder_guards():
+    with pytest.raises(ValueError):
+        dual_ladder(0, 9)
+    with pytest.raises(ValueError):
+        dual_ladder(8, -1)
