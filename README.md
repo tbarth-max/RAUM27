@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-616 tests as of this module set, at 100% statement coverage; all
+628 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2082,6 +2082,29 @@ pulse on an undamped oscillator: a load held at least half a natural
 period, including a permanent load put on suddenly, deflects **twice**
 the static value; a short impulse much less; a slowly applied permanent
 load (the standing test) exactly the static value.
+
+## Module: `raum27.verzerrung` — Six Axes Measure, Eight Corners Check
+
+Passing the ideal sphere and cube through the ellipsoids they really
+become is the strain ellipsoid of continuum mechanics: a linear
+deformation `F` turns the unit sphere into an ellipsoid with squared
+semi-axes equal to the eigenvalues of `C = FᵀF`, and the cube into a
+parallelepiped; `det F` is the volume ratio. Everything is exact for
+rational `F`.
+
+The 6 + 8 point system splits the work cleanly. **The six axis points
+determine the deformation**: half the difference of each opposite pair
+is a column of `F`, and half their sum must vanish unless the centre
+moved. **The eight corners then test it**: for a linear law each corner
+image is the signed sum of the axis images, so it is predicted before it
+is measured, and the residual is exactly what a linear law cannot
+explain. The tests pin a nonlinear law (`x' = x + a·y·z`) that is
+invisible on all six axes and shows up as `±a` on all eight corners.
+
+Stretching by 4/3 and 3/4 gives squared semi-axes 16/9, 1, 9/16 and
+keeps the volume exactly. When `C` is not diagonal its eigenvalues are
+roots of a cubic and need not be rational; the cubic's coefficients,
+the three invariants, are always exact.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
