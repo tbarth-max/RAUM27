@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-677 tests as of this module set, at 100% statement coverage; all
+683 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2240,6 +2240,27 @@ flow without melting), work hardening and dynamic recrystallisation (new
 nuclei out of deformation); diamond has one of the highest band limits
 of any solid.
 
+## Module: `raum27.synchronsensor` — One Centre, Six on the Sphere, Eight on the Cube
+
+The central measuring cell: a centre sensor, six on the sphere of radius
+1/2 (the face centres of the unit cube) and eight on its corners at
+√3/2. Every measured quantity — acceleration, inertia, any field — is
+treated alike, one scalar per sensor; what is read is each outer
+sensor's delta against the centre, 1 × 6 and 1 × 8, and from it a 6-bit
+and an 8-bit word (bit set when the delta exceeds a threshold).
+
+From centre and axis pairs the cell recovers the value, the gradient and
+the three pure curvatures; from signed sums over the corners the three
+mixed terms and the twist xyz — eleven terms, exact for rational
+readings. The corners then **check** the axes: their gradient agrees
+with the axes' exactly when no third-order cross term (x·y² and the
+like) is present, and the difference is that term, made visible — the
+six-measure, eight-check rule of `verzerrung`, now for any field.
+Against a stored baseline each new frame yields only the changed
+sensors, the two words and the change of every fitted term: reality read
+as a stream of deltas. The 45° link: a corner projects onto each cut
+plane as that plane's diagonal, squared lengths 3/4 → 1/2 → 1/4.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2449,7 +2470,9 @@ modelling rule chosen, not derived; **[open]** not yet decided or shown.
    `biegelinie`]
 8. **Measurement lives in ratios.** A hub reads the web only through
    several threads against a reference; 90° is found from equal pole
-   distances or a still energy sum. [checked — `messnetz`]
+   distances or a still energy sum; the central cell of 1 + 6 + 8 sensors
+   reads any field to second order and checks it. [checked — `messnetz`,
+   `synchronsensor`]
 9. **The lattice carries, below its limits.** Energy travels as lattice
    waves up to ω_max and stays crystalline below the Lindemann energy.
    [checked — `gitter`]
