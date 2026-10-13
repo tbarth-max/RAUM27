@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-728 tests as of this module set, at 100% statement coverage; all
+731 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2295,6 +2295,16 @@ Written with factored denominators, 1/(1·2), 1/(2·3), 1/(3·4), … shows
 at a glance that each term is 1/n − 1/(n+1) and the sum is n/(n+1); the
 innermost gap 1/89 700 of the inverted circles is 1/(299·300) — patterns
 that the decimals 0.5, 0.1667, 0.0833 … and 0.0000111 keep invisible.
+
+Nine and ten see each other as periodic: 1/9 is 0.(1) in base 10 but
+0.1 in base 9; 1/10 is 0.1 in base 10 but 0.(08) in base 9. What ends in
+one system repeats without end in the other — the fraction is exact in
+both. On a circle 0/n and n/n are one point: k steps on circle n are
+(k div n) completed turns and position k mod n, the turn counter
+advancing exactly where the position falls back to zero. Joining the
+side midpoints of a square gives the rhombus — the square turned by 45°
+— with exactly half the area: 1, 1/2, 1/4, 1/8, … entirely rational,
+with no π.
 
 ## Module: `raum27.kaskade` — Take Out the Known, Mirror, Compare, Hand Over the Rest
 

@@ -6,7 +6,7 @@ import math
 import pytest
 
 from raum27.verhaeltnis import (
-    annotate, as_ratio, circle_points, common_circle, contains, factors, new_points,
+    annotate, as_ratio, circle_points, expansion, turns_and_position, common_circle, contains, factors, new_points,
     origin, positions_up_to, proportion, show, show_unreduced,
 )
 
@@ -67,3 +67,24 @@ def test_factored_denominators_make_the_pattern_visible():
     assert factors(89700) == "2·2·3·5·5·13·23"     # = 299 · 300, the innermost gap
     total = sum(Fraction(1, n * (n + 1)) for n in range(1, 300))
     assert total == Fraction(299, 300)              # telescoping: n/(n+1)
+
+
+def test_nine_and_ten_see_each_other_as_periodic():
+    assert expansion(1, 9, 10) == ("", "1")         # 0.(1)
+    assert expansion(1, 9, 9) == ("1", "")          # 0.1
+    assert expansion(1, 10, 10) == ("1", "")        # 0.1
+    assert expansion(1, 10, 9) == ("", "08")        # 0.(08)
+    assert expansion(1, 27, 10) == ("", "037")
+    assert expansion(1, 81, 10) == ("", "012345679")
+    assert expansion(1, 18, 10) == ("0", "5")
+    with pytest.raises(ValueError):
+        expansion(3, 2)
+
+
+def test_zero_and_one_meet_on_the_circle():
+    assert turns_and_position(0, 9) == (0, 0)
+    assert turns_and_position(9, 9) == (1, 0)       # n/n: one turn done, back at the start
+    assert turns_and_position(13, 9) == (1, 4)
+    assert origin(9, 9) == origin(0, 9) == (0, 1)
+    with pytest.raises(ValueError):
+        turns_and_position(1, 0)

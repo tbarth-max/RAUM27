@@ -125,3 +125,31 @@ def show_unreduced(k, n):
     j, home = origin(k, n)
     here = f"{k}/{n} (circle {n})"
     return here if home == n else f"{here} = {j}/{home} (circle {home})"
+
+
+def expansion(numerator, denominator, base=10):
+    """Digits of numerator/denominator (0 <= value < 1) in ``base``: (terminating part, period).
+
+    1/9 is 0.(1) in base 10 but 0.1 in base 9; 1/10 is 0.1 in base 10 but
+    0.(08) in base 9. What ends in one system repeats forever in the other;
+    the fraction itself is exact in both.
+    """
+    if not 0 <= numerator < denominator or base < 2:
+        raise ValueError("need 0 <= numerator < denominator and base >= 2")
+    seen, digits, r = {}, [], numerator
+    while r and r not in seen:
+        seen[r] = len(digits)
+        r *= base
+        digits.append(str(r // denominator) if r // denominator < 10 else chr(87 + r // denominator))
+        r %= denominator
+    if not r:
+        return "".join(digits), ""
+    start = seen[r]
+    return "".join(digits[:start]), "".join(digits[start:])
+
+
+def turns_and_position(k, n):
+    """k steps on circle n: (completed turns, position). n/n is 0/n one turn later."""
+    if n < 1:
+        raise ValueError("a circle has at least one raster point")
+    return k // n, k % n

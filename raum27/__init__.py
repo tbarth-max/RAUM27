@@ -444,6 +444,8 @@ from raum27.verhaeltnis import (
     positions_up_to as vh_positions_up_to,
     factors as vh_factors,
     show_unreduced as vh_show_unreduced,
+    expansion as vh_expansion,
+    turns_and_position as vh_turns_and_position,
 )
 from raum27.kaskade import (
     known_circle_ratio as ks_known_circle_ratio,
@@ -949,6 +951,8 @@ __all__ = [
     "vh_positions_up_to",
     "vh_factors",
     "vh_show_unreduced",
+    "vh_expansion",
+    "vh_turns_and_position",
     "ss_sample",
     "ss_deltas",
     "ss_bit_words",

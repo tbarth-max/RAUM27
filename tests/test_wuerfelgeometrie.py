@@ -82,3 +82,16 @@ def test_eight_octant_cubes_meet_in_the_27_points_with_binary_sharing():
     assert sharing == {8: 1, 4: 6, 2: 12, 1: 8}
     assert sum(sharing.values()) == 27
     assert sum(k * v for k, v in sharing.items()) == 8 * 8      # every cube has its 8 corners
+
+
+def test_midpoints_of_a_square_halve_it_and_stay_rational():
+    square = [(Fraction(1), Fraction(1)), (Fraction(-1), Fraction(1)), (Fraction(-1), Fraction(-1)), (Fraction(1), Fraction(-1))]
+
+    def area(poly):
+        return abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(poly, poly[1:] + poly[:1]))) / 2
+
+    areas = []
+    for _ in range(5):
+        areas.append(area(square))
+        square = [((x0 + x1) / 2, (y0 + y1) / 2) for (x0, y0), (x1, y1) in zip(square, square[1:] + square[:1])]
+    assert [a / areas[0] for a in areas] == [1, Fraction(1, 2), Fraction(1, 4), Fraction(1, 8), Fraction(1, 16)]
