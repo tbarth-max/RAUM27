@@ -2,7 +2,7 @@
 
 import pytest
 
-from raum27.zahnwerk import DIGITS, from_value, step, tension, triggers, value, wheels_needed
+from raum27.zahnwerk import DIGITS, HOOK, from_value, step, tension, triggers, value, wheels_needed
 
 
 def test_ninth_click_turns_the_next_wheel():
@@ -96,3 +96,35 @@ def test_duplex_trigger_condition_matches_the_train():
         triggers(0, 1)
     with pytest.raises(ValueError):
         triggers(5, 0)
+
+
+def test_hook_zero_shows_zero_outside_and_opens_the_one_on_the_right():
+    assert step([9, 0], low=HOOK) == ([0, 1], 2)            # 9 -> 10 = "1 there, 0 here"
+    assert step([9, 9, 0], low=HOOK) == ([0, 0, 1], 3)      # 99 -> 100
+    assert step([0, 1], -1, low=HOOK) == ([9, 0], 2)        # and back
+    assert triggers(9, 1, low=HOOK) and triggers(0, -1, low=HOOK)
+    assert not triggers(1, -1, low=HOOK)
+
+
+def test_hook_mode_counts_nine_ninety_nine_nine_hundred_ninety_nine():
+    for count, top in ((1, 9), (2, 99), (3, 999)):
+        assert value([9] * count, low=HOOK) == top
+    wheels = [0, 0, 0]
+    for n in range(1000 - 1):
+        assert value(wheels, low=HOOK) == n
+        assert from_value(n, 3, low=HOOK) == wheels
+        nxt, _ = step(wheels, low=HOOK)
+        assert step(nxt, -1, low=HOOK)[0] == wheels
+        wheels = nxt
+    assert max(tension([9, 9], low=HOOK)) == 9
+
+
+def test_both_modes_need_nine_wheels_for_three_hundred_million():
+    assert wheels_needed(300_000_000) == 9
+    assert wheels_needed(300_000_000, low=HOOK) == 9
+    assert value([9] * 8, low=HOOK) == 99_999_999 < 300_000_000 <= value([9] * 9, low=HOOK)
+
+
+def test_unknown_low_is_refused():
+    with pytest.raises(ValueError):
+        step([5], low=2)

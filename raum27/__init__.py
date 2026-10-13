@@ -357,6 +357,7 @@ from raum27.zahnwerk import (
     tension as zw_tension,
     wheels_needed as zw_wheels_needed,
     triggers as zw_triggers,
+    HOOK as zw_HOOK,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -787,6 +788,7 @@ __all__ = [
     "zw_tension",
     "zw_wheels_needed",
     "zw_triggers",
+    "zw_HOOK",
     "vz_AXES",
     "vz_CORNERS",
     "vz_apply",

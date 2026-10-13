@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-645 tests as of this module set, at 100% statement coverage; all
+649 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2124,6 +2124,12 @@ long the train runs; `n` wheels hold `9ⁿ` states with all wheels at 1 as
 the zero point; nine wheels (9⁹ = 387 420 489) are the first to hold
 300 000 000, eight hold only 43 046 721; and turning the last wheel over
 is refused, since a silent wrap would lose the count.
+
+With the **hook zero** (`low=HOOK`) each wheel also has an inner 0: the
+click that would make 10 leaves the wheel on its hook showing 0 and opens
+the 1 on the next wheel to the right. Ten is still never shown; one, two,
+three wheels count to 9, 99, 999 — decimal place value — and nine wheels
+are again the first to hold 300 000 000.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
