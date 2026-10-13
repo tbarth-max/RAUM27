@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-712 tests as of this module set, at 100% statement coverage; all
+717 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2357,6 +2357,24 @@ holds whatever A got wrong — the test pins the check closing on a wrong
 answer. B must reach its value by its own route, and errors both routes
 share still pass: agreement measures independence as much as
 correctness (the known limit of N-version computing).
+
+## Module: `raum27.sanftabtastung` — Gentle Inverse Probing: Wake, Do Not Push
+
+Probing a system — an insect on the sensor cell, a crystal, anything —
+through passive interaction only, with the smallest reaction that still
+answers. Three exact rules: (1) **many small pulses instead of one**: a
+response a in noise σ is detected with k sigmas after N repeats when
+a ≥ kσ/√N, so each touch shrinks with √N while the total energy
+N·a² = (kσ)² stays exactly the same — splitting lowers the disturbance
+per touch, not the price of certainty; (2) **ask at the natural
+frequency**: a driven oscillator answers Q times more strongly at
+resonance than to a slow push and falls off fast beside it (20 % off:
+below a tenth), so the drive needed drops by Q and its energy by Q²;
+(3) **stay below the disturbance limit** (the Lindemann limit of
+`gitter`, or an insect's reaction threshold): the plan returns the
+fewest repeats keeping every response under it. Simulated with a matched
+filter, the planned whisper is found in over 97 % of trials and silence
+is mistaken for an answer in under 5 %.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

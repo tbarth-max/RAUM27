@@ -462,6 +462,13 @@ from raum27.konsens import (
     consensus as kn_consensus,
     locate_from_poles as kn_locate_from_poles,
 )
+from raum27.sanftabtastung import (
+    required_response as sa_required_response,
+    detection_energy as sa_detection_energy,
+    resonance_gain as sa_resonance_gain,
+    gentle_plan as sa_gentle_plan,
+    detection_rate as sa_detection_rate,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -884,6 +891,11 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "sa_required_response",
+    "sa_detection_energy",
+    "sa_resonance_gain",
+    "sa_gentle_plan",
+    "sa_detection_rate",
     "kn_inverse_check",
     "kn_balance_point",
     "kn_moment_check",
