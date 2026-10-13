@@ -4,7 +4,7 @@ from fractions import Fraction
 
 import pytest
 
-from raum27.konsens import balance_point, consensus, inverse_check, moment_check
+from raum27.konsens import balance_point, consensus, inverse_check, locate_from_poles, moment_check
 from raum27.synchronsensor import AXIS, CORNERS
 
 F = Fraction
@@ -66,3 +66,32 @@ def test_bad_calls_are_refused():
         balance_point([1, -1], [(0,), (1,)])
     with pytest.raises(TypeError):
         inverse_check(0.5, 2)
+
+
+def _squared_distances(point, pole=1):
+    plus = [sum((point[i] - (pole if i == k else 0)) ** 2 for i in range(3)) for k in range(3)]
+    minus = [sum((point[i] + (pole if i == k else 0)) ** 2 for i in range(3)) for k in range(3)]
+    return plus, minus
+
+
+def test_plus_and_minus_meet_exactly_where_c_stands():
+    for point in ((0, 0, 0), (F(1, 3), F(-2, 7), F(5, 4)), (F(9, 16), 0, F(-1, 2))):
+        plus, minus = _squared_distances(point)
+        assert locate_from_poles(plus, minus) == tuple(F(c) for c in point)
+    plus, minus = _squared_distances((0, 0, 0))
+    assert plus == minus                                   # in the centre both sides agree
+    assert consensus(plus, minus, rule="poles") == (True, (0, 0, 0))
+
+
+def test_one_pair_gives_only_the_equator_and_c_refuses_off_centre():
+    # every point of the equator circle has equal north and south distances
+    for p in ((1, 0, 0), (0, 1, 0), (F(3, 5), F(4, 5), 0)):
+        plus, minus = _squared_distances(p)
+        assert plus[2] == minus[2]                          # z-pair cannot tell them apart
+    plus, minus = _squared_distances((F(1, 10), 0, 0))
+    accepted, reason = consensus(plus, minus, rule="poles")
+    assert not accepted and "1/10" in reason
+    with pytest.raises(ValueError):
+        locate_from_poles([1], [1, 2])
+    with pytest.raises(ValueError):
+        locate_from_poles([1], [1], pole=0)

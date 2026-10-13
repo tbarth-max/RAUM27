@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-710 tests as of this module set, at 100% statement coverage; all
+712 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2343,6 +2343,13 @@ the six axis points or the eight corners balance exactly in the centre;
 two screws on the diagonal of a plate balance in its middle, two on an
 edge sit half a plate width off it). C accepts only an exact close and
 never picks between disagreeing answers; a refusal goes to manual work.
+A third form uses **plus and minus as the two sides**: A measures the
+squared distance to the plus pole of each axis, B to the minus pole;
+since |P − Re|² − |P + Re|² = −4R·p, each axis gives C's coordinate
+exactly, (minus − plus)/(4R). One pair fixes only the plane of equal
+distances — on the sphere, the equator circle; two fix a line; all three
+fix the point where plus and minus meet, and C accepts only if that is
+its own centre.
 
 **The condition without which it proves nothing: A and B must be
 independent.** If B is computed from A's output (B = 1/A), then a·b = 1

@@ -62,12 +62,34 @@ def moment_check(weights, positions, centre):
                  for i in range(dims))
 
 
+def locate_from_poles(plus_squared, minus_squared, pole=1):
+    """Where C stands, from the plus side and the minus side of each axis.
+
+    Instance A measures the squared distance to the plus pole of each axis
+    (north, east, front), instance B to the minus pole (south, west, back);
+    poles at +-``pole``. Since |P - (+R e)|^2 - |P - (-R e)|^2 = -4 R p_e,
+    each axis gives C's coordinate exactly: p_e = (minus - plus) / (4 R).
+
+    One axis pair alone fixes only the plane where both distances are equal
+    -- on the sphere, the equator circle; two pairs fix a line; all three
+    fix the point. Returns C's position as a tuple of Fractions.
+    """
+    pole = _exact(pole)
+    if pole == 0:
+        raise ValueError("the poles must be apart")
+    if len(plus_squared) != len(minus_squared):
+        raise ValueError("every axis needs a plus and a minus distance")
+    return tuple((_exact(m) - _exact(p)) / (4 * pole) for p, m in zip(plus_squared, minus_squared))
+
+
 def consensus(a, b, rule="inverse", centre=None):
     """Accept A's result only if C's single check closes exactly.
 
     ``rule='inverse'``: ``a`` and ``b`` are numbers, closes when a * b == 1.
     ``rule='moment'``: ``a`` are weights, ``b`` positions, closes when the
     moment about ``centre`` is zero.
+    ``rule='poles'``: ``a`` squared distances to the plus poles, ``b`` to the
+    minus poles; closes when they meet in ``centre`` (default the origin).
     Returns ``(accepted, value_or_reason)``.
     """
     if rule == "inverse":
@@ -75,6 +97,12 @@ def consensus(a, b, rule="inverse", centre=None):
         if product == 1:
             return True, _exact(a)
         return False, f"does not close: a * b = {product}"
+    if rule == "poles":
+        position = locate_from_poles(a, b)
+        target = tuple(_exact(c) for c in (centre if centre is not None else (0,) * len(position)))
+        if position == target:
+            return True, position
+        return False, "does not close: plus and minus meet at (" + ", ".join(str(c) for c in position) + ")"
     if rule == "moment":
         if centre is None:
             raise ValueError("a moment check needs C's centre")

@@ -460,6 +460,7 @@ from raum27.konsens import (
     balance_point as kn_balance_point,
     moment_check as kn_moment_check,
     consensus as kn_consensus,
+    locate_from_poles as kn_locate_from_poles,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -887,6 +888,7 @@ __all__ = [
     "kn_balance_point",
     "kn_moment_check",
     "kn_consensus",
+    "kn_locate_from_poles",
     "ks_known_circle_ratio",
     "ks_explain",
     "ks_cascade",
