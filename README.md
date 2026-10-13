@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-684 tests as of this module set, at 100% statement coverage; all
+688 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2267,6 +2267,20 @@ Against a stored baseline each new frame yields only the changed
 sensors, the two words and the change of every fitted term: reality read
 as a stream of deltas. The 45° link: a corner projects onto each cut
 plane as that plane's diagonal, squared lengths 3/4 → 1/2 → 1/4.
+
+## Module: `raum27.verhaeltnis` — Think First, Then Compute: Show the Proportion
+
+A module may compute with decimals if its logic has no fraction bar;
+what it shows should still keep the proportion visible — `(1:3)` next to
+`(1:9)` shows a factor three at a glance that `0.3333` and `0.1111` hide.
+The layer finds the simplest fraction a number really is (continued
+fractions, bounded denominator) and shows it only if it matches within
+tolerance; an irrational number such as √2 − 1 stays a decimal and is
+never dressed up as a ratio. The same principle at the level of
+formulas: in λ·sin(16x/9λ) the two λ cannot be cancelled — the sine is
+not a product — but writing u = x/λ and y = Y/λ turns the whole family
+into the single curve y = sin(16u/9). Simplify by choosing the right
+ratios first, then compute once.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

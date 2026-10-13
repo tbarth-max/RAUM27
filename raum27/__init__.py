@@ -431,6 +431,12 @@ from raum27.synchronsensor import (
     CORNERS as ss_CORNERS,
     SENSORS as ss_SENSORS,
 )
+from raum27.verhaeltnis import (
+    as_ratio as vh_as_ratio,
+    show as vh_show,
+    proportion as vh_proportion,
+    annotate as vh_annotate,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -853,6 +859,10 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "vh_as_ratio",
+    "vh_show",
+    "vh_proportion",
+    "vh_annotate",
     "ss_sample",
     "ss_deltas",
     "ss_bit_words",
