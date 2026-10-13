@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-731 tests as of this module set, at 100% statement coverage; all
+726 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2408,22 +2408,6 @@ must cross the edge (a part of real hardware can still fail inside), and
 rolling back is exact for the computation and its record — physically
 it means returning to a safe state, not undoing what happened.
 
-## Module: `raum27.synchronlog` — One Chained Delta Log, Lockstep Worlds, a Way Back to Reality
-
-The sensor cell hands over the deltas of the measured state; every
-simulation decides what to take over; real or game worlds stay causally
-consistent and computable back to reality. Three exact pieces: a
-**chained log** — each entry carries the hash of the one before, so
-changing any past delta breaks the chain at exactly that entry (the
-useful core of a blockchain; between parties who trust each other no
-mining is needed); **lockstep replay** — only deltas travel and every
-participant computes the state itself, which works only if all machines
-compute bit-identically: binary floats can drift ((0.1 + 0.2) + 0.3 ≠
-0.1 + (0.2 + 0.3)), exact fractions cannot, so the state fingerprints
-agree everywhere; and **worlds that map back** — a game world as reality
-seen through an invertible exact map per value (scale and shift), so
-every game state computes back to the real one exactly.
-
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2817,3 +2801,10 @@ move it forward.
 14. **The erkenntnis grid** (knowledge X, causality Y, intuition Z on
     the levels 1/q, 1, q; intuition proposes, X and Y decide): agreed in
     principle, not yet built.
+15. **The chained delta log ("blockchain") and lockstep synchronisation**
+    are held back on purpose until a first trial run has shown they work
+    as intended: trust in that layer must not rest on an untested draft.
+    The draft (hash-chained deltas, lockstep replay in exact fractions,
+    invertible world maps) is kept in the git history (commit "synchronlog:
+    chained delta log, lockstep replay, worlds that map back") and can be
+    restored from there.
