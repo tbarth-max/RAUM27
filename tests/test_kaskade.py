@@ -5,7 +5,10 @@ import random
 
 import pytest
 
-from raum27.kaskade import cascade, explain, known_circle_ratio, manual_share
+from raum27.kaskade import (
+    MIRRORS, cascade, explain, known_circle_ratio, manual_share, mirror, mirrored_pattern,
+    newton_image,
+)
 
 F = Fraction
 FACTORS = [F(4, 3), F(16, 9)]
@@ -83,3 +86,42 @@ def test_zero_and_bad_input_are_handed_over_or_refused():
         cascade([(0.5, 1)], FACTORS)
     with pytest.raises(ValueError):
         manual_share([], FACTORS)
+
+
+@pytest.mark.parametrize("mode", MIRRORS)
+def test_mirror_table_matches_the_mirrored_samples(mode):
+    k = F(4, 3)
+    for kind, curve in (("prop", lambda x: k * x), ("inv", lambda x: k / x)):
+        image_kind, image_k = mirrored_pattern((kind, k), mode)
+        for x in (F(1, 2), F(3), F(7, 5)):
+            X, Y = mirror((x, curve(x)), mode)
+            assert Y == (image_k * X if image_kind == "prop" else image_k / X)
+    r = F(8, 3)
+    for x in (F(1), F(5, 2)):
+        X, Y = mirror((x, r * x), mode)
+        assert Y / X == mirrored_pattern(("circle", r), mode)[1]
+
+
+def test_forty_five_degrees_keeps_inverse_and_double_mirror_undoes():
+    assert mirrored_pattern(("inv", F(16, 9)), "diagonal") == ("inv", F(16, 9))
+    assert mirrored_pattern(("prop", F(16, 9)), "diagonal") == ("prop", F(9, 16))
+    assert mirrored_pattern(("prop", F(16, 9)), "both") == ("prop", F(16, 9))
+    sample = (F(3, 7), F(5, 2))
+    for mode in MIRRORS:
+        assert mirror(mirror(sample, mode), mode) == sample
+    with pytest.raises(ValueError):
+        mirror(sample, "sideways")
+    with pytest.raises(ValueError):
+        mirrored_pattern(("prop", F(1)), "sideways")
+
+
+def test_focal_point_is_an_inversion_and_two_lenses_stand_it_upright():
+    f = F(2)
+    for x in (F(1), F(4), F(1, 3)):
+        image, magnification = newton_image(x, f)
+        assert x * image == f * f                       # inversion of radius f
+        assert magnification < 0                        # upside down
+        _, second = newton_image(image, f)              # relay through a second lens
+        assert magnification * second > 0               # upright again
+    with pytest.raises(ValueError):
+        newton_image(0, f)

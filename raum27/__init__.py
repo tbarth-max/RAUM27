@@ -450,6 +450,10 @@ from raum27.kaskade import (
     explain as ks_explain,
     cascade as ks_cascade,
     manual_share as ks_manual_share,
+    MIRRORS as ks_MIRRORS,
+    mirror as ks_mirror,
+    mirrored_pattern as ks_mirrored_pattern,
+    newton_image as ks_newton_image,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -877,6 +881,10 @@ __all__ = [
     "ks_explain",
     "ks_cascade",
     "ks_manual_share",
+    "ks_MIRRORS",
+    "ks_mirror",
+    "ks_mirrored_pattern",
+    "ks_newton_image",
     "vh_as_ratio",
     "vh_show",
     "vh_proportion",

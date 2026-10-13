@@ -28,6 +28,10 @@ the manual folder with their reason -- nothing is guessed, as in
 
 from fractions import Fraction
 
+MIRRORS = ("inversion", "diagonal", "both", "axis")
+"""inversion: (x, y) -> (1/x, 1/y); diagonal: the 45-degree mirror (x, y) -> (y, x);
+both: diagonal after inversion, (x, y) -> (1/y, 1/x); axis: the 90-degree mirror (x, y) -> (-x, y)."""
+
 
 def _exact(v):
     if isinstance(v, bool) or not isinstance(v, (int, Fraction)):
@@ -71,9 +75,64 @@ def explain(x, y, factors, allowed=(2, 3)):
     return None
 
 
-def _mirror_of(pattern):
+def mirror(sample, mode="inversion"):
+    """The sample seen in one of the mirrors (see ``MIRRORS``)."""
+    x, y = sample
+    if mode == "inversion":
+        return 1 / x, 1 / y
+    if mode == "diagonal":
+        return y, x
+    if mode == "both":
+        return 1 / y, 1 / x
+    if mode == "axis":
+        return -x, y
+    raise ValueError(f"unknown mirror {mode!r}")
+
+
+def mirrored_pattern(pattern, mode="inversion"):
+    """What a pattern becomes in a mirror.
+
+    =========  =========================  =========================
+    mirror     y = k x  becomes            y = k / x  becomes
+    =========  =========================  =========================
+    inversion  y = (1/k) x                 y = (1/k) / x
+    diagonal   y = (1/k) x                 y = k / x   (unchanged)
+    both       y = k x   (unchanged)       y = (1/k) / x
+    axis       y = -k x                    y = -k / x
+    =========  =========================  =========================
+
+    The 45-degree mirror keeps inverse proportion and inverts the
+    proportional factor; doing it after the inversion turns that back.
+    """
     kind, k = pattern
-    return (kind, 1 / k)
+    if kind == "circle":
+        return ("circle", {"inversion": 1 / k, "diagonal": 1 / k, "both": k, "axis": -k}[mode])
+    if mode == "inversion":
+        return (kind, 1 / k)
+    if mode == "diagonal":
+        return (kind, 1 / k) if kind == "prop" else (kind, k)
+    if mode == "both":
+        return (kind, k) if kind == "prop" else (kind, 1 / k)
+    if mode == "axis":
+        return (kind, -k)
+    raise ValueError(f"unknown mirror {mode!r}")
+
+
+def _mirror_of(pattern):
+    return mirrored_pattern(pattern, "inversion")
+
+
+def newton_image(object_distance, focal_length):
+    """Newton's lens law x * x' = f^2: the focal point as an inversion of radius f.
+
+    Distances are measured from the front and back focal points. Returns
+    the image distance x' and the magnification -f/x: the image is upside
+    down -- one inversion. Two lenses in a row turn it upright again.
+    """
+    x, f = _exact(object_distance), _exact(focal_length)
+    if x == 0:
+        raise ValueError("an object in the focal point has its image at infinity")
+    return f * f / x, -f / x
 
 
 def cascade(samples, factors, allowed=(2, 3)):

@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-699 tests as of this module set, at 100% statement coverage; all
+705 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2314,6 +2314,22 @@ zero (cannot be mirrored). Nothing is guessed, as in `abtastung`. In the
 test stream of 300 samples with 10 % from beyond the 2–3 walls, under a
 fifth reaches the manual folder, and every sample from beyond the walls
 is among them.
+
+Which mirror is used matters, and it is pinned in a table:
+
+| mirror | y = kx becomes | y = k/x becomes |
+|---|---|---|
+| inversion (x, y) → (1/x, 1/y) | y = (1/k)x | y = (1/k)/x |
+| 45° (x, y) → (y, x) | y = (1/k)x | **unchanged** |
+| both, (x, y) → (1/y, 1/x) | **unchanged** | y = (1/k)/x |
+| 90° axis (x, y) → (−x, y) | y = −kx | y = −k/x |
+
+Every mirror applied twice gives back the sample; the 45° mirror after
+the inversion turns the proportional factor back. The focal point is
+literally an inversion: Newton's lens law x·x′ = f², distances from the
+two focal points, with magnification −f/x — the image stands upside
+down; a second lens turns it upright again, which is why a terrestrial
+telescope needs an erecting lens.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
