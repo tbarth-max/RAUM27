@@ -8,6 +8,9 @@ keeps it from turning over. The click that would reach 10 sets the wheel
 back to 1 and advances the next wheel by one. Going below 1 is the
 mirror image: the wheel goes to 9 and the next wheel steps back.
 
+The rule that decides when the next wheel moves is the **duplex trigger
+condition** (``triggers``): forward from 9, or backward from 1.
+
 This is an odometer with the digits 1..9, the number 10 being the
 spring constant: the limit no wheel can reach. Consequences pinned by
 the tests:
@@ -29,6 +32,20 @@ DIGITS = 9
 def _check(wheels):
     if not wheels or any(not isinstance(d, int) or not 1 <= d <= DIGITS for d in wheels):
         raise ValueError(f"every wheel stands on 1..{DIGITS}")
+
+
+def triggers(position, direction):
+    """The duplex trigger condition of one wheel.
+
+    A click hands on to the next wheel exactly when it would leave the
+    range 1..9: forward from 9 (carry) or backward from 1 (borrow). Two
+    sides, one rule -- hence duplex.
+    """
+    if not isinstance(position, int) or not 1 <= position <= DIGITS:
+        raise ValueError(f"a wheel stands on 1..{DIGITS}")
+    if direction not in (1, -1):
+        raise ValueError("a click goes one position forward (1) or back (-1)")
+    return (position == DIGITS and direction == 1) or (position == 1 and direction == -1)
 
 
 def step(wheels, direction=1):

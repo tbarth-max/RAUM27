@@ -2,7 +2,7 @@
 
 import pytest
 
-from raum27.zahnwerk import DIGITS, from_value, step, tension, value, wheels_needed
+from raum27.zahnwerk import DIGITS, from_value, step, tension, triggers, value, wheels_needed
 
 
 def test_ninth_click_turns_the_next_wheel():
@@ -83,3 +83,16 @@ def test_nine_wheels_are_the_first_to_hold_three_hundred_million():
 def test_invalid_inputs(call):
     with pytest.raises(ValueError):
         call()
+
+
+def test_duplex_trigger_condition_matches_the_train():
+    fired = {(p, d) for p in range(1, 10) for d in (1, -1) if triggers(p, d)}
+    assert fired == {(9, 1), (1, -1)}
+    for first in range(1, 10):
+        for d in (1, -1):
+            _, moved = step([first, 5], d)
+            assert (moved > 1) == triggers(first, d)
+    with pytest.raises(ValueError):
+        triggers(0, 1)
+    with pytest.raises(ValueError):
+        triggers(5, 0)

@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-644 tests as of this module set, at 100% statement coverage; all
+645 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2113,7 +2113,8 @@ of the turns until it tears or snaps back. The rule instead: each wheel
 has nine positions and turns freely back and forth between 1 and 9; the
 stop at 10 does not hold the wheel but keeps it from turning over — the
 click that would reach 10 sets it back to 1 and advances the next wheel.
-Going below 1 mirrors this. Ten is the spring constant, the limit no
+Going below 1 mirrors this; the two-sided rule is the **duplex trigger
+condition** (`triggers`): forward from 9 or backward from 1. Ten is the spring constant, the limit no
 wheel reaches; it is the escapement and gear train of a mechanical
 clock.
 
