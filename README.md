@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-649 tests as of this module set, at 100% statement coverage; all
+672 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2131,6 +2131,96 @@ the 1 on the next wheel to the right. Ten is still never shown; one, two,
 three wheels count to 9, 99, 999 — decimal place value — and nine wheels
 are again the first to hold 300 000 000.
 
+## Module: `raum27.wuerfelgeometrie` — Why 27, Why 48, and What Views Decide
+
+Each axis takes three states (−1, 0, +1, i.e. 0/1/2 with 1 as the
+middle). Grouped by how many axes are triggered the 27 cells split as
+**1 + 6 + 12 + 8** — centre, face centres (sextants), edge midpoints (the
+four diagonals of each cut plane), corners (octants) — which is
+(1 + 2)³ multiplied out, at squared distances 0, 1, 2, 3.
+
+The three cut planes as mirrors give 2³ = 8 sign changes; swapping the
+axes gives 3! = 6; together **48 = 8 × 6**, the full symmetry of the
+cube. Element orders: 1 (×1), 2 (×19), 3 (×8), 4 (×12), 6 (×8) — **no
+order 8**, so the 1–8 cycle belongs to the square in a cut plane, not to
+the cube.
+
+Rhombus : circle : square = **2 : π : 4**; octahedron : sphere : cube =
+**1 : π : 6**; doubling rhombus and square pins π between them
+(Archimedes). In the family |x|ᵖ + |y|ᵖ + |z|ᵖ = 1 (octahedron at p = 1,
+sphere at 2, cube at ∞), duality p → p/(p − 1) swaps 1 and ∞ and has
+exactly one fixed point, **p = 2: the sphere is the self-dual middle**
+between the 6-system and the 8-system.
+
+Counting the cells on every line through the 3×3×3 cube, the three axis
+directions alone are ambiguous — the two interpenetrating tetrahedra of
+a small cube give identical counts — while the axes plus **one**
+space-diagonal (octant) direction determine every one of the 2²⁷ bodies.
+(One-off computation, not in the tests because it takes 20 s: with
+occupied/empty silhouettes instead of counts, the three axis views give
+only 1 614 530 distinct triples for 134 217 728 bodies, and three full
+squares fit 10 323 979 bodies.)
+
+## Module: `raum27.messnetz` — Spider Web, Sensor Shells, the 90° Finder, Light and Limits
+
+**Spider web** (8 spokes, 3 rings, springs of stiffness 1/length). A
+single sensor at the hub tells only which ring was touched, and it is
+**exactly blind to a torn ring**: a force at the hub excites only the
+symmetric motion, in which no ring thread stretches, so by reciprocity
+no ring property reaches the hub. Strain gauges on the spokes at the
+hub, read against a reference that removes the common part, locate
+every touch point: with each thread cut into four (168 touch points,
+also between knots) the four threads left, top, right, bottom separate
+all 168; the closest two differ by about 0.4 % of full scale, all eight
+threads give about three times that margin. **Arrival-time differences
+alone separate only 16** — the information is in the ratio of forces.
+
+**Sensor shells.** One scalar reading per sensor: the 6 axis points
+resolve 6 of the 9 field terms up to second order, the 8 corners 7,
+**both together all 9**; up to third order 13 of 16.
+
+**90° without measuring an angle.** Poles at ±1: |P − N|² − |P − S|² =
+−4z exactly, so equal pole distances mean the equator plane. In time,
+two equal oscillations with phase gap φ have summed energy
+1 − cos φ · cos(2x + φ): it stands still exactly at 90°, and its swing
+2|cos φ| measures the distance from 90°.
+
+**Light.** f·λ = c: at 300 MHz light has λ = 1 m. Red 650, green 532 and
+blue 450 nm repeat together only after their lcm, 1 556 100 nm ≈ 1.56 mm;
+a fibre Bragg grating shifts colour by about 0.78 × strain (1.2 nm at
+0.1 % for 1550 nm).
+
+**Limits.** 14 bits on a logarithmic scale over 100 decades give steps of
+1.4 %. Erasing a bit costs at least kT ln 2 ≈ 2.9·10⁻²¹ J at 300 K; a
+reversible step has no such floor. A radius from three neighbouring
+noisy points gets **worse** as the points get closer (≈ noise/spacing²);
+dense points help only when fitted together over a fixed arc.
+
+## Module: `raum27.kurvenkette` — The Four-Part Sine Chain, Phases, Chain and Dome, Ball and Donut
+
+With u = 16x/(9λ): **λ sin u** starts with slope 16/9 for every λ; its
+arch midpoints all lie on one line Y = 32x/(9π) at 48.5°, 3.5° steeper
+than the diagonal (exactly 45° would need π/2 in place of 16/9).
+**λ sin² u** is a parabola 256/81 · x²/λ at the origin. **λ sinh u** has
+the same starting slope and is the hyperbola side. **1/(λ sin u)** is the
+inversion; its product with the first curve is exactly 1. For x below
+about 9/16 the order is inverse > sinh > sin > sin² — "sin > sinh" is
+false for every x > 0.
+
+Six and eight positions per turn stand in frequency 4 : 3 and in energy
+**(8/6)² = 16/9**, beat twice per turn and repeat after lcm(6, 8) = 24;
+the two phases together tell apart only 24 of 48 pairs (one shared bit),
+while coprime 8 and 9 tell apart all 72.
+
+The hanging chain a·cosh(x/a) has arc length **a·sinh(x/a)** — the sinh
+curve above with a = 9λ/16 — and inverted is the arch without bending
+moment. A thin spherical dome under self-weight stays in ring compression
+down to **cos φ = (√5 − 1)/2, the golden ratio**, 51.8° from the crown.
+A rotation on a ball must vanish somewhere — exactly at the two poles,
+the forced axis (hairy ball theorem, indices summing to 2); a torus
+carries a flow with no zero. A winding on the torus with ratio 3 : 4
+closes; with 1 : √2 it never closes and comes ever nearer to its start.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2307,6 +2397,62 @@ that scope it computes and produces. What it does not do is predict
 measurements — no module claims to, and the audit does not test for it.
 That boundary is a scope statement, not a defect.
 
+## Refuted — Claims That Were Checked and Do Not Hold
+
+Kept on purpose: a refutation is a result. Each entry names the check.
+
+- **"c^c" as a physical bound.** c carries a unit; c^c has about 2.5·10⁹
+  digits in m/s and 1.6·10⁶ in km/s. A number that depends on the unit
+  is not a property of nature. In the system's own units c = 1.
+- **"∞ · 0 = 1" as arithmetic.** n·(1/n) = 1 but 2n·(1/n) = 2 and
+  n²·(1/n) → ∞. It holds only as the pairing of a quantity with its own
+  inverse across radius 1 — which is the Riemann sphere, 0 and ∞ as poles.
+- **The forwarded "TensorBendingEngine".** Its path radius is always 1
+  whatever the bending radius; the turn per step grows (0.2, 0.3, 0.4…)
+  because the accumulated phase is reapplied; "XT" grows without bound
+  (1888 after 2000 steps at r = 300); one step forward and back does not
+  return; a million states need at least 15.6 MB, not 8.5 KiB.
+- **"A diamond pressed at the Earth's centre cannot be destroyed on
+  Earth."** Hydrostatic pressure tests only the spherical part of stress;
+  diamond fails by shear and cleavage (a blade and a hammer split it
+  along its octahedral planes), burns in air near 700 °C and is laser-cut
+  routinely. Its lattice also stores no energy on decompression.
+- **"Destructive interference raises the inner energy."** Two equal
+  waves give 2I₀(1 + cos φ): zero where they cancel, 4I₀ where they add,
+  2I₀ on average — energy is moved, not created. In a standing wave the
+  node of one form is the antinode of the other (E vs B, displacement vs
+  strain), and sin² + cos² = 1 keeps the time-averaged energy the same
+  everywhere. What does build up is in-phase driving (resonance).
+- **"Scaling to the largest energy removes shear."** Shear depends on
+  the direction of a load relative to the axes, not on its size; it
+  vanishes in the principal axes of each load, which turn with the load.
+- **"The smaller the points, the more exact the radius."** True without
+  noise; with noise σ a radius from neighbouring points errs by about
+  σ/spacing² (0.0006 at spacing 0.5, 0.63 at 0.01).
+- **"dx proportional to the bending radius is more accurate."** At equal
+  piece count it was worse than equal pieces (6·10⁻⁵ vs 2·10⁻⁷ at 200
+  pieces on a kinked line): an arc is exact for constant radius, the
+  error comes from the radius changing inside a piece.
+- **"sin > sinh"** in the submitted chain of curves: false for all x > 0.
+- **"A single hub sensor reads the whole web."** It reads only the ring
+  and is exactly blind to a torn ring (`messnetz`).
+- **"Three views determine a body."** They do not (`wuerfelgeometrie`).
+- **"The period of a reversible 2²⁶-state system cannot exceed 2²⁶."**
+  True for one trajectory; the whole system returns only after the lcm of
+  its cycles, which can be far larger (cycles 2, 3, 5, 7, 11, 13 on 41
+  states return together after 30 030 steps).
+- **"A 1-bit seed unfolds into infinite information."** A function of one
+  bit has at most two outputs; an 8748-byte buffer has finitely many
+  states.
+- **The 10-minute hardware report.** 26 155 062 vectors in 600.01 s is
+  43 591/s, not 43 732; 235 ns per vector and 48.69 MiB/s disagree with
+  that rate by about a factor of 100; "60 minutes stable, verified" was
+  written while the run was still going; "temperature-stable" with no
+  temperature data.
+- **B3 / B4 resonance code.** Phases averaged arithmetically, not on the
+  circle (359° and 1° average to 180°); `mirror_phases` never used;
+  `route_signal` is a linear scan, not O(1).
+
 ## Open Questions — Where Verification Stopped, Not Where an Idea Was Refuted
 
 For whoever picks this up next: these are points where the trail runs
@@ -2347,3 +2493,32 @@ move it forward.
    provide. Nothing to integrate unless the underlying *general-purpose
    math* (not the forecasting claim itself) turns out to be reusable
    elsewhere.
+6. **`raum27_flug.py`** — imported by both flight scripts in Drive
+   (`raum27 flug pruefung.py`, `raum27 flug stapel.py`) but not supplied.
+   Until it is, the flight claims (702 flights, return error 1.3·10⁻¹³)
+   cannot be reproduced.
+7. **The 60-minute hardware run** — to be evaluated neutrally once its
+   results are uploaded (Drive folder "Anti Gravity").
+8. **Which 6- and 8-bit pattern a frequency carries**, and the rule by
+   which an impulse leaves an interaction point on a circle. The modules
+   accept any pattern; the rule itself has not been stated.
+9. **Physical readings of the geometry**: that strong force and gravity
+   share one drive, that the inversion of the largest space is the big
+   bang or a multiverse, that a crystal "folds" pressure energy, and the
+   meaning of "Hyperraum 27". None is derived or tested here; the
+   geometry stands without them.
+10. **The inner counter-rotation** that is to stabilise the system:
+    whether a co-rotating gyroscope (stiffens the axis) or a
+    counter-rotating pair (cancels angular momentum) is meant decides the
+    design; the intermediate axis of rotation is unstable either way.
+11. **"Time as much as space" on the equatorial torus**: equal volume,
+    surface or diameter? A torus as wide as the sphere with a closed hole
+    holds only about 59 % of the sphere's volume.
+12. **The reading "3 × 4 = 12 − 3 = 9"**: the nine cells of a cut plane,
+    or the twelve edge midpoints? Not fixed yet.
+13. **The 6/8 coupling through "λ sin(16x/9λ)" as physics**: the curves
+    are analysed in `kurvenkette`; what physical quantity λ and Y are has
+    not been fixed.
+14. **The erkenntnis grid** (knowledge X, causality Y, intuition Z on
+    the levels 1/q, 1, q; intuition proposes, X and Y decide): agreed in
+    principle, not yet built.
