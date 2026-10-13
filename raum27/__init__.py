@@ -455,6 +455,12 @@ from raum27.kaskade import (
     mirrored_pattern as ks_mirrored_pattern,
     newton_image as ks_newton_image,
 )
+from raum27.konsens import (
+    inverse_check as kn_inverse_check,
+    balance_point as kn_balance_point,
+    moment_check as kn_moment_check,
+    consensus as kn_consensus,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -877,6 +883,10 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "kn_inverse_check",
+    "kn_balance_point",
+    "kn_moment_check",
+    "kn_consensus",
     "ks_known_circle_ratio",
     "ks_explain",
     "ks_cascade",

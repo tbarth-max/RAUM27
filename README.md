@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-705 tests as of this module set, at 100% statement coverage; all
+710 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2330,6 +2330,26 @@ literally an inversion: Newton's lens law x·x′ = f², distances from the
 two focal points, with magnification −f/x — the image stands upside
 down; a second lens turns it upright again, which is why a terrestrial
 telescope needs an erecting lens.
+
+## Module: `raum27.konsens` — A and B Compute, C in the Centre Checks One Value
+
+Three-instance consensus: instances A and B do the work; the central
+instance C needs a single value, because the result must close back to 1
+— to C's own place in the centre. Two exact forms: an **inversion pair**
+(A computes a quantity, B its inverse by its own route, C checks
+a·b = 1) and a **moment balance** (A gives the weights, B where they act,
+C checks that the moments about its position cancel — equal weights on
+the six axis points or the eight corners balance exactly in the centre;
+two screws on the diagonal of a plate balance in its middle, two on an
+edge sit half a plate width off it). C accepts only an exact close and
+never picks between disagreeing answers; a refusal goes to manual work.
+
+**The condition without which it proves nothing: A and B must be
+independent.** If B is computed from A's output (B = 1/A), then a·b = 1
+holds whatever A got wrong — the test pins the check closing on a wrong
+answer. B must reach its value by its own route, and errors both routes
+share still pass: agreement measures independence as much as
+correctness (the known limit of N-version computing).
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
