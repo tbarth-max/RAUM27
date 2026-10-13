@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-628 tests as of this module set, at 100% statement coverage; all
+644 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2105,6 +2105,24 @@ Stretching by 4/3 and 3/4 gives squared semi-axes 16/9, 1, 9/16 and
 keeps the volume exactly. When `C` is not diagonal its eigenvalues are
 roots of a cubic and need not be rational; the cubic's coefficients,
 the three invariants, are always exact.
+
+## Module: `raum27.zahnwerk` — Nine Positions per Wheel, the Tenth Click Turns the Next
+
+A spring wound on without end stores energy that grows with the square
+of the turns until it tears or snaps back. The rule instead: each wheel
+has nine positions and turns freely back and forth between 1 and 9; the
+stop at 10 does not hold the wheel but keeps it from turning over — the
+click that would reach 10 sets it back to 1 and advances the next wheel.
+Going below 1 mirrors this. Ten is the spring constant, the limit no
+wheel reaches; it is the escapement and gear train of a mechanical
+clock.
+
+Pinned by the tests: every click is undone exactly by the opposite
+click; no wheel is ever wound more than eight clicks from rest however
+long the train runs; `n` wheels hold `9ⁿ` states with all wheels at 1 as
+the zero point; nine wheels (9⁹ = 387 420 489) are the first to hold
+300 000 000, eight hold only 43 046 721; and turning the last wheel over
+is refused, since a silent wrap would lose the count.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

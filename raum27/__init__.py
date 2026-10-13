@@ -349,6 +349,14 @@ from raum27.verzerrung import (
     is_rigid as vz_is_rigid,
     squared_semi_axes_if_diagonal as vz_squared_semi_axes_if_diagonal,
 )
+from raum27.zahnwerk import (
+    DIGITS as zw_DIGITS,
+    step as zw_step,
+    value as zw_value,
+    from_value as zw_from_value,
+    tension as zw_tension,
+    wheels_needed as zw_wheels_needed,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -771,6 +779,12 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "zw_DIGITS",
+    "zw_step",
+    "zw_value",
+    "zw_from_value",
+    "zw_tension",
+    "zw_wheels_needed",
     "vz_AXES",
     "vz_CORNERS",
     "vz_apply",
