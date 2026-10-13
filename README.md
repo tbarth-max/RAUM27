@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-726 tests as of this module set, at 100% statement coverage; all
+736 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2408,6 +2408,50 @@ must cross the edge (a part of real hardware can still fail inside), and
 rolling back is exact for the computation and its record — physically
 it means returning to a safe state, not undoing what happened.
 
+## Module: `raum27.fundamentalbereich` — Compute One Branch, Mirror the Rest, but Only Along Real Symmetries
+
+Checked against the summary `RAUM27_Geometrie_Resonanz_Physik.md` and the
+scripts `raum27_raspi_sprachmodell.py` / `sandbox_drei_instanzen_loop.py`
+of 2026-10-13.
+
+- **Fundamental domain.** The 729 nodes around 555 fall into **35** orbits
+  under the 48 cube symmetries (0 ≤ c ≤ b ≤ a ≤ 4), as the summary says.
+- **The x-only modulation keeps 16 symmetries, not 8.** Under
+  `berechne_vektor_ns_inversion` / `compute_vector`, x becomes
+  x + c/sin(16x) and y, z stay. Because x ↦ x + c/sin(16x) is odd, flipping
+  x still commutes with it. What survives is the y/z square (8) times the
+  x sign flip: 16 symmetries, **75** base nodes. Only a modulation that is
+  not odd leaves 8 (135 nodes). The fix is the same odd function on all
+  three axes, `all_axes(f)`, which gives all 48 and 35 nodes. The same
+  function, not odd, on all axes keeps only the 6 permutations.
+- **The modulation is about 3·10⁻⁸ in size.** With c = 0.1·λ₂/λ₁ ≈ 9.8·10⁻⁹
+  the shift is at most 3.4·10⁻⁸ (|x| = 1). In `float32` it survives only
+  at |x| = 1, as one unit in the last place. At |x| = 2, 3, 4 it rounds
+  away. In practice the symmetry break is a rounding-level effect.
+- **Legendre.** 4ᵃ(8b+7) is never a sum of three squares. On the 1..9 grid
+  this explains every missing d² up to 87. From 91 on, the grid edge
+  (|Δ| ≤ 8) is the cause.
+- **27 ideal points**, d² = 0 / 16 / 32 / 48 (counts 1, 6, 12, 8). The
+  three touching spheres of the unit cube have r² = 1/4 : 2/4 : 3/4.
+- **Two coupled 3D systems** have 1458 states, one 6D search has 531 441.
+  The ratio is exactly 729/2.
+- **Sieve.** The octahedron table checks out (68.2 / 29.7 / 8.8 / 2.3 /
+  1.05 / 0.6 % at 1, 2, 4, 8, 12, 16 divisions). The 1 % stop is first
+  crossed at 13, not 12. The polygon row (36.3 % rhombus … 0.04 % 128-gon)
+  also checks out: 1 % is passed at the 32-gon and the reserve
+  1 − σ = 103771/150000000 ≈ 0.069 % at the 128-gon. σ = 149896229/150000000.
+- **Sum line of the sandbox.** d0 + d2 = 24 for **every** node, so
+  "24/24 = 1" is an identity and carries no information. The split's
+  rest ±1/24 (±7/960 in frequency) depends only on the digit sum mod 3:
+  243 nodes have rest 0, 243 have +1/24, 243 have −1/24. It is a
+  property of the grid position, not of the data.
+- **Digit cycle 1-2-4-8-7-5** (2ᵏ mod 9) has two mirrors. Additively,
+  k and k+3 sum to 9. Multiplicatively, k and 6−k give a product of 1 mod 9.
+  The plain product of all six is 8, not 1.
+- **Stern-Brocot.** `stern_brocot_path(16/9) = "RLRRRL"`, and 9/16 is the
+  same path with L and R swapped (inversion = mirror). `from_path` builds
+  the fraction back with additions only.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2728,6 +2772,12 @@ Kept on purpose: a refutation is a result. Each entry names the check.
   that rate by about a factor of 100; "60 minutes stable, verified" was
   written while the run was still going; "temperature-stable" with no
   temperature data.
+- **"Only the y/z symmetries (factor 8) remain under the x-only
+  modulation."** The modulation is odd in x, so the x sign flip survives
+  as well: 16 symmetries, 75 base nodes (`fundamentalbereich`).
+- **"The sum line d0 + d2 = 24/24 decides per node."** It equals 24 for
+  every node. The rest ±1/24 comes from the digit sum mod 3, i.e. from
+  the grid, not from the data (`fundamentalbereich`).
 - **B3 / B4 resonance code.** Phases averaged arithmetically, not on the
   circle (359° and 1° average to 180°); `mirror_phases` never used;
   `route_signal` is a linear scan, not O(1).
@@ -2808,3 +2858,12 @@ move it forward.
     invertible world maps) is kept in the git history (commit "synchronlog:
     chained delta log, lockstep replay, worlds that map back") and can be
     restored from there.
+16. **Wall tensor, holomorphic wall tensor, pendulum fraction net.**
+    `sandbox_drei_instanzen_loop.py` and its two test files import
+    `raum27_wandneigung_tensor`, `holomorphic_wand_tensor` and
+    `raum27_pendel_fraktal_bruchnetz`, which are not in the folder. One
+    stated value checks out: det [[2/6 DX², 1/6 DX²], [1/2 DX, 1/2 DX]]
+    = DX³/12 = 1/6144 at DX = 1/8. The rest waits for the modules.
+17. **Octahedron/polygon sieve as a stepping procedure on data**, and
+    **pulsar timing data** as a test bed: the numbers are checked
+    (`fundamentalbereich`), the run on data is not done.
