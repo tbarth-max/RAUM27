@@ -468,6 +468,8 @@ from raum27.sanftabtastung import (
     resonance_gain as sa_resonance_gain,
     gentle_plan as sa_gentle_plan,
     detection_rate as sa_detection_rate,
+    alarm_states as sa_alarm_states,
+    respond as sa_respond,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -896,6 +898,8 @@ __all__ = [
     "sa_resonance_gain",
     "sa_gentle_plan",
     "sa_detection_rate",
+    "sa_alarm_states",
+    "sa_respond",
     "kn_inverse_check",
     "kn_balance_point",
     "kn_moment_check",

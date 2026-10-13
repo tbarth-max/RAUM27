@@ -23,6 +23,14 @@ Three exact rules make that a plan:
   threshold). ``gentle_plan`` returns the fewest repeats for which that
   holds, and the drive per pulse.
 
+**The alarm loop.** When the house is on fire, waking is not gentle.
+If a reading crosses a critical level, the gentle plan is dropped for one
+hard pulse: the whole budget (k sigma)^2 in a single touch, answered
+after one pulse instead of N -- N times faster, as hard as needed. The
+state is binary (quiet / alarm) with hysteresis, a Schmitt trigger: it
+switches on above one level and off only below a lower one, so it does
+not flutter at the edge (``alarm_states``, ``respond``).
+
 What remains true and is not hidden: the total budget (k sigma)^2 is the
 price of certainty against the noise and cannot be lowered by splitting;
 only the disturbance per touch can.
@@ -74,3 +82,30 @@ def detection_rate(response, noise, repeats, trials=400, confidence=4.0, seed=3)
         mean = sum(response + rng.gauss(0, noise) for _ in range(repeats)) / repeats
         found += mean > threshold
     return found / trials
+
+
+def alarm_states(readings, on, off):
+    """Binary alarm state per reading with hysteresis: on above ``on``, off only below ``off``."""
+    if off >= on:
+        raise ValueError("the off level must lie below the on level")
+    state, states = False, []
+    for value in readings:
+        if not state and value >= on:
+            state = True
+        elif state and value <= off:
+            state = False
+        states.append(state)
+    return states
+
+
+def respond(reading, critical, noise, disturbance_limit, omega0, quality, confidence=4.0):
+    """Gentle plan in calm, one hard pulse in an emergency.
+
+    Returns (mode, pulses, response per pulse). In an emergency the
+    response is k * sigma in a single pulse: the same total energy as the
+    gentle plan, delivered at once.
+    """
+    if reading >= critical:
+        return "alarm", 1, required_response(noise, 1, confidence)
+    repeats, response, _ = gentle_plan(noise, disturbance_limit, omega0, quality, confidence)
+    return "gentle", repeats, response

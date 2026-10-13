@@ -5,6 +5,8 @@ import math
 import pytest
 
 from raum27.sanftabtastung import (
+    alarm_states,
+    respond,
     detection_energy,
     detection_rate,
     gentle_plan,
@@ -48,3 +50,25 @@ def test_invalid_inputs():
         resonance_gain(1, 0, 1)
     with pytest.raises(ValueError):
         gentle_plan(1, 0, 1, 1)
+
+
+def test_alarm_is_one_hard_pulse_with_the_same_total_budget():
+    mode, pulses, response = respond(9.0, critical=5.0, noise=1.0, disturbance_limit=0.1,
+                                     omega0=230.0, quality=40)
+    assert (mode, pulses) == ("alarm", 1)
+    assert response == pytest.approx(4.0)                          # k sigma at once
+    calm = respond(1.0, critical=5.0, noise=1.0, disturbance_limit=0.1, omega0=230.0, quality=40)
+    assert calm[0] == "gentle" and calm[1] == 1600
+    assert pulses * response ** 2 == pytest.approx(calm[1] * calm[2] ** 2)   # same energy
+    assert calm[1] / pulses == 1600                                # answered 1600 times sooner
+
+
+def test_hysteresis_does_not_flutter_at_the_edge():
+    readings = [1, 4.9, 5.1, 4.9, 5.1, 4.0, 3.1, 2.9, 3.5, 5.0]
+    assert alarm_states(readings, on=5.0, off=3.0) == [
+        False, False, True, True, True, True, True, False, False, True]
+    flutter = [r >= 5.0 for r in readings]                          # a single threshold flips twice as often
+    flips = lambda xs: sum(a != b for a, b in zip(xs, xs[1:]))
+    assert flips(flutter) > flips(alarm_states(readings, on=5.0, off=3.0))
+    with pytest.raises(ValueError):
+        alarm_states(readings, on=3.0, off=5.0)

@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-717 tests as of this module set, at 100% statement coverage; all
+719 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2375,6 +2375,13 @@ below a tenth), so the drive needed drops by Q and its energy by Q²;
 fewest repeats keeping every response under it. Simulated with a matched
 filter, the planned whisper is found in over 97 % of trials and silence
 is mistaken for an answer in under 5 %.
+
+**The alarm loop.** When the house is on fire, waking is not gentle: a
+reading above a critical level drops the gentle plan for one hard pulse
+— the same total budget (kσ)² in a single touch, answered after one
+pulse instead of 1600, as hard as it must be. The state is binary
+(quiet / alarm) with hysteresis — on above one level, off only below a
+lower one — so it does not flutter at the edge.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
