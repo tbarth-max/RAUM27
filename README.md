@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-692 tests as of this module set, at 100% statement coverage; all
+699 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2295,6 +2295,25 @@ Written with factored denominators, 1/(1·2), 1/(2·3), 1/(3·4), … shows
 at a glance that each term is 1/n − 1/(n+1) and the sum is n/(n+1); the
 innermost gap 1/89 700 of the inverted circles is 1/(299·300) — patterns
 that the decimals 0.5, 0.1667, 0.0833 … and 0.0000111 keep invisible.
+
+## Module: `raum27.kaskade` — Take Out the Known, Mirror, Compare, Hand Over the Rest
+
+The automation cascade for a data stream that should not be touched by
+hand but cannot be fully automated. Each sample (x, y) is first matched
+against what is already known — proportional with a known factor
+(y = kx), inverse proportional (y = k/x), or a ratio built only from
+the circles of 2 and 3 (a 5 or 7 is a wall into another space). The same
+stream then runs mirrored, (x, y) → (1/x, 1/y), which keeps each
+pattern and inverts its factor. A sample is confirmed only when the
+original and the mirror name exactly matching patterns; everything else
+goes to the manual folder with its reason — new (fits nothing),
+explained on one side only (for instance a value that follows the
+*inverse* of a known factor), ambiguous (a point on two curves at once,
+such as (4/3, 1) on y = (4/3)/x whose mirror lies on y = (4/3)x), or
+zero (cannot be mirrored). Nothing is guessed, as in `abtastung`. In the
+test stream of 300 samples with 10 % from beyond the 2–3 walls, under a
+fifth reaches the manual folder, and every sample from beyond the walls
+is among them.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

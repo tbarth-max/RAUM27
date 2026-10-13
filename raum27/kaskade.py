@@ -1,0 +1,111 @@
+"""The automation cascade: take out what is known, mirror, compare, hand over only the rest.
+
+The procedure submitted: let the data stream run through; take out every
+sample that fits something already known -- a proportion, an inverse
+proportion, a ratio built from the known circles; run the same stream a
+second time mirrored (inverted); compare the two at the end of the
+cascade. What is left is a small delta, and only that goes to the folder
+for manual work.
+
+A sample is a pair (x, y) of exact numbers. The known patterns:
+
+- **proportional** with a known factor k: y = k x;
+- **inverse proportional** with a known factor k: y = k / x;
+- **a ratio of the known circles**: y / x reduces to p/q with every prime
+  of p and q among the allowed ones (default 2 and 3 -- the chains RAUM27
+  is built from; a 5 or a 7 is a wall into another space).
+
+Mirroring maps (x, y) to (1/x, 1/y). It keeps each pattern and inverts
+its factor: y = k x becomes 1/y = (1/k)(1/x), y = k/x becomes
+1/y = (1/k)/(1/x). A sample is **confirmed** only if it is explained in
+the original stream and its mirror is explained by exactly the mirrored
+pattern. Explained on one side only is suspicious; a point whose
+original and mirror name different patterns lies on two curves at once
+and is ambiguous; explained on neither side is new. All of these go to
+the manual folder with their reason -- nothing is guessed, as in
+``raum27.abtastung``. Zero cannot be mirrored and is always handed over.
+"""
+
+from fractions import Fraction
+
+
+def _exact(v):
+    if isinstance(v, bool) or not isinstance(v, (int, Fraction)):
+        raise TypeError("samples must be int or Fraction")
+    return Fraction(v)
+
+
+def _primes(n):
+    n, out, p = abs(n), set(), 2
+    while p * p <= n:
+        while n % p == 0:
+            out.add(p)
+            n //= p
+        p += 1
+    if n > 1:
+        out.add(n)
+    return out
+
+
+def known_circle_ratio(x, y, allowed=(2, 3)):
+    """y / x as p/q if all primes of p and q are allowed, else None."""
+    if x == 0 or y == 0:
+        return None
+    r = Fraction(y) / Fraction(x)
+    if _primes(r.numerator) | _primes(r.denominator) <= set(allowed):
+        return r
+    return None
+
+
+def explain(x, y, factors, allowed=(2, 3)):
+    """Which known pattern explains (x, y): ('prop', k), ('inv', k), ('circle', r) or None."""
+    for k in factors:
+        if y == k * x:
+            return ("prop", k)
+    for k in factors:
+        if x != 0 and y == k / x:
+            return ("inv", k)
+    r = known_circle_ratio(x, y, allowed)
+    if r is not None:
+        return ("circle", r)
+    return None
+
+
+def _mirror_of(pattern):
+    kind, k = pattern
+    return (kind, 1 / k)
+
+
+def cascade(samples, factors, allowed=(2, 3)):
+    """Run the stream and its mirror; return (confirmed, manual).
+
+    ``confirmed`` holds (sample, pattern); ``manual`` holds (sample, reason).
+    """
+    factors = [_exact(k) for k in factors]
+    mirrored_factors = factors + [1 / k for k in factors if k != 0]
+    confirmed, manual = [], []
+    for x, y in samples:
+        x, y = _exact(x), _exact(y)
+        if x == 0 or y == 0:
+            manual.append(((x, y), "zero cannot be mirrored"))
+            continue
+        here = explain(x, y, factors, allowed)
+        there = explain(1 / x, 1 / y, mirrored_factors, allowed)
+        if here is None and there is None:
+            manual.append(((x, y), "new: fits no known pattern"))
+        elif here is None or there is None:
+            manual.append(((x, y), "explained on one side only"))
+        elif here[0] == "circle" or there == _mirror_of(here):
+            confirmed.append(((x, y), here))
+        else:
+            manual.append(((x, y), "ambiguous: original and mirror name different patterns"))
+    return confirmed, manual
+
+
+def manual_share(samples, factors, allowed=(2, 3)):
+    """Share of the stream that still needs a hand."""
+    confirmed, manual = cascade(samples, factors, allowed)
+    total = len(confirmed) + len(manual)
+    if total == 0:
+        raise ValueError("an empty stream has no share")
+    return Fraction(len(manual), total)
