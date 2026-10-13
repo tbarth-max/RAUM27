@@ -2602,13 +2602,21 @@ modelling rule chosen, not derived; **[open]** not yet decided or shown.
     outward and returns only as field compression; lasting states need
     equality on average; the energy layer is one-way while the
     information layer stays reversible. [set — README "Main Condition"]
-11. **Physical identities** (one drive for strong force and gravity,
+11. **Each part does its own job; supervision is passive, intervention
+    only in emergencies.** Agents compute on their own beat; a centre
+    checks one value; the stream is read as deltas against a hologram
+    without touching it; probing is a whisper at the natural frequency;
+    a binary alarm with hysteresis acts only above a critical level, and
+    whatever the system will not do it says, never silently. Data and
+    computation then scale with what changes, not with what exists.
+    [set — `abtastung`, `kaskade`, `konsens`, `sanftabtastung`]
+12. **Physical identities** (one drive for strong force and gravity,
     big bang as inversion, the field constant that closes from below,
     the frequency's own 6/8 pattern). [open — README "Open Questions"]
 
 What the chain claims and what it does not is therefore visible at a
-glance: items 1–9 are mathematics and engineering that hold, 10 is the
-rule the model adds, 11 is where it would have to meet experiment.
+glance: items 1–9 are mathematics and engineering that hold, 10 and 11 are the
+rules the model adds, 12 is where it would have to meet experiment.
 
 ## Main Condition (Set, Not Derived): The Inner Source Is Never Smaller
 
