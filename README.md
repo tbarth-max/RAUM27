@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-719 tests as of this module set, at 100% statement coverage; all
+723 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2382,6 +2382,21 @@ reading above a critical level drops the gentle plan for one hard pulse
 pulse instead of 1600, as hard as it must be. The state is binary
 (quiet / alarm) with hysteresis — on above one level, off only below a
 lower one — so it does not flutter at the edge.
+
+## Module: `raum27.grenzkreis` — Guard Only the Edge, Roll Back When It Tears
+
+If the system cannot break from inside — the 10 is out of reach — there
+is no need to watch everything: one last circle around it is enough. A
+state changes only by exact deltas; each step is tried against the one
+boundary rule (every value strictly inside the circle). A step that
+would cross it does not stand: the state stays at the last safe state
+and the event records the step and **where** the circle was crossed —
+reaching exactly 10 already counts. Every accepted step is undone
+exactly by its inverse, so the run rewinds to its start. Two limits are
+stated: guarding only the edge is complete only if every disturbance
+must cross the edge (a part of real hardware can still fail inside), and
+rolling back is exact for the computation and its record — physically
+it means returning to a safe state, not undoing what happened.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

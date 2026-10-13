@@ -471,6 +471,12 @@ from raum27.sanftabtastung import (
     alarm_states as sa_alarm_states,
     respond as sa_respond,
 )
+from raum27.grenzkreis import (
+    inside as gk_inside,
+    crossings as gk_crossings,
+    guarded_run as gk_guarded_run,
+    rewind as gk_rewind,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -893,6 +899,10 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "gk_inside",
+    "gk_crossings",
+    "gk_guarded_run",
+    "gk_rewind",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
