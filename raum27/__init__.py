@@ -477,6 +477,14 @@ from raum27.grenzkreis import (
     guarded_run as gk_guarded_run,
     rewind as gk_rewind,
 )
+from raum27.synchronlog import (
+    append as sl_append,
+    verify as sl_verify,
+    replay as sl_replay,
+    state_digest as sl_state_digest,
+    to_world as sl_to_world,
+    to_reality as sl_to_reality,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -899,6 +907,12 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "sl_append",
+    "sl_verify",
+    "sl_replay",
+    "sl_state_digest",
+    "sl_to_world",
+    "sl_to_reality",
     "gk_inside",
     "gk_crossings",
     "gk_guarded_run",

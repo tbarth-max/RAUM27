@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-723 tests as of this module set, at 100% statement coverage; all
+728 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2397,6 +2397,22 @@ stated: guarding only the edge is complete only if every disturbance
 must cross the edge (a part of real hardware can still fail inside), and
 rolling back is exact for the computation and its record — physically
 it means returning to a safe state, not undoing what happened.
+
+## Module: `raum27.synchronlog` — One Chained Delta Log, Lockstep Worlds, a Way Back to Reality
+
+The sensor cell hands over the deltas of the measured state; every
+simulation decides what to take over; real or game worlds stay causally
+consistent and computable back to reality. Three exact pieces: a
+**chained log** — each entry carries the hash of the one before, so
+changing any past delta breaks the chain at exactly that entry (the
+useful core of a blockchain; between parties who trust each other no
+mining is needed); **lockstep replay** — only deltas travel and every
+participant computes the state itself, which works only if all machines
+compute bit-identically: binary floats can drift ((0.1 + 0.2) + 0.3 ≠
+0.1 + (0.2 + 0.3)), exact fractions cannot, so the state fingerprints
+agree everywhere; and **worlds that map back** — a game world as reality
+seen through an invertible exact map per value (scale and shift), so
+every game state computes back to the real one exactly.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
