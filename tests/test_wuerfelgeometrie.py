@@ -13,6 +13,7 @@ from raum27.wuerfelgeometrie import (
     dual_exponent,
     element_orders,
     line_count_rank,
+    octant_cube_sharing,
     plane_area_ratio,
     shells,
     solid_volume_ratio,
@@ -74,3 +75,10 @@ def test_axes_plus_one_octant_direction_decide_every_body():
     assert views_are_ambiguous(AXIS_DIRECTIONS + DIAGONAL_DIRECTIONS[:1]) is None
     assert line_count_rank(AXIS_DIRECTIONS + DIAGONAL_DIRECTIONS[:1]) == 26
     assert line_count_rank(AXIS_DIRECTIONS + DIAGONAL_DIRECTIONS[:2]) == 27
+
+
+def test_eight_octant_cubes_meet_in_the_27_points_with_binary_sharing():
+    sharing = octant_cube_sharing()
+    assert sharing == {8: 1, 4: 6, 2: 12, 1: 8}
+    assert sum(sharing.values()) == 27
+    assert sum(k * v for k, v in sharing.items()) == 8 * 8      # every cube has its 8 corners

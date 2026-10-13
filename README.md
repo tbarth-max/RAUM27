@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-683 tests as of this module set, at 100% statement coverage; all
+684 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2151,6 +2151,13 @@ Rhombus : circle : square = **2 : π : 4**; octahedron : sphere : cube =
 sphere at 2, cube at ∞), duality p → p/(p − 1) swaps 1 and ∞ and has
 exactly one fixed point, **p = 2: the sphere is the self-dual middle**
 between the 6-system and the 8-system.
+
+The octants as cubes: eight unit cubes stacked 2 × 2 × 2 meet exactly in
+the 27 points, and each point is shared by 2^(coordinates in the middle)
+cubes — the centre by all **8**, the 6 face centres by **4**, the 12
+edge midpoints by **2**, the 8 outer corners by **1** (8 + 24 + 24 + 8 =
+64 = 8 cubes × 8 corners). The eight octant cubes rebuild the 27-point
+cube one level up: the architecture repeats itself.
 
 Counting the cells on every line through the 3×3×3 cube, the three axis
 directions alone are ambiguous — the two interpenetrating tetrahedra of

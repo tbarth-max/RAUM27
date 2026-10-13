@@ -174,3 +174,19 @@ def views_are_ambiguous(directions):
     plus = sorted(CELLS[i] for i in range(27) if pattern[i] == 1)
     minus = sorted(CELLS[i] for i in range(27) if pattern[i] == -1)
     return plus, minus
+
+
+def octant_cube_sharing():
+    """Eight unit cubes stacked 2x2x2: how many cubes share each of their corner points.
+
+    The corners are the 27 points {0, 1, 2}^3. A point is shared by
+    2^(number of its coordinates equal to 1) cubes: the centre by all 8,
+    the 6 face centres by 4, the 12 edge midpoints by 2, the 8 outer
+    corners by 1. Returns {cubes sharing: number of points}.
+    """
+    counts = {}
+    for point in product((0, 1, 2), repeat=3):
+        cubes = sum(1 for origin in product((0, 1), repeat=3)
+                    if all(o <= p <= o + 1 for o, p in zip(origin, point)))
+        counts[cubes] = counts.get(cubes, 0) + 1
+    return counts
