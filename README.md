@@ -2397,6 +2397,39 @@ that scope it computes and produces. What it does not do is predict
 measurements — no module claims to, and the audit does not test for it.
 That boundary is a scope statement, not a defect.
 
+## Main Condition (Set, Not Derived): The Inner Source Is Never Smaller
+
+Stated as the governing rule of the model: **E_inner ≥ E_outer.** The
+zero point is not empty but the reservoir of potential energy. Energy
+leaves it outward and spreads through the spheres; it never returns into
+the zero linearly, only through the field, as pressure that compresses
+the zero further (the crystal folding further). E_inner > E_outer is
+expansion, E_inner = E_outer is the standing state (state 1); E_outer >
+E_inner would crush the resonator.
+
+What follows from it, checked against conservation of energy:
+
+- In a closed system the strict inequality can only hold for a while:
+  if energy leaves and nothing returns, the source runs down. A lasting
+  state needs the outward flow to be paid back as compression work, i.e.
+  **equality on average** — the rule then fixes the *direction* of the
+  flow (from inside out), not a permanent surplus.
+- This is how a star works: the core is the denser, hotter reservoir,
+  energy flows only outward as radiation, gravity — a field — presses
+  back as compression, and when the fuel is spent the compression goes
+  on: carbon crystallises in white-dwarf cores (see the diamond entry
+  under "Refuted"). Outer pressure exceeding inner support is core
+  collapse.
+- One-way flow from hot to cold is irreversible (second law). The
+  model therefore has two layers that must not be confused: the
+  **information layer** (gear train, delta log) is exactly reversible;
+  the **energy layer** under this condition is one-way.
+
+Status: a modelling axiom with a clear physical counterpart, not a
+derivation. Open: the quantity that plays the role of the field constant
+that "closes from below", and how the compression of the zero is
+measured.
+
 ## Refuted — Claims That Were Checked and Do Not Hold
 
 Kept on purpose: a refutation is a result. Each entry names the check.
