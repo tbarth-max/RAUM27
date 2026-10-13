@@ -406,6 +406,16 @@ from raum27.kurvenkette import (
     PEAK_LINE_SLOPE as kk_PEAK_LINE_SLOPE,
     GOLDEN_COS as kk_GOLDEN_COS,
 )
+from raum27.gitter import (
+    max_frequency as gt_max_frequency,
+    dispersion as gt_dispersion,
+    ring_frequencies as gt_ring_frequencies,
+    decay_per_cell as gt_decay_per_cell,
+    passes as gt_passes,
+    max_energy_per_particle as gt_max_energy_per_particle,
+    structure_holds as gt_structure_holds,
+    LINDEMANN as gt_LINDEMANN,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -828,6 +838,14 @@ __all__ = [
     "pw_unpack",
     "pw_walk",
     "worst_heading_error",
+    "gt_max_frequency",
+    "gt_dispersion",
+    "gt_ring_frequencies",
+    "gt_decay_per_cell",
+    "gt_passes",
+    "gt_max_energy_per_particle",
+    "gt_structure_holds",
+    "gt_LINDEMANN",
     "wg_shells",
     "wg_cube_symmetries",
     "wg_element_orders",

@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-672 tests as of this module set, at 100% statement coverage; all
+677 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2221,6 +2221,25 @@ the forced axis (hairy ball theorem, indices summing to 2); a torus
 carries a flow with no zero. A winding on the torus with ratio 3 : 4
 closes; with 1 : √2 it never closes and comes ever nearer to its start.
 
+## Module: `raum27.gitter` — The Lattice as Carrier: Band Limit and Structure Guard
+
+The zero point as the nucleus of a crystal: expansion is crystal growth,
+compression is crystal flow — energy handed on as lattice waves, charging
+every particle without dissolving the structure. For a chain of masses
+`m` and springs `k`: a wave of wavenumber q has frequency
+2√(k/m)·|sin(qa/2)|; **nothing above ω_max = 2√(k/m) travels** (a ring
+of N masses has exactly the frequencies 2√(k/m)·|sin(πn/N)|, checked
+against the eigenvalues). Driven above the band, the amplitude falls per
+cell by |b| − √(b² − 1), b = 1 − mω²/(2k): the lattice reflects instead
+of absorbing. The structure guard is Lindemann's criterion — a crystal
+melts when its atoms swing by about a tenth of their spacing — giving
+the largest energy per particle E_max = mω²(La)²/2: **the inner energy
+must stay below the structure constant**, and reaching it is already too
+much. Real counterparts: nucleation, phonons, dislocation glide (crystals
+flow without melting), work hardening and dynamic recrystallisation (new
+nuclei out of deformation); diamond has one of the highest band limits
+of any solid.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2396,6 +2415,55 @@ geometry of the cube and the structures derived from it, and inside
 that scope it computes and produces. What it does not do is predict
 measurements — no module claims to, and the audit does not test for it.
 That boundary is a scope statement, not a defect.
+
+## Thesis Model — The Whole Chain in One Line of Thought
+
+Status marks: **[checked]** computed and pinned by tests; **[set]** a
+modelling rule chosen, not derived; **[open]** not yet decided or shown.
+
+1. **Structure first.** Each axis has three states; three axes give the
+   27 cells, 1 + 6 + 12 + 8 at squared distances 0–3. Reflection gives 8,
+   axis exchange 6, together the 48 symmetries. [checked —
+   `wuerfelgeometrie`]
+2. **Six measure, eight check.** The six axis points determine a linear
+   deformation; the eight corners predict themselves and expose what is
+   nonlinear; as sensors, 6 + 8 together resolve a field fully to second
+   order where neither alone does. [checked — `verzerrung`, `messnetz`]
+3. **The sphere is the middle.** Octahedron (6) inside, cube (8)
+   outside, sphere the self-dual fixed point between them; 1 : π : 6.
+   [checked — `wuerfelgeometrie`]
+4. **Inversion at radius 1 is the negative.** r → 1/r, an exact
+   involution; frequency ↔ wavelength swap lcm and gcd; only a geometric
+   ladder maps onto itself; 0 and ∞ are the poles of the number sphere.
+   [checked — `schalenleiter`, `rueckprojektion`]
+5. **Bounded wheels, unbounded count.** Nine positions per wheel, the
+   tenth click turns the next (duplex trigger; hook zero gives 9, 99,
+   999); every click reversible; nine wheels hold 300 000 000. [checked —
+   `zahnwerk`]
+6. **States, not numbers.** A path is a word; a step is a wavelength
+   dx = v/f recorded as 1 + 6 + 8 bits; a scan stores only deltas
+   against the hologram and takes over only unique patterns. [checked —
+   `pfadwort`, `zustandshologramm`, `abtastung`]
+7. **Arcs instead of corners.** The bending line from chained arcs is
+   exact at every node with three readings per piece. [checked —
+   `biegelinie`]
+8. **Measurement lives in ratios.** A hub reads the web only through
+   several threads against a reference; 90° is found from equal pole
+   distances or a still energy sum. [checked — `messnetz`]
+9. **The lattice carries, below its limits.** Energy travels as lattice
+   waves up to ω_max and stays crystalline below the Lindemann energy.
+   [checked — `gitter`]
+10. **The main condition.** E_inner ≥ E_outer: energy leaves the zero
+    outward and returns only as field compression; lasting states need
+    equality on average; the energy layer is one-way while the
+    information layer stays reversible. [set — README "Main Condition"]
+11. **Physical identities** (one drive for strong force and gravity,
+    big bang as inversion, the field constant that closes from below,
+    the frequency's own 6/8 pattern). [open — README "Open Questions"]
+
+What the chain claims and what it does not is therefore visible at a
+glance: items 1–9 are mathematics and engineering that hold, 10 is the
+rule the model adds, 11 is where it would have to meet experiment.
 
 ## Main Condition (Set, Not Derived): The Inner Source Is Never Smaller
 
