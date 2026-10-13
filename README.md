@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-688 tests as of this module set, at 100% statement coverage; all
+692 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2281,6 +2281,20 @@ formulas: in λ·sin(16x/9λ) the two λ cannot be cancelled — the sine is
 not a product — but writing u = x/λ and y = Y/λ turns the whole family
 into the single curve y = sin(16u/9). Simplify by choosing the right
 ratios first, then compute once.
+
+**Denominator circles — look before computing.** A denominator n is a
+circle of n raster points; the numerator is the position in the beat,
+n/n = 1 closes the turn. Circle m lies entirely on circle n exactly when
+m divides n, so a round circle mostly repeats smaller ones: circle 12
+has 12 points, only 4 of them new (1/12, 5/12, 7/12, 11/12 — Euler's φ),
+while a prime circle such as 11 brings 10 new points and connects
+nothing. The 6- and 8-systems meet on circle 24 = lcm(6, 8); circles
+1–9 together hold 28 positions. Cancelling hides which circle a point
+came from, so the layer keeps it: `2/6 (circle 6) = 1/3 (circle 3)`.
+Written with factored denominators, 1/(1·2), 1/(2·3), 1/(3·4), … shows
+at a glance that each term is 1/n − 1/(n+1) and the sum is n/(n+1); the
+innermost gap 1/89 700 of the inverted circles is 1/(299·300) — patterns
+that the decimals 0.5, 0.1667, 0.0833 … and 0.0000111 keep invisible.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
