@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-736 tests as of this module set, at 100% statement coverage; all
+748 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2452,6 +2452,54 @@ of 2026-10-13.
   same path with L and R swapped (inversion = mirror). `from_path` builds
   the fraction back with additions only.
 
+## Module: `raum27.wandtensor` — The Wall Tensor Is the Exact Step for Linear Curvature
+
+From `raum27_wandneigung_tensor.py`, checked in exact fractions. T(DX) =
+[[2/6 DX², 1/6 DX²], [1/2 DX, 1/2 DX]] acting on (f_start, f_end) is the
+exact step of a bending line whose curvature is linear on the piece:
+w' = w + DX·θ + DX²(2f₀ + f₁)/6, θ' = θ + DX(f₀ + f₁)/2. det T = DX³/12
+(1/6144 at DX = 1/8), so two successive states give both curvatures back.
+
+- **Cantilever with end load** (linear curvature): error **0** at all 8 nodes.
+- **Uniform load** (quadratic curvature): error **1/7680** at the end with
+  8 pieces. The middle reading of `biegelinie.three_point_chain` makes it 0.
+  "Random error off" holds for linear curvature only.
+- **Nine fractions 1 − k/9** as a ramp with DX = 1/9: the denominators run
+  2187, 2187, 81, 2187, 2187, 81, 2187, 2187, 3, and w ends at exactly 1/3.
+- **Left out:** the "zero-layer contact contract". Built from the tensor,
+  its condition holds by algebra for every input. It is part of the trust
+  layer, which waits for the first trial run.
+
+Also checked from the same folder: in `holomorphic_wand_tensor.py`, the coupled
+energy ratio is k/m for every state, not a measurement. The quadrant labels
+Y1 … Y4 are shifted by 90°: "Y1 = 90°" is still unrotated. In
+`raum27_pendel_fraktal_bruchnetz.py`, the digit roots of 2ᵏ (1-2-4-8-7-5)
+and 5ᵏ (the same cycle backwards) multiply to digit root 1 on every
+step, because 2ᵏ·5ᵏ = 10ᵏ (`fundamentalbereich.outer_inner_mirror`).
+
+## Module: `raum27.sprachprotokoll` — Six Channels, a 6-Bit Change Mask, ΔX Leading
+
+The six cube faces are six channels: concept, relation, grammar, event,
+prosody and control. A frame is a 6-bit **change mask** followed by a
+4-bit value for each changed channel. Unchanged channels keep their
+current state. `000000` is a complete frame and means "nothing changed".
+
+- **Exact cost:** 6 + 4k bits for k changed channels, against 24 for six
+  fixed fields. The mask wins for k ≤ 4 (22 bits at most) and loses for
+  k = 5 (26) and k = 6 (30). If each channel changes with probability p,
+  the mean is 6 + 24p, so it pays off exactly when p < 3/4. At 1.5 changed
+  channels per step (p = 1/4) the mean is 12 bits.
+- **ΔT = ΔX / v**, with v fixed per medium and at most 3·10⁸ m/s. 33 m of
+  sound at 330 m/s is exactly 1/10 s. Processing time is a separate value
+  per agent (comfort band 200–500 ms) and is never derived from ΔX.
+- **Synchronising to the slower side** is one-way: the faster answer is
+  buffered by the difference, and the slower one cannot be sped up.
+  Control traffic uses prediction (x + v·latency) instead of delay.
+- **Open:** 16 values per channel is far too few for real vocabulary. The
+  shared dictionary, references and the benchmark against UTF-8 on real
+  sentences are still missing. The integrity witness C′ (hash comparison)
+  waits, with the rest of the trust layer, for the first trial run.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2858,12 +2906,10 @@ move it forward.
     invertible world maps) is kept in the git history (commit "synchronlog:
     chained delta log, lockstep replay, worlds that map back") and can be
     restored from there.
-16. **Wall tensor, holomorphic wall tensor, pendulum fraction net.**
-    `sandbox_drei_instanzen_loop.py` and its two test files import
-    `raum27_wandneigung_tensor`, `holomorphic_wand_tensor` and
-    `raum27_pendel_fraktal_bruchnetz`, which are not in the folder. One
-    stated value checks out: det [[2/6 DX², 1/6 DX²], [1/2 DX, 1/2 DX]]
-    = DX³/12 = 1/6144 at DX = 1/8. The rest waits for the modules.
+16. **Sandbox three-instance loop as a whole run.** The three modules it
+    imports were found (13.10.) and checked (`wandtensor`; see there for the
+    holomorphic tensor and the fraction net). The loop itself needs numpy
+    and the language-model file and has not been run here.
 17. **Octahedron/polygon sieve as a stepping procedure on data**, and
     **pulsar timing data** as a test bed: the numbers are checked
     (`fundamentalbereich`), the run on data is not done.

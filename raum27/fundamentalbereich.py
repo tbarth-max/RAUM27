@@ -197,6 +197,22 @@ def cycle_mirrors():
     return additive, multiplicative
 
 
+def digital_root(n):
+    """Iterated digit sum 1..9 (0 for 0)."""
+    n = abs(int(n))
+    return 0 if n == 0 else 1 + (n - 1) % 9
+
+
+def outer_inner_mirror(steps=6):
+    """Outside 2^k against inside 1/2^k = 5^k / 10^k: digit roots and their product.
+
+    2^k runs 1-2-4-8-7-5, 5^k the same cycle backwards; because
+    2^k * 5^k = 10^k, the product always has digit root 1.
+    """
+    return [(digital_root(2 ** k), digital_root(5 ** k), digital_root(digital_root(2 ** k) * digital_root(5 ** k)))
+            for k in range(steps)]
+
+
 # --- Stern-Brocot tree --------------------------------------------------------
 
 def stern_brocot_path(x):

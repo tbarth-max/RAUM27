@@ -137,3 +137,12 @@ def test_stern_brocot_by_mediants():
         stern_brocot_path(0)
     with pytest.raises(ValueError):
         from_path("LX")
+
+
+def test_outer_and_inner_digit_roots_mirror_with_product_one():
+    from raum27.fundamentalbereich import digital_root, outer_inner_mirror
+    rows = outer_inner_mirror()
+    assert [a for a, _, _ in rows] == [1, 2, 4, 8, 7, 5]
+    assert [b for _, b, _ in rows] == [1, 5, 7, 8, 4, 2]
+    assert all(p == 1 for *_, p in outer_inner_mirror(24))
+    assert digital_root(0) == 0 and digital_root(999) == 9
