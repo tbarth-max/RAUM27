@@ -82,3 +82,21 @@ def test_turning_about_the_diagonal_meets_six_faces_and_keeps_six_symmetries():
     dot = sum(x * y for x, y in zip(a, b))
     norm2 = sum(x * x for x in a)
     assert dot / norm2 == Fraction(1, 2)
+
+
+def test_raum27_points_spin_like_a_sphere_and_imbalance_grows_with_speed():
+    from itertools import product
+    from raum27.eckenruecklauf import imbalance_force, inertia_tensor, is_isotropic
+    h = Fraction(9, 2)
+    corners = list(product((-h, h), repeat=3))
+    faces = [(h, 0, 0), (-h, 0, 0), (0, h, 0), (0, -h, 0), (0, 0, h), (0, 0, -h)]
+    grid27 = list(product((-h, 0, h), repeat=3))
+    tetra = [(h, h, h), (h, -h, -h), (-h, h, -h), (-h, -h, h)]
+    for pts in (corners, faces, grid27, tetra, corners + faces + [(0, 0, 0)]):
+        assert is_isotropic(inertia_tensor(pts))
+    assert inertia_tensor(corners)[0][0] == 8 * (h * h + h * h)
+    assert not is_isotropic(inertia_tensor(faces + [(h, h, 0)]))      # one extra mass breaks it
+    assert not is_isotropic(inertia_tensor([(h, 0, 0), (-h, 0, 0)]))
+    assert imbalance_force(1, Fraction(1, 100), 20) == 4              # m w^2 r
+    assert imbalance_force(1, Fraction(1, 100), 40) == 16             # twice as fast, four times the pull
+    assert imbalance_force(1, 0, 1000) == 0                           # centred: no pull at any speed

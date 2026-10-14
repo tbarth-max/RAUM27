@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-780 tests as of this module set, at 100% statement coverage; all
+781 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2677,6 +2677,15 @@ The corner lies on the outer sphere and is the 10.
   permutations of the coordinate axes, i.e. the 6 orders of XY, XZ, XT
   (XY·XZ·XT, XY·XT·XZ, XZ·XY·XT, XZ·XT·XY, XT·XY·XZ, XT·XZ·XY). Up and
   down lie on one axis line and therefore share one plane.
+- **The balance that can spin.** Stopped, it weighs (statics, `waage`).
+  Spinning, every imbalance shows as a pull m·ω²·r: twice the speed gives
+  four times the pull, and a centred mass gives none at any speed. Fast
+  spinning does not make an unbalanced body symmetric. It only looks
+  symmetric to a slow eye, and mechanically it shakes harder. What it
+  does give is a stiff axis (gyroscope). The RAUM27 point sets themselves
+  have an isotropic inertia tensor: the 8 corners, the 6 faces, the full
+  27, the 4 tetrahedron corners and 1+6+8. About every axis through the
+  centre they turn like a sphere. One extra mass breaks this.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

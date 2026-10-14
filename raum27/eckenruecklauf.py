@@ -105,3 +105,40 @@ def split_along_axis(point, axis=DIAGONAL):
     dot = sum(p * a for p, a in zip(point, axis))
     along2 = dot * dot / sum(a * a for a in axis)
     return along2, sum(p * p for p in point) - along2
+
+
+# --- the balance that can spin ------------------------------------------------
+#
+# Stopped, a balance weighs (statics). Spinning, it shows every imbalance
+# as a force that grows with the square of the speed: an extra mass m at
+# distance r from the axis pulls with m * omega^2 * r. Fast spinning does
+# not make an unbalanced body symmetric -- it only looks symmetric to a
+# slow eye; mechanically it shakes harder. What it does give is a stiff
+# axis (gyroscope). The RAUM27 point sets themselves -- 8 corners, 6 faces,
+# the full 27 -- have an isotropic inertia tensor: about every axis
+# through the centre they turn like a sphere.
+
+
+def inertia_tensor(points, mass=1):
+    """Inertia tensor of equal point masses about the origin, exact."""
+    (mass,) = _exact(mass)
+    pts = [_exact(*p) for p in points]
+    t = [[Fraction(0)] * 3 for _ in range(3)]
+    for p in pts:
+        r2 = sum(c * c for c in p)
+        for i in range(3):
+            for j in range(3):
+                t[i][j] += mass * ((r2 if i == j else 0) - p[i] * p[j])
+    return t
+
+
+def is_isotropic(tensor):
+    """Same moment about every axis: diagonal and all diagonal entries equal."""
+    d = tensor[0][0]
+    return all(tensor[i][j] == (d if i == j else 0) for i in range(3) for j in range(3))
+
+
+def imbalance_force(mass, radius, omega):
+    """Centrifugal pull of an off-axis mass: m * omega^2 * r."""
+    m, r, w = _exact(mass, radius, omega)
+    return m * w * w * r

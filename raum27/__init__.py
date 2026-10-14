@@ -589,6 +589,9 @@ from raum27.eckenruecklauf import (
     opposite_digit_node as er_opposite_digit_node,
     axis_keepers as er_axis_keepers,
     split_along_axis as er_split_along_axis,
+    inertia_tensor as er_inertia_tensor,
+    is_isotropic as er_is_isotropic,
+    imbalance_force as er_imbalance_force,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1111,6 +1114,9 @@ __all__ = [
     "er_opposite_digit_node",
     "er_axis_keepers",
     "er_split_along_axis",
+    "er_inertia_tensor",
+    "er_is_isotropic",
+    "er_imbalance_force",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
