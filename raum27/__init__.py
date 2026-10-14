@@ -569,6 +569,14 @@ from raum27.schallgrenze import (
     first_x_beyond_c as sg_first_x_beyond_c,
     work_at_constant_pressure as sg_work_at_constant_pressure,
 )
+from raum27.stapelplan import (
+    part_times as sp2_part_times,
+    makespan as sp2_makespan,
+    batch_interval as sp2_batch_interval,
+    bottleneck as sp2_bottleneck,
+    most_parts as sp2_most_parts,
+    seconds_per_item as sp2_seconds_per_item,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -1073,6 +1081,12 @@ __all__ = [
     "sg_expansion_cap_cubed",
     "sg_first_x_beyond_c",
     "sg_work_at_constant_pressure",
+    "sp2_part_times",
+    "sp2_makespan",
+    "sp2_batch_interval",
+    "sp2_bottleneck",
+    "sp2_most_parts",
+    "sp2_seconds_per_item",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",

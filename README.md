@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-768 tests as of this module set, at 100% statement coverage; all
+773 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2608,6 +2608,26 @@ the path as x ↔ 1/x" in exact squares:
   the main condition E_inner ≥ E_outer, now with a number.
 - **A real gas does not do this by itself.** At fixed temperature K = γp
   falls with ρ and c_s stays the same.
+
+## Module: `raum27.stapelplan` — The Batch Cascade Between Agents
+
+Stage i needs wᵢ hours per full batch (e.g. 10 000 sheets) with mᵢ
+parallel instances. Split into k equal parts, the chain is a flow line:
+tᵢ = wᵢ/(mᵢk) and makespan = Σtᵢ + (k − 1)·max tᵢ, exactly.
+
+- **One whole batch through five 4 h stages takes 20 h** (N·Δ). Split into
+  4 parts it takes 8 h, into 10 parts 5.6 h. The next stage starts as soon
+  as the first part is ready.
+- **The slowest stage sets the pace.** Steady state is one batch every
+  max(wᵢ/mᵢ). A second instance helps only at the bottleneck: an 8 h
+  stage with 2 instances brings the chain back to 4 h per batch; a second
+  instance anywhere else gains nothing.
+- **Wake intervals cost time.** Agents that wake on their own schedule
+  add up to one wake interval per hand-over unless their wake times are
+  staggered (8 h → 12 h for 4 parts with hourly wakes). A part shorter
+  than the wake interval only waits, so with hourly wakes and 4 h stages
+  k ≤ 4. A continuously running runner can split much finer.
+- 10 000 sheets in 4 h is 1.44 s per sheet.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
