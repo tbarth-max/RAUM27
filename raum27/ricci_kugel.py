@@ -62,3 +62,30 @@ def surgery_time(r0_squared, resolution, n=3):
 def max_curvature(resolution):
     """Largest curvature 1/r^2 the stopped flow ever shows: N^2."""
     return Fraction(resolution * resolution)
+
+
+# --- many zero points, one common centre -----------------------------------------
+#
+# Every singularity has its own place p and its own scale r (the radius
+# where the flow was stopped). Moved to the origin and divided by r, the
+# neighbourhoods of all of them lie on top of each other: near very high
+# curvature the flow only knows a few standard shapes (Perelman's canonical
+# neighbourhoods -- a shrinking round sphere, a neck). The pair (p, r) is
+# kept as the address, so the step is undone exactly; what does not match
+# the standard shape after normalising is the delta that remains.
+
+
+def to_common_centre(points, place, scale):
+    """Move a neighbourhood so its zero point is the origin and its radius is 1."""
+    place = _exact(*place)
+    (scale,) = _exact(scale)
+    if scale <= 0:
+        raise ValueError("scale must be positive")
+    return [tuple((c - p) / scale for c, p in zip(_exact(*q), place)) for q in points]
+
+
+def from_common_centre(points, place, scale):
+    """Undo it: the address (place, scale) gives every point back exactly."""
+    place = _exact(*place)
+    (scale,) = _exact(scale)
+    return [tuple(c * scale + p for c, p in zip(_exact(*q), place)) for q in points]

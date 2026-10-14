@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-786 tests as of this module set, at 100% statement coverage; all
+787 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2731,6 +2731,16 @@ exact in r²: r²(t) = r₀² − 2(n − 1)t.
   singularity replaced at a positive scale. It proves nothing new. The
   conjecture is proved, by Perelman, for every simply connected closed
   3-manifold, not only for round spheres.
+- **Many zero points, one common centre.** Each singularity has its own
+  place p and its own scale r. Moved to the origin and divided by r, all
+  their neighbourhoods lie on top of each other. Near very high curvature
+  the flow only knows a few standard shapes (Perelman's canonical
+  neighbourhoods: a shrinking sphere, a neck). The address (p, r) is
+  kept, so every point comes back exactly. Whatever still differs from
+  the standard shape after normalising is the delta that remains (a
+  bump of 1/9 stays visible as 1/9). Caution: this normalises per
+  neighbourhood. Physically merging distinct singularities into one
+  point would erase the distinction between them.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

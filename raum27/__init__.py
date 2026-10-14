@@ -603,6 +603,8 @@ from raum27.ricci_kugel import (
     extinction_time as rk_extinction_time,
     surgery_time as rk_surgery_time,
     max_curvature as rk_max_curvature,
+    to_common_centre as rk_to_common_centre,
+    from_common_centre as rk_from_common_centre,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1137,6 +1139,8 @@ __all__ = [
     "rk_extinction_time",
     "rk_surgery_time",
     "rk_max_curvature",
+    "rk_to_common_centre",
+    "rk_from_common_centre",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
