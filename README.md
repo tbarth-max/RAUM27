@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-757 tests as of this module set, at 100% statement coverage; all
+761 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2541,6 +2541,26 @@ diagrams".
   even if every relay checks its own hand-over. Only a check between the
   two ends covers the whole way (the end-to-end argument). The check
   itself belongs to the trust layer and waits for the first trial run.
+
+## Module: `raum27.nennerordnung` — Compare Patterns First, Compute Last
+
+- **Every root is a power with a fractional exponent.** Anything built
+  by multiplying, dividing and taking roots is a product of primes with
+  rational exponents (√2 = 2^(1/2), √12 = 2·3^(1/2)), and that form is
+  unique. Equality is exact: √2·√8 = 2^(1/2 + 3/2) = 4. Order is exact
+  too, without evaluating a decimal: raise both sides to the lcm of the
+  exponent denominators. √2 < ∛3 because 2³ = 8 < 9 = 3². **Limit:** a sum
+  of different roots (√2 + √3) has no such form and stays an open
+  expression.
+- **Every ratio is kept as Z1 : Z2.** On the common denominator the
+  numerators compare directly (1:3, 2:6, 1:4, 3:4, 5:12 over 12 →
+  4, 4, 3, 9, 5). Grouped by the reduced denominator, each ratio sits on
+  its circle, and 1:3 and 2:6 stay as two origins of one point. That
+  gives **two** orderings, not one: which circle (the denominator, i.e.
+  the resolution) and where on it (the numerator, i.e. the position).
+- **Units out, then time out.** A length over a reference length is a
+  pure ratio. Inside, time is kept as a path s = v·t, and only the output
+  turns it back with the output speed: t = s / v_out.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

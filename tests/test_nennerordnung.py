@@ -1,0 +1,55 @@
+"""Tests for raum27.nennerordnung."""
+
+from fractions import Fraction
+
+import pytest
+
+from raum27.nennerordnung import (
+    Power, by_denominator, on_common_denominator, path_from_time, time_from_path, unit_free,
+)
+
+
+def test_roots_as_fractional_exponents_multiply_exactly():
+    r2, r8 = Power.of(2).root(2), Power.of(8).root(2)
+    assert repr(r2) == "2^(1/2)"
+    assert (r2 * r8).rational() == 4
+    assert (Power.of(Fraction(9, 4)).root(2)).rational() == Fraction(3, 2)
+    assert Power.of(2).root(2).rational() is None
+    assert Power.of(12).root(2) == Power.of(2) * Power.of(3).root(2)      # sqrt 12 = 2 sqrt 3
+    assert (Power.of(6) / Power.of(6)).rational() == 1 and repr(Power.of(1)) == "1"
+    assert repr(Power.of(Fraction(4, 3)).root(3)) == "2^(2/3)·3^(-1/3)"
+    assert len({Power.of(4).root(2), Power.of(2)}) == 1
+    with pytest.raises(ValueError):
+        Power.of(0)
+
+
+def test_order_without_evaluating_a_root():
+    assert Power.of(2).root(2) < Power.of(3).root(3)                       # 8 < 9 after the 6th power
+    assert Power.of(3).root(3) < Power.of(Fraction(3, 2))
+    assert not Power.of(2).root(2) < Power.of(2).root(2)
+    assert Power.of(2) ** Fraction(1, 2) == Power.of(2).root(2)
+
+
+def test_common_denominator_and_circles():
+    pairs = [(1, 3), (2, 6), (1, 4), (3, 4), (5, 12), (-1, -2)]
+    n, nums = on_common_denominator(pairs)
+    assert n == 12 and nums == [4, 4, 3, 9, 5, 6]
+    groups = by_denominator(pairs)
+    assert list(groups) == [2, 3, 4, 12]
+    assert groups[3] == [(1, 3), (2, 6)]                                   # same point, both origins kept
+    assert groups[4] == [(1, 4), (3, 4)]
+    with pytest.raises(ZeroDivisionError):
+        on_common_denominator([(1, 0)])
+
+
+def test_units_out_and_time_as_path():
+    assert unit_free(Fraction(33, 10), Fraction(33, 100)) == 10
+    s = path_from_time(Fraction(1, 10), 330)
+    assert s == 33 and time_from_path(s, 330) == Fraction(1, 10)
+    assert time_from_path(s, 300000000) == Fraction(11, 100000000)
+    with pytest.raises(ZeroDivisionError):
+        unit_free(1, 0)
+    with pytest.raises(ValueError):
+        time_from_path(1, 0)
+    with pytest.raises(TypeError):
+        unit_free(0.5, 1)

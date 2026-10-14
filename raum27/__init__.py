@@ -546,6 +546,14 @@ from raum27.zeitachse import (
     rotation as za_rotation,
     turn as za_turn,
 )
+from raum27.nennerordnung import (
+    Power as no_Power,
+    on_common_denominator as no_on_common_denominator,
+    by_denominator as no_by_denominator,
+    unit_free as no_unit_free,
+    path_from_time as no_path_from_time,
+    time_from_path as no_time_from_path,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -1031,6 +1039,12 @@ __all__ = [
     "za_diagonal_cosines_squared",
     "za_rotation",
     "za_turn",
+    "no_Power",
+    "no_on_common_denominator",
+    "no_by_denominator",
+    "no_unit_free",
+    "no_path_from_time",
+    "no_time_from_path",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
