@@ -160,3 +160,40 @@ def across_axis(point, axis=DIAGONAL):
     axis = _exact(*axis)
     k = sum(p * a for p, a in zip(point, axis)) / sum(a * a for a in axis)
     return tuple(p - k * a for p, a in zip(point, axis))
+
+
+# --- locating an enclosed anomaly on the 6 + 8 axes -------------------------------
+#
+# An anomaly is enclosed by a small sphere (centre p). Its distances to the
+# 3 coordinate axis lines (the 6 face directions) and to the 4 space
+# diagonals (the 8 corner directions) are exact in squares, and they come
+# with two built-in checks: the 3 add up to 2|p|^2, the 4 add up to
+# (8/3)|p|^2. A hit on the 9/2 sphere fixes the scale: everything is
+# multiplied by (9/2)/(distance of the hit), and the anomaly reads its
+# X, Y, Z, T coordinates on the four tetrahedral axes (summing to 0).
+
+COORDINATE_AXES = ((1, 0, 0), (0, 1, 0), (0, 0, 1))
+DIAGONAL_AXES = ((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1))   # X, Y, Z, T
+NINE_HALVES = Fraction(9, 2)
+
+
+def axis_distances_squared(point):
+    """(squared distances to the 3 coordinate axes, to the 4 diagonal axes)."""
+    return ([split_along_axis(point, a)[1] for a in COORDINATE_AXES],
+            [split_along_axis(point, a)[1] for a in DIAGONAL_AXES])
+
+
+def scale_to_nine_halves(point, hit_distance):
+    """Scale so that the hit lands on the 9/2 sphere; returns the scaled point."""
+    point = _exact(*point)
+    (hit_distance,) = _exact(hit_distance)
+    if hit_distance <= 0:
+        raise ValueError("the hit must lie away from the centre")
+    s = NINE_HALVES / hit_distance
+    return tuple(s * c for c in point)
+
+
+def xyzt_readings(point):
+    """Readings of a point on the four tetrahedral axes X, Y, Z, T (they add up to 0)."""
+    point = _exact(*point)
+    return tuple(sum(p * a for p, a in zip(point, axis)) for axis in DIAGONAL_AXES)

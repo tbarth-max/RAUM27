@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-788 tests as of this module set, at 100% statement coverage; all
+789 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2713,6 +2713,15 @@ The corner lies on the outer sphere and is the 10.
   power form (`nennerordnung.Power`). Also checked: 8 = 2³ and 9 = 3² are
   the only neighbouring perfect powers below 10⁶ (Mihăilescu's theorem
   says: ever).
+- **Locating an enclosed anomaly on the 6 + 8 axes.** The squared
+  distances of its centre p to the 3 coordinate axes (6 face directions)
+  and to the 4 diagonals (8 corner directions) are exact, with two
+  built-in checks: the three add up to 2|p|² and the four to (8/3)|p|². A
+  hit on an axis at distance d sets the scale: multiply by (9/2)/d, and the
+  hit lands on the 9/2 sphere. The anomaly then reads its X, Y, Z, T
+  coordinates on the four tetrahedral axes, and the four readings add up
+  to 0. The plane in which the hit lies (XY, XZ or XT) follows from the
+  axis it was measured on.
 
 ## Module: `raum27.ricci_kugel` — The Sphere Under Ricci Flow, Stopped Before Radius 0
 

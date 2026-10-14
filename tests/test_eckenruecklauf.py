@@ -130,3 +130,20 @@ def test_eight_corners_seen_along_the_diagonal_are_a_hexagon_and_two_at_the_cent
     # 8 = 2^3 and 9 = 3^2: the only two neighbouring perfect powers (Catalan / Mihailescu)
     powers = sorted({b ** e for b in range(2, 40) for e in range(2, 12) if b ** e < 10 ** 6})
     assert [(a, b) for a, b in zip(powers, powers[1:]) if b - a == 1] == [(8, 9)]
+
+
+def test_enclosed_anomaly_located_on_six_plus_eight_axes_and_scaled_to_nine_halves():
+    from raum27.eckenruecklauf import axis_distances_squared, scale_to_nine_halves, xyzt_readings
+    p = (Fraction(1, 3), Fraction(-2, 3), Fraction(5, 7))
+    r2 = sum(c * c for c in p)
+    coord, diag = axis_distances_squared(p)
+    assert sum(coord) == 2 * r2                                       # check 1
+    assert sum(diag) == Fraction(8, 3) * r2                           # check 2
+    hit = Fraction(3, 2)                                              # the measured hit on an axis
+    q = scale_to_nine_halves(p, hit)
+    assert q == tuple(3 * c for c in p)                               # (9/2)/(3/2) = 3
+    x, y, z, t = xyzt_readings(q)
+    assert x + y + z + t == 0
+    assert scale_to_nine_halves((hit, 0, 0), hit) == (Fraction(9, 2), 0, 0)   # the hit itself lands on 9/2
+    with pytest.raises(ValueError):
+        scale_to_nine_halves(p, 0)

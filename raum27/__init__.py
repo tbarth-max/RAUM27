@@ -596,6 +596,9 @@ from raum27.eckenruecklauf import (
     imbalance_force as er_imbalance_force,
     deviation_from_sphere as er_deviation_from_sphere,
     across_axis as er_across_axis,
+    axis_distances_squared as er_axis_distances_squared,
+    scale_to_nine_halves as er_scale_to_nine_halves,
+    xyzt_readings as er_xyzt_readings,
 )
 from raum27.ricci_kugel import (
     shrink_rate as rk_shrink_rate,
@@ -1136,6 +1139,9 @@ __all__ = [
     "er_imbalance_force",
     "er_deviation_from_sphere",
     "er_across_axis",
+    "er_axis_distances_squared",
+    "er_scale_to_nine_halves",
+    "er_xyzt_readings",
     "rk_shrink_rate",
     "rk_radius_squared",
     "rk_extinction_time",
