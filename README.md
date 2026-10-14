@@ -3146,6 +3146,20 @@ Kept on purpose: a refutation is a result. Each entry names the check.
   stable below the limit."** The product of the two speeds is fixed, but
   the expanding side grows like x^(3/2) and passes c at x = 3446 for
   water (`schallgrenze`). The limit must be imposed, it does not follow.
+- **"The SPARC test is passed: the 4/3-deformed RAUM27 curve matches the
+  measured rotation curve to 1.43 %."** Recomputed, and every number in the
+  forwarded table is reproduced exactly. That shows what it compares:
+  (1) The "measured" column is not SPARC data. It is the McGaugh RAR
+  formula g_bar/(1 − e^(−√(g_bar/g₀))), applied to a model galaxy whose disk
+  mass is treated as spherical. (2) The "RAUM27" curve is
+  g = √(g_bar² + (4/3)·g_bar·g₀), i.e. the same √(g_bar·g₀) (MOND-type)
+  formula with g₀ replaced by (4/3)·g₀ = 1.6·10⁻¹⁰ m/s². The 4/3 acts as a
+  refitted constant, not a derived one. (3) At large radius the two
+  curves part: v⁴ → (4/3)·G·M·g₀ instead of G·M·g₀, so v ends up (4/3)^(1/4)
+  ≈ 7.5 % too high. That conflicts with the measured baryonic
+  Tully–Fisher relation. (4) The 0.17 % at r = (9/2)·R_d is the point where
+  two curves cross, and 4.5 kpc = "9/2" depends on the unit. A real test
+  needs the 175 SPARC rotation-curve files and has not been run.
 - **B3 / B4 resonance code.** Phases averaged arithmetically, not on the
   circle (359° and 1° average to 180°); `mirror_phases` never used;
   `route_signal` is a linear scan, not O(1).
