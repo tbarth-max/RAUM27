@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-789 tests as of this module set, at 100% statement coverage; all
+793 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2757,6 +2757,30 @@ exact in r²: r²(t) = r₀² − 2(n − 1)t.
   (T − t)/r² = 1/(2(n − 1)) at every moment (1/4 for the 3-sphere). Only
   what differs from that fixed picture moves, so again: reference state
   plus delta.
+
+## Module: `raum27.nullpunkt` — The Zero-Point System With Fixed Names
+
+One module with the public definition, so every instance uses the same
+names:
+
+| Name | Meaning |
+|---|---|
+| `SKALA` | 9/2: half of the axis-to-axis distance 9, the inner sphere |
+| `ZENTRUM` | (0, 0, 0): the common zero point (node 555) |
+| `FLAECHEN_6` | the 6 face directions |
+| `ECKEN_8` | the 8 corner directions |
+| `XYZT` | the 4 tetrahedral axes X, Y, Z, T, summing to 0 |
+| `Anomalie(ort, massstab, treffer)` | an enclosed zero point: place, radius of the enclosing sphere (> 0), distance of its hit on an axis |
+| `.normiert()` / `.xyzt()` / `.pruefung()` / `.zurueck()` | scaled to 9/2, read on X Y Z T, the three built-in checks, exact way back |
+| `wirkung(ursache)` | the effect: 180° opposite the cause through the centre (−p; on the grid d → 10 − d) |
+| `vergleiche(a, b)` | difference of two anomalies on X Y Z T |
+| `zeit_bei_ausgabe(weg, v)` | time only at the output: t = s / v |
+
+Inside, there is no time, only path and path marks. Cause (the state as
+it is) and effect sit opposite each other at equal distance, and the
+centre between them is the common zero point. Applying `wirkung` twice
+gives the cause back. In spacetime the counterpart is that the past
+and future light cones of an event touch only in the event itself.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
