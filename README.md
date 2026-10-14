@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-773 tests as of this module set, at 100% statement coverage; all
+778 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2628,6 +2628,28 @@ tᵢ = wᵢ/(mᵢk) and makespan = Σtᵢ + (k − 1)·max tᵢ, exactly.
   than the wake interval only waits, so with hourly wakes and 4 h stages
   k ≤ 4. A continuously running runner can split much finer.
 - 10 000 sheets in 4 h is 1.44 s per sheet.
+
+## Module: `raum27.eckenruecklauf` — The Corner Is the Ten That Is Never Reached
+
+Cube edge a = 9: inner sphere radius a/2 = 9/2 (the proportionality factor
+of the first cube), touching spheres r² = 81/4, 81/2 and 243/4 (1 : 2 : 3).
+The corner lies on the outer sphere and is the 10.
+
+- **From sphere to cube without a corner.** The p-ball |x|ᵖ+|y|ᵖ+|z|ᵖ = rᵖ
+  touches every face at r for every p and reaches along a diagonal to
+  r·3^(1/2 − 1/p). That is r at p = 2 (the sphere) and r/√3 at p = 1 (the
+  octahedron). It approaches r·√3, the corner, only as p → ∞. The order is
+  checked exactly with fractional exponents (`nennerordnung`). For every
+  finite p the corner is rounded. A corner radius of 0, the sharp 90°
+  where a real structure cracks, is refused.
+- **Approaching without arriving.** After n pushes, each covering the
+  share 1 − q of what is left, the rest is gap·qⁿ. It is never 0, and
+  the pushes never add up to more than the gap.
+- **The return comes out of the corner.** Reflection on three
+  perpendicular faces turns every direction v into −v: the corner
+  reflector, as on the Moon. On the grid this is the opposite pole
+  d → 10 − d (XYZ + opposite = 1110). Whatever is sent toward a corner
+  comes straight back.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

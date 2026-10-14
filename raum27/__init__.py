@@ -577,6 +577,15 @@ from raum27.stapelplan import (
     most_parts as sp2_most_parts,
     seconds_per_item as sp2_seconds_per_item,
 )
+from raum27.eckenruecklauf import (
+    touching_radii_squared as er_touching_radii_squared,
+    diagonal_reach as er_diagonal_reach,
+    reaches_corner as er_reaches_corner,
+    corner_radius as er_corner_radius,
+    remaining_gaps as er_remaining_gaps,
+    corner_reflect as er_corner_reflect,
+    opposite_digit_node as er_opposite_digit_node,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -1087,6 +1096,13 @@ __all__ = [
     "sp2_bottleneck",
     "sp2_most_parts",
     "sp2_seconds_per_item",
+    "er_touching_radii_squared",
+    "er_diagonal_reach",
+    "er_reaches_corner",
+    "er_corner_radius",
+    "er_remaining_gaps",
+    "er_corner_reflect",
+    "er_opposite_digit_node",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
