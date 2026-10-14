@@ -553,6 +553,9 @@ from raum27.nennerordnung import (
     unit_free as no_unit_free,
     path_from_time as no_path_from_time,
     time_from_path as no_time_from_path,
+    in_world as no_in_world,
+    to_metres as no_to_metres,
+    light_time as no_light_time,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1045,6 +1048,9 @@ __all__ = [
     "no_unit_free",
     "no_path_from_time",
     "no_time_from_path",
+    "no_in_world",
+    "no_to_metres",
+    "no_light_time",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",

@@ -53,3 +53,22 @@ def test_units_out_and_time_as_path():
         time_from_path(1, 0)
     with pytest.raises(TypeError):
         unit_free(0.5, 1)
+
+
+def test_every_world_in_its_own_unit():
+    from raum27.nennerordnung import in_world, light_time, to_metres
+    assert in_world(Fraction(5, 10 ** 9)) == (5, "nm")
+    assert in_world(Fraction(3, 10 ** 5)) == (30, "µm")
+    assert in_world(Fraction(33, 10)) == (Fraction(33, 10), "m")
+    assert in_world(384400000) == (Fraction(3844, 10), "Mm")             # Earth to Moon
+    assert in_world(Fraction(1, 10 ** 12)) == (Fraction(1, 1000), "nm")  # below the ladder: stays exact
+    for v, u in ((7, "nm"), (Fraction(1, 2), "km"), (999, "Gm")):
+        assert to_metres(*in_world(to_metres(v, u))) == to_metres(v, u)    # round trip, exact
+    assert in_world(to_metres(Fraction(1, 2), "km")) == (500, "m")
+    assert light_time(1) == Fraction(1, 300000000)
+    assert light_time(384400000) == Fraction(3844, 3000)                  # about 1.28 s
+    light_year = 300000000 * 365 * 24 * 3600
+    assert (Fraction(light_year) + Fraction(1, 10 ** 9)) - light_year == Fraction(1, 10 ** 9)
+    assert (light_year + 1e-9) - light_year == 0.0                        # a float loses the nanometre
+    with pytest.raises(ValueError):
+        in_world(0)

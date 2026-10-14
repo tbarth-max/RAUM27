@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-761 tests as of this module set, at 100% statement coverage; all
+762 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2561,6 +2561,16 @@ diagrams".
 - **Units out, then time out.** A length over a reference length is a
   pure ratio. Inside, time is kept as a path s = v·t, and only the output
   turns it back with the output speed: t = s / v_out.
+- **Every world in its own unit.** Nano world in nm, micro world in µm,
+  our world in m, the large world in km and light-paths. A unit is only
+  the denominator 10^(3k): the number stays between 1 and 1000, and the
+  conversion is exact both ways (Earth–Moon 384 400 000 m = 384.4 Mm,
+  light time 3844/3000 s in the model). Exactness matters across the
+  scales: one light-year plus one nanometre loses the nanometre in a
+  float and keeps it as a fraction. Time stays system-dependent: in each
+  world it follows the path with that world's speed. Changing the unit
+  changes the numbers, not the physics; quantum effects at the nanometre
+  are a different law, not a different unit.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

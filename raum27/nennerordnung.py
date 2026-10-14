@@ -142,3 +142,39 @@ def time_from_path(s, v_out):
     if v_out <= 0:
         raise ValueError("output speed must be positive")
     return s / v_out
+
+
+# --- every world in its own unit ---------------------------------------------
+#
+# Nano world in nanometres, micro world in micrometres, our world in metres,
+# the large world in kilometres and light-paths. A unit is only a
+# denominator 10^(3k): the number in it stays between 1 and 1000, the
+# conversion is exact, and time follows the path in each world with that
+# world's own speed.
+
+PREFIXES = {-9: "nm", -6: "µm", -3: "mm", 0: "m", 3: "km", 6: "Mm", 9: "Gm"}
+MODEL_C = Fraction(300000000)
+
+
+def in_world(metres):
+    """(value, unit) with 1 <= value < 1000 in the matching unit, exact."""
+    (metres,) = _exact(metres)
+    if metres <= 0:
+        raise ValueError("a positive length")
+    k = 0
+    while metres / Fraction(10) ** k >= 1000 and k < 9:
+        k += 3
+    while metres / Fraction(10) ** k < 1 and k > -9:
+        k -= 3
+    return metres / Fraction(10) ** k, PREFIXES[k]
+
+
+def to_metres(value, unit):
+    (value,) = _exact(value)
+    exponent = {u: k for k, u in PREFIXES.items()}[unit]
+    return value * Fraction(10) ** exponent
+
+
+def light_time(metres, c=MODEL_C):
+    """Time light needs for a path: 1 light-metre = 1/300 000 000 s in the model."""
+    return time_from_path(metres, c)
