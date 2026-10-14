@@ -562,6 +562,8 @@ from raum27.nennerordnung import (
     light_time as no_light_time,
     snap as no_snap,
     snap_series as no_snap_series,
+    cross as no_cross,
+    in_step as no_in_step,
 )
 from raum27.schallgrenze import (
     speed_squared as sg_speed_squared,
@@ -1093,6 +1095,8 @@ __all__ = [
     "no_light_time",
     "no_snap",
     "no_snap_series",
+    "no_cross",
+    "no_in_step",
     "sg_speed_squared",
     "sg_stiffness_for_speed",
     "sg_mirrored",

@@ -204,3 +204,22 @@ def snap_series(values, resolution):
         s, carry = snap(Fraction(v) + carry, resolution)
         shown.append(s)
     return shown, carry
+
+
+# --- two oscillations, one cross --------------------------------------------------
+#
+# Amplitude/period of oscillation 1 against oscillation 2: A1/P1 : A2/P2.
+# Cross-multiplied, the two are in step exactly when A1*P2 = P1*A2, i.e.
+# when the determinant of [[A1, P1], [A2, P2]] is 0 -- no division needed.
+# "(P1/A1) * (A2/P2) equals (A1/P1) / (A2/P2)" holds only there: the two
+# sides are reciprocals of each other, equal only at ratio 1.
+
+
+def cross(a1, p1, a2, p2):
+    """A1*P2 - P1*A2: 0 exactly when A1/P1 = A2/P2."""
+    a1, p1, a2, p2 = _exact(a1, p1, a2, p2)
+    return a1 * p2 - p1 * a2
+
+
+def in_step(a1, p1, a2, p2):
+    return cross(a1, p1, a2, p2) == 0

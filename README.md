@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-781 tests as of this module set, at 100% statement coverage; all
+782 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2592,6 +2592,15 @@ diagrams".
   while carried they sum exactly to 1. Physically the zero-point
   oscillation of a crystal never vanishes; the goal is to make it as
   small as the resolution, not zero.
+- **Two oscillations, one cross.** A₁/P₁ against A₂/P₂ is in step exactly
+  when A₁·P₂ = P₁·A₂, that is when det [[A₁, P₁], [A₂, P₂]] = 0. No division
+  is needed. "(P₁/A₁)·(A₂/P₂) = (A₁/P₁)/(A₂/P₂)" holds only there, because
+  the two sides are reciprocals of each other. For (2, 5) and (3, 4) the
+  cross is −7. Whenever both pairs sum to 7, as opposite faces of a die
+  do, the cross is 7·(a₁ − a₂), always a multiple of 7. 1/7 repeats after
+  6 digits (142857) in base 10 and after 3 in base 9. Counter-rotating
+  oscillators that pull each other into step are Huygens' two pendulum
+  clocks, which locked in anti-phase.
 
 ## Module: `raum27.schallgrenze` — Stiffness Over Density, Expansion Mirrored by Compression
 

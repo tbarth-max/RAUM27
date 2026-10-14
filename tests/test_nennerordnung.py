@@ -85,3 +85,16 @@ def test_smallest_point_and_carried_rest():
     assert sum(shown) + rest == 1 and abs(rest) <= Fraction(1, 18)      # carried: nothing lost
     with pytest.raises(ValueError):
         snap(1, 0)
+
+
+def test_cross_instead_of_division_and_the_seven():
+    from raum27.nennerordnung import cross, in_step
+    from raum27.verhaeltnis import expansion
+    assert in_step(2, 5, 4, 10) and not in_step(2, 5, 3, 4)
+    assert cross(2, 5, 3, 4) == -7                                      # the "verflixte sieben"
+    for a, c in ((1, 2), (2, 3), (1, 3)):                               # both pairs sum to 7 (dice)
+        assert cross(a, 7 - a, c, 7 - c) == 7 * (a - c)                 # always a multiple of 7
+    x = (Fraction(2, 5)) / (Fraction(3, 4))
+    assert (Fraction(5, 2) * Fraction(3, 4)) == 1 / x                   # the two sides are reciprocals
+    assert expansion(1, 7, 10) == ("", "142857")                        # 1/7 repeats after 6 digits
+    assert len(expansion(1, 7, 9)[1]) == 3
