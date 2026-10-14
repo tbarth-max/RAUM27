@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-764 tests as of this module set, at 100% statement coverage; all
+768 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2585,6 +2585,30 @@ diagrams".
   changes the numbers, not the physics; quantum effects at the nanometre
   are a different law, not a different unit.
 
+## Module: `raum27.schallgrenze` — Stiffness Over Density, Expansion Mirrored by Compression
+
+c_s² = K/ρ: stiffness over density, not density alone. Water ≈ 1483 m/s,
+lead (dense) ≈ 2 km/s, diamond (3.5 × water) > 10 km/s. For c_s = c the
+stiffness would have to be K = ρc², for water about 4.1·10¹⁰ times its real
+value. This is the continuum form of the lattice band limit in `gitter`.
+
+The idea "keep the amount, expand the space, keep the stiffness, mirror
+the path as x ↔ 1/x" in exact squares:
+
+- c_exp² = K·x³/ρ₀ and c_comp² = K/(ρ₀x³). Their **product is (K/ρ₀)² for
+  every x**: the two speeds mirror each other around c₀ like x and 1/x
+  around 1 (`rueckprojektion`, `schalenleiter`).
+- **The light limit caps the expansion.** With K held fixed, c_exp grows
+  like x^(3/2) and would pass c at a linear factor of 3446 for water.
+  "The wave speed stays stable and below the limit" therefore does not
+  follow; the cap c_s ≤ c has to be imposed as the outer boundary circle
+  (`grenzkreis`).
+- **Keeping the pressure while expanding costs work** p·ΔV (1 bar, volume
+  × 8: 700 kJ per m³ of start volume). It is paid from inside, which is
+  the main condition E_inner ≥ E_outer, now with a number.
+- **A real gas does not do this by itself.** At fixed temperature K = γp
+  falls with ρ and c_s stays the same.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -2849,9 +2873,12 @@ What follows from it, checked against conservation of energy:
   the **energy layer** under this condition is one-way.
 
 Status: a modelling axiom with a clear physical counterpart, not a
-derivation. Open: the quantity that plays the role of the field constant
-that "closes from below", and how the compression of the zero is
-measured.
+derivation. Proposed reading (`schallgrenze`, set, not derived): the field
+constant that "closes from below" is the stiffness K, which is held
+fixed. The work to hold it while the space grows is p·ΔV, paid from
+inside. The compression is measured by the sound speed itself:
+c_comp²/c₀² = 1/x³. Still open: whether a real medium can hold K fixed
+this way. A gas at fixed temperature does not.
 
 ## Refuted — Claims That Were Checked and Do Not Hold
 
@@ -2911,6 +2938,10 @@ Kept on purpose: a refutation is a result. Each entry names the check.
 - **"The sum line d0 + d2 = 24/24 decides per node."** It equals 24 for
   every node. The rest ±1/24 comes from the digit sum mod 3, i.e. from
   the grid, not from the data (`fundamentalbereich`).
+- **"Constant stiffness with mirrored expansion keeps the wave speed
+  stable below the limit."** The product of the two speeds is fixed, but
+  the expanding side grows like x^(3/2) and passes c at x = 3446 for
+  water (`schallgrenze`). The limit must be imposed, it does not follow.
 - **B3 / B4 resonance code.** Phases averaged arithmetically, not on the
   circle (359° and 1° average to 180°); `mirror_phases` never used;
   `route_signal` is a linear scan, not O(1).

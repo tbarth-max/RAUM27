@@ -561,6 +561,14 @@ from raum27.nennerordnung import (
     to_metres as no_to_metres,
     light_time as no_light_time,
 )
+from raum27.schallgrenze import (
+    speed_squared as sg_speed_squared,
+    stiffness_for_speed as sg_stiffness_for_speed,
+    mirrored as sg_mirrored,
+    expansion_cap_cubed as sg_expansion_cap_cubed,
+    first_x_beyond_c as sg_first_x_beyond_c,
+    work_at_constant_pressure as sg_work_at_constant_pressure,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -1059,6 +1067,12 @@ __all__ = [
     "no_in_world",
     "no_to_metres",
     "no_light_time",
+    "sg_speed_squared",
+    "sg_stiffness_for_speed",
+    "sg_mirrored",
+    "sg_expansion_cap_cubed",
+    "sg_first_x_beyond_c",
+    "sg_work_at_constant_pressure",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
