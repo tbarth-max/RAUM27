@@ -59,3 +59,26 @@ def test_the_corner_sends_everything_back():
     assert opposite_digit_node("555") == "555"
     with pytest.raises(TypeError):
         corner_reflect((0.5, 0, 0))
+
+
+def test_turning_about_the_diagonal_meets_six_faces_and_keeps_six_symmetries():
+    from itertools import permutations
+    from raum27.eckenruecklauf import axis_keepers, split_along_axis
+    keepers = axis_keepers()
+    assert len(keepers) == 6
+    assert all(s == (1, 1, 1) for p, s in keepers)                      # no sign flips
+    assert sorted(p for p, s in keepers) == sorted(permutations(range(3)))
+    h = Fraction(9, 2)
+    faces = [(h, 0, 0), (-h, 0, 0), (0, h, 0), (0, -h, 0), (0, 0, h), (0, 0, -h)]
+    for f in faces:
+        along, across = split_along_axis(f)
+        assert (along, across) == (Fraction(27, 4), Fraction(27, 2))
+        assert along + across == h * h                                   # 9/2 from the centre
+    # across-parts of neighbouring faces are 60 degrees apart: cos = 1/2
+    def across(v):
+        d = sum(v) / 3
+        return tuple(c - d for c in v)
+    a, b = across(faces[0]), across(faces[5])                            # +x and -z
+    dot = sum(x * y for x, y in zip(a, b))
+    norm2 = sum(x * x for x in a)
+    assert dot / norm2 == Fraction(1, 2)

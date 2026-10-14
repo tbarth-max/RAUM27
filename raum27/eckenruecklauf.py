@@ -78,3 +78,30 @@ def corner_reflect(v):
 def opposite_digit_node(node):
     """The same on the 1..9 grid: each digit d -> 10 - d."""
     return "".join(str(10 - int(d)) for d in node)
+
+
+# --- turning about a space diagonal ---------------------------------------------
+#
+# A spiral turning about the space diagonal (1, 1, 1) meets the six face
+# directions (up, down, left, right, front, back) every 60 degrees: seen
+# along the diagonal they form a regular hexagon. The cube symmetries that
+# keep this axis in place are exactly the 6 permutations of the three
+# coordinate axes -- the 6 orders of XY, XZ, XT. Each face centre stays at
+# 9/2 from the centre: (9/2)^2 = 81/4 = 27/4 along the axis + 27/2 across.
+
+DIAGONAL = (1, 1, 1)
+
+
+def axis_keepers(axis=DIAGONAL):
+    """Signed axis permutations g with g(axis) = axis."""
+    from raum27.fundamentalbereich import act, cube_group
+    return [g for g in cube_group() if act(g, axis) == tuple(axis)]
+
+
+def split_along_axis(point, axis=DIAGONAL):
+    """(squared part along the axis, squared part across it) of a point, exactly."""
+    point = _exact(*point)
+    axis = _exact(*axis)
+    dot = sum(p * a for p, a in zip(point, axis))
+    along2 = dot * dot / sum(a * a for a in axis)
+    return along2, sum(p * p for p in point) - along2

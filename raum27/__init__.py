@@ -585,6 +585,8 @@ from raum27.eckenruecklauf import (
     remaining_gaps as er_remaining_gaps,
     corner_reflect as er_corner_reflect,
     opposite_digit_node as er_opposite_digit_node,
+    axis_keepers as er_axis_keepers,
+    split_along_axis as er_split_along_axis,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1103,6 +1105,8 @@ __all__ = [
     "er_remaining_gaps",
     "er_corner_reflect",
     "er_opposite_digit_node",
+    "er_axis_keepers",
+    "er_split_along_axis",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",

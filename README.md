@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-778 tests as of this module set, at 100% statement coverage; all
+779 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2661,6 +2661,14 @@ The corner lies on the outer sphere and is the 10.
   axis shows exactly 9/2. A spiral that grows toward this limit reads
   9/2·(1 − qⁿ) at its axis hits (9/4, 27/8, 63/16 … for q = 1/2). It
   approaches 9/2 and does not pass it.
+- **The spiral turns about a space diagonal.** Seen along (1, 1, 1), the
+  six face directions (up, down, left, right, front, back) form a regular
+  hexagon, so the spiral meets one of them every 60°. Each face centre
+  stays at 9/2 from the centre: 81/4 = 27/4 along the axis + 27/2 across
+  it. The cube symmetries that keep this axis in place are exactly the 6
+  permutations of the coordinate axes, i.e. the 6 orders of XY, XZ, XT
+  (XY·XZ·XT, XY·XT·XZ, XZ·XY·XT, XZ·XT·XY, XT·XY·XZ, XT·XZ·XY). Up and
+  down lie on one axis line and therefore share one plane.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
