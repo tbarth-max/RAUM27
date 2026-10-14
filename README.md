@@ -3010,6 +3010,15 @@ rules the model adds, 12 is where it would have to meet experiment.
    and interactions. What matches is pattern; what remains is the new
    delta (`deviation_from_sphere`, `kaskade`).
 
+The rhombus A, B, C, C′ in this process (Thomas, 14.10.): **A** and
+**B** are the two normalisations onto the axes, the 6 face directions and
+the 8 corner directions, each with its own built-in check. **C** is the
+common central zero point, the target. **C′** is the intersection point:
+the hit on the 9/2 sphere where the found zero point is fixed in space. Note:
+in the speech-protocol notes C′ was the checksum witness of the trust
+layer, which is held back. Here it is the geometric intersection; the two
+roles are kept apart.
+
 Limit: some kinks come only from limited resolution and disappear with
 a finer N. Others are real, where curvature truly grows without bound. A
 finer measurement decides which is which: a kink of the first kind
