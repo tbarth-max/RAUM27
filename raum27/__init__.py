@@ -605,6 +605,8 @@ from raum27.ricci_kugel import (
     max_curvature as rk_max_curvature,
     to_common_centre as rk_to_common_centre,
     from_common_centre as rk_from_common_centre,
+    normalised_view as rk_normalised_view,
+    parabolic_rescale as rk_parabolic_rescale,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1141,6 +1143,8 @@ __all__ = [
     "rk_max_curvature",
     "rk_to_common_centre",
     "rk_from_common_centre",
+    "rk_normalised_view",
+    "rk_parabolic_rescale",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",

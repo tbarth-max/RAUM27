@@ -46,3 +46,14 @@ def test_many_zero_points_lie_on_top_of_each_other_and_come_back():
     assert bumped[0][0] - 1 == Fraction(1, 9)
     with pytest.raises(ValueError):
         to_common_centre([(0, 0, 0)], (0, 0, 0), 0)
+
+
+def test_followed_with_its_own_zoom_the_sphere_never_changes():
+    from raum27.ricci_kugel import normalised_view, parabolic_rescale
+    for n in (2, 3):
+        views = {normalised_view(R0, Fraction(k, 7), n) for k in range(0, 30)}
+        assert views == {(1, Fraction(1, 2 * (n - 1)))}                # self-similar: one picture
+    assert parabolic_rescale(Fraction(1, 81), Fraction(1, 81), Fraction(1, 81)) == (1, 1)
+    assert parabolic_rescale(4, 2, 4) == (1, Fraction(1, 2))
+    with pytest.raises(ValueError):
+        parabolic_rescale(1, 1, 0)

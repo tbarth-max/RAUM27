@@ -89,3 +89,27 @@ def from_common_centre(points, place, scale):
     place = _exact(*place)
     (scale,) = _exact(scale)
     return [tuple(c * scale + p for c, p in zip(_exact(*q), place)) for q in points]
+
+
+# --- following the flow, normalised along the way ---------------------------------
+#
+# Following the flow with the zoom adjusted at every moment means
+# parabolic rescaling: lengths by 1/r, times by 1/r^2 (in squares: both by
+# 1/r^2, exact). For the round sphere the picture then never changes -- it
+# is self-similar: radius 1 and remaining time (T - t)/r^2 = 1/(2(n-1)) at
+# every moment. Only what differs from that fixed picture moves.
+
+
+def normalised_view(r0_squared, t, n=3):
+    """(radius^2, remaining time) of the sphere seen at its own scale at time t."""
+    r2 = radius_squared(r0_squared, t, n)
+    remaining = extinction_time(r0_squared, n) - Fraction(t)
+    return r2 / r2, remaining / r2
+
+
+def parabolic_rescale(step_squared, dt, r_squared):
+    """A flow step (|dx|^2, dt) seen at scale r: both divided by r^2."""
+    step_squared, dt, r_squared = _exact(step_squared, dt, r_squared)
+    if r_squared <= 0:
+        raise ValueError("scale must be positive")
+    return step_squared / r_squared, dt / r_squared
