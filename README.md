@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-784 tests as of this module set, at 100% statement coverage; all
+786 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2713,6 +2713,24 @@ The corner lies on the outer sphere and is the 10.
   power form (`nennerordnung.Power`). Also checked: 8 = 2³ and 9 = 3² are
   the only neighbouring perfect powers below 10⁶ (Mihăilescu's theorem
   says: ever).
+
+## Module: `raum27.ricci_kugel` — The Sphere Under Ricci Flow, Stopped Before Radius 0
+
+Perelman proved the Poincaré conjecture with Ricci flow. The metric
+moves against its curvature, round spheres shrink, and where a region
+pinches toward radius 0 it is cut out and capped with a small round
+piece of positive size ("surgery"). For a round n-sphere the flow is
+exact in r²: r²(t) = r₀² − 2(n − 1)t.
+
+- The 9/2 sphere (r₀² = 81/4) would vanish at t = 81/8 as a 2-sphere and at
+  81/16 as a 3-sphere.
+- Here the flow stops at the smallest point 1/N. For N = 9 the cap keeps
+  radius 1/9 and curvature 81 = N². The radius 0 is never entered, and a
+  step past it is refused.
+- **Limit, stated plainly:** this mirrors one feature of the proof, a
+  singularity replaced at a positive scale. It proves nothing new. The
+  conjecture is proved, by Perelman, for every simply connected closed
+  3-manifold, not only for round spheres.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

@@ -597,6 +597,13 @@ from raum27.eckenruecklauf import (
     deviation_from_sphere as er_deviation_from_sphere,
     across_axis as er_across_axis,
 )
+from raum27.ricci_kugel import (
+    shrink_rate as rk_shrink_rate,
+    radius_squared as rk_radius_squared,
+    extinction_time as rk_extinction_time,
+    surgery_time as rk_surgery_time,
+    max_curvature as rk_max_curvature,
+)
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
     Delta as zm_Delta,
@@ -1125,6 +1132,11 @@ __all__ = [
     "er_imbalance_force",
     "er_deviation_from_sphere",
     "er_across_axis",
+    "rk_shrink_rate",
+    "rk_radius_squared",
+    "rk_extinction_time",
+    "rk_surgery_time",
+    "rk_max_curvature",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",
