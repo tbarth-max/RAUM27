@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-748 tests as of this module set, at 100% statement coverage; all
+755 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2499,6 +2499,37 @@ current state. `000000` is a complete frame and means "nothing changed".
   shared dictionary, references and the benchmark against UTF-8 on real
   sentences are still missing. The integrity witness C′ (hash comparison)
   waits, with the rest of the trust layer, for the first trial run.
+
+## Module: `raum27.zeitachse` — Time as a Path: What a T Axis Adds and What It Does Not
+
+Checked against the idea "X = Y² = Z³ = T⁴ in the cube, the sphere
+expanding from the centre, time read off the four space diagonals, six
+diagrams".
+
+- **Six diagrams.** Four axes x, y, z, t give C(4,2) = 6 planes: XY, XZ,
+  XT, YZ, YT, ZT. The list as dictated had XT twice and no YZ.
+- **The four diagonals carry one number.** A sphere expanding from the
+  centre cuts all four space diagonals at the same distance (coordinate²
+  = R/3), so the four readings are a single scale parameter. This is
+  the existing rule: time is the index of the shells, not a direction
+  inside one (`kugelkoordinaten`, `viertakt`).
+- **Roots come back exactly only on perfect powers.** a, a², a³, a⁴ all
+  return to a, but 2^(1/4) is not a fraction. The square already removes
+  the roots: (√2)² = 2, (√3)² = 3. The 4th power (4 and 9) adds nothing
+  exact, and that 9 = (√3)⁴ coincides with 8·1/9 + 1/9 = 1 is
+  arithmetic, not a derivation.
+- **What a real fourth axis adds, exactly.** The unit 4-cube has
+  diagonal √4 = 2, which is rational (only dimensions 1, 4, 9, 16 … give
+  rational diagonals). Every natural number is a sum of four squares
+  (Lagrange), so the 3D gaps 4ᵃ(8b+7) close. The 4-cube has 16 corners,
+  32 edges, 24 squares and 8 cubes.
+- **Physics has the opposite sign.** s² = x² + y² + z² − (ct)², which is 0
+  on a light ray. A Euclidean t axis is a modelling choice.
+- **Direct line versus relays.** Through n relays a message arrives
+  unchanged with probability (1 − p)ⁿ: 0.976 for 24 relays at p = 1/1000,
+  even if every relay checks its own hand-over. Only a check between the
+  two ends covers the whole way (the end-to-end argument). The check
+  itself belongs to the trust layer and waits for the first trial run.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
