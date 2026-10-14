@@ -2650,6 +2650,17 @@ The corner lies on the outer sphere and is the 10.
   reflector, as on the Moon. On the grid this is the opposite pole
   d → 10 − d (XYZ + opposite = 1110). Whatever is sent toward a corner
   comes straight back.
+- **Fixed by Thomas: 9/2 is the scaled proportionality factor.** The
+  distance from axis to axis is 9. Seen from the centre that is 9/2,
+  taken as a magnitude ("without minus"), and squared it scales as 81/4.
+  With four axes X, Y, Z, T drawn as the tetrahedral directions
+  (alternate cube corners, summing to 0), a point at the corner
+  (9/2, 9/2, 9/2) reads 27/2 on its own axis and −9/2 on each of the
+  three others. The readings add up to 0, and their squares to 4·|v|² =
+  243 (the built-in check of `zeitachse`). Without sign, every other
+  axis shows exactly 9/2. A spiral that grows toward this limit reads
+  9/2·(1 − qⁿ) at its axis hits (9/4, 27/8, 63/16 … for q = 1/2). It
+  approaches 9/2 and does not pass it.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
