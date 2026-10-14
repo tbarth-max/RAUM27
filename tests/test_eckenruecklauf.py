@@ -113,3 +113,20 @@ def test_only_the_deviation_from_the_sphere_remains():
     assert dev != zero
     assert sum(dev[i][i] for i in range(3)) == 0                        # traceless
     assert dev[0][1] == dev[1][0] == -h * h                             # the extra mass shows where it sits
+
+
+def test_eight_corners_seen_along_the_diagonal_are_a_hexagon_and_two_at_the_centre():
+    from itertools import product
+    from raum27.eckenruecklauf import across_axis
+    shadows = [across_axis(c) for c in product((-1, 1), repeat=3)]
+    centre = [s for s in shadows if s == (0, 0, 0)]
+    ring = [s for s in shadows if s != (0, 0, 0)]
+    assert len(centre) == 2 and len(ring) == 6                          # the octet pattern: 6 + 2
+    assert {sum(c * c for c in s) for s in ring} == {Fraction(8, 3)}    # all on one circle
+    cosines = sorted({sum(a * b for a, b in zip(s, t)) / Fraction(8, 3) for s in ring for t in ring if s != t})
+    assert cosines == [-1, Fraction(-1, 2), Fraction(1, 2)]            # 60-degree steps: a regular hexagon
+    # in 3D none of them is at radius 0 -- the zero is only the shadow
+    assert all(sum(c * c for c in corner) == 3 for corner in product((-1, 1), repeat=3))
+    # 8 = 2^3 and 9 = 3^2: the only two neighbouring perfect powers (Catalan / Mihailescu)
+    powers = sorted({b ** e for b in range(2, 40) for e in range(2, 12) if b ** e < 10 ** 6})
+    assert [(a, b) for a, b in zip(powers, powers[1:]) if b - a == 1] == [(8, 9)]

@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-783 tests as of this module set, at 100% statement coverage; all
+784 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2702,6 +2702,17 @@ The corner lies on the outer sphere and is the 10.
   Measurable are acceleration (specific force) and rotation rate, as in
   inertial navigation. Velocity and position follow only by integration,
   so they drift unless they are checked against fixes.
+- **Eight corners seen along the diagonal: a hexagon plus two at the
+  centre.** Six shadows lie on one circle (r² = 8/3) at 60° steps, and the
+  two corners on the axis fall onto the centre. This is the same pattern
+  as the weight diagram of the eight gluons (the SU(3) octet: six charged
+  on a hexagon, two neutral at the centre). In 3D no corner is at radius
+  0, because the zero is only the shadow. **Limit:** this matches the
+  layout, not the physics. Gluon dynamics needs the SU(3) structure
+  constants, which contain √3/2 and are exact only in squared or
+  power form (`nennerordnung.Power`). Also checked: 8 = 2³ and 9 = 3² are
+  the only neighbouring perfect powers below 10⁶ (Mihăilescu's theorem
+  says: ever).
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 

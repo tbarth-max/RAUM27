@@ -152,3 +152,11 @@ def deviation_from_sphere(tensor):
     """
     mean = sum(tensor[i][i] for i in range(3)) / 3
     return [[tensor[i][j] - (mean if i == j else 0) for j in range(3)] for i in range(3)]
+
+
+def across_axis(point, axis=DIAGONAL):
+    """The part of a point across the axis (its shadow when looking along the axis)."""
+    point = _exact(*point)
+    axis = _exact(*axis)
+    k = sum(p * a for p, a in zip(point, axis)) / sum(a * a for a in axis)
+    return tuple(p - k * a for p, a in zip(point, axis))
