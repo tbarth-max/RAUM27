@@ -94,3 +94,33 @@ def test_rational_quaternions_turn_exactly():
     assert turn(third, (1, 0, 0)) == (0, 1, 0) and turn(third, (0, 1, 0)) == (0, 0, 1)
     with pytest.raises(ValueError):
         rotation(0, 0, 0, 0)
+
+
+def test_path_contracts_as_time_stretches_and_the_interval_stays():
+    from raum27.zeitachse import boost, gamma
+    assert gamma(Fraction(3, 5)) == Fraction(5, 4) and gamma(Fraction(4, 5)) == Fraction(5, 3)
+    assert gamma(0) == 1
+    x, t = Fraction(7), Fraction(10)
+    for beta in (Fraction(3, 5), Fraction(-4, 5), Fraction(5, 13)):
+        x2, t2 = boost(x, t, beta)
+        assert x2 * x2 - t2 * t2 == x * x - t * t                             # the shared quantity
+    # a clock at rest (x = 0) ticks slower seen from the moving system ...
+    assert boost(0, 1, Fraction(3, 5))[1] == Fraction(5, 4)
+    # ... and a rod of length 1 at rest measures 4/5 there (both ends read at equal t')
+    b = Fraction(3, 5)
+    assert boost(0, 0, b) == (0, 0)                                            # near end at t' = 0
+    assert boost(1, b, b) == (Fraction(4, 5), 0)                               # far end at t' = 0: 4/5
+    with pytest.raises(ValueError):
+        gamma(Fraction(1, 2))                                                  # sqrt(3)/2: not a fraction
+    with pytest.raises(ValueError):
+        gamma(1)
+
+
+def test_halving_the_number_is_endless_the_thread_is_not():
+    from raum27.zeitachse import fold_limit, halvings
+    h = halvings(1, 10)
+    assert h[-1] == Fraction(1, 1024) and sum(h[1:]) + h[-1] == 1             # the halves add up again
+    assert fold_limit(1, Fraction(1, 10 ** 9)) == 15                           # 1 m thread, 1 nm thick
+    assert fold_limit(1, Fraction(1, 10 ** 3)) == 5                            # 1 m, 1 mm thick
+    with pytest.raises(ValueError):
+        fold_limit(1, 0)

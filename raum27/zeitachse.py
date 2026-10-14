@@ -171,3 +171,56 @@ def rotation(a, b, c, d):
 def turn(matrix, u):
     u = _exact(*u)
     return tuple(sum(m * x for m, x in zip(row, u)) for row in matrix)
+
+
+# --- path does not escape relativity -------------------------------------------
+#
+# Moving time into the path does not remove time dilation: between two
+# systems in relative motion the path contracts by the same factor gamma
+# by which the time stretches. What *is* the same for every system is the
+# interval s^2 = x^2 - (c t)^2 -- a square, exact in fractions. For
+# speeds from Pythagorean triples gamma itself is a fraction:
+# v = 3/5 c gives gamma = 5/4, v = 4/5 c gives 5/3.
+
+
+def gamma(beta):
+    """Lorentz factor 1 / sqrt(1 - beta^2) for beta = v/c, exact or ValueError."""
+    (beta,) = _exact(beta)
+    if not -1 < beta < 1:
+        raise ValueError("|v| < c")
+    root = exact_root(1 - beta * beta, 2)
+    if root is None:
+        raise ValueError("gamma is irrational for this speed")
+    return 1 / root
+
+
+def boost(x, t, beta):
+    """Coordinates (x, t) seen from a system moving at beta = v/c (c = 1)."""
+    x, t = _exact(x, t)
+    g = gamma(beta)
+    beta = Fraction(beta)
+    return g * (x - beta * t), g * (t - beta * x)
+
+
+# --- halving a thread --------------------------------------------------------------
+#
+# The number can be halved for ever: L / 2^n, exact, and the halves add up
+# to L again (1/2 + 1/4 + ... = 1). A real thread folded n times becomes
+# 2^n strands of length L / 2^n -- the bundle gets as thick as it is long
+# when 4^n >= L / d.
+
+
+def halvings(length, n):
+    (length,) = _exact(length)
+    return [length / 2 ** k for k in range(n + 1)]
+
+
+def fold_limit(length, thickness):
+    """Folds until the bundle (2^n strands of thickness d) is as thick as it is long."""
+    length, thickness = _exact(length, thickness)
+    if length <= 0 or thickness <= 0:
+        raise ValueError("positive length and thickness")
+    n = 0
+    while 4 ** n < length / thickness:
+        n += 1
+    return n

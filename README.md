@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-762 tests as of this module set, at 100% statement coverage; all
+764 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2536,6 +2536,19 @@ diagrams".
   integer a, b, c, d the rotation matrix consists of fractions and the
   turn stays exact (e.g. (3, 1, 2, 0), norm 14). (1, 1, 1, 1) is the
   120° turn about a space diagonal: x → y → z.
+- **Moving time into the path does not escape time dilation.** Between
+  two systems in relative motion the path contracts by the same factor γ
+  by which time stretches. At v = 3/5 c, γ = 5/4 exactly: a clock at rest
+  shows 5/4 there, and a rod of length 1 measures 4/5. What is the same
+  for every system is the **interval** s² = x² − (ct)², a square and exact
+  in fractions. That is the real shared quantity. γ is a fraction only for
+  speeds from Pythagorean triples (3/5, 4/5, 5/13 …); at v = c/2 it
+  contains √3.
+- **Halving the number is endless, halving a thread is not.** L/2ⁿ is
+  exact for every n, and the halves add up to L again. A real thread
+  folded n times is 2ⁿ strands of length L/2ⁿ. It becomes as thick as it
+  is long when 4ⁿ ≥ L/d: after 15 folds for 1 m at 1 nm thickness, after
+  5 at 1 mm. The model therefore halves the number, not the thread.
 - **Direct line versus relays.** Through n relays a message arrives
   unchanged with probability (1 − p)ⁿ: 0.976 for 24 relays at p = 1/1000,
   even if every relay checks its own hand-over. Only a check between the

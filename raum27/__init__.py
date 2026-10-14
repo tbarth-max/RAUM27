@@ -545,6 +545,10 @@ from raum27.zeitachse import (
     diagonal_cosines_squared as za_diagonal_cosines_squared,
     rotation as za_rotation,
     turn as za_turn,
+    gamma as za_gamma,
+    boost as za_boost,
+    halvings as za_halvings,
+    fold_limit as za_fold_limit,
 )
 from raum27.nennerordnung import (
     Power as no_Power,
@@ -1042,6 +1046,10 @@ __all__ = [
     "za_diagonal_cosines_squared",
     "za_rotation",
     "za_turn",
+    "za_gamma",
+    "za_boost",
+    "za_halvings",
+    "za_fold_limit",
     "no_Power",
     "no_on_common_denominator",
     "no_by_denominator",
