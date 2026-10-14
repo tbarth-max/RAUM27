@@ -594,6 +594,7 @@ from raum27.eckenruecklauf import (
     inertia_tensor as er_inertia_tensor,
     is_isotropic as er_is_isotropic,
     imbalance_force as er_imbalance_force,
+    deviation_from_sphere as er_deviation_from_sphere,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1121,6 +1122,7 @@ __all__ = [
     "er_inertia_tensor",
     "er_is_isotropic",
     "er_imbalance_force",
+    "er_deviation_from_sphere",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",

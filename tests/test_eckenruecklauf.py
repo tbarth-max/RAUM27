@@ -100,3 +100,16 @@ def test_raum27_points_spin_like_a_sphere_and_imbalance_grows_with_speed():
     assert imbalance_force(1, Fraction(1, 100), 20) == 4              # m w^2 r
     assert imbalance_force(1, Fraction(1, 100), 40) == 16             # twice as fast, four times the pull
     assert imbalance_force(1, 0, 1000) == 0                           # centred: no pull at any speed
+
+
+def test_only_the_deviation_from_the_sphere_remains():
+    from itertools import product
+    from raum27.eckenruecklauf import deviation_from_sphere, inertia_tensor
+    h = Fraction(9, 2)
+    grid27 = list(product((-h, 0, h), repeat=3))
+    zero = [[0] * 3 for _ in range(3)]
+    assert deviation_from_sphere(inertia_tensor(grid27)) == zero        # reference state: nothing to store
+    dev = deviation_from_sphere(inertia_tensor(grid27 + [(h, h, 0)]))
+    assert dev != zero
+    assert sum(dev[i][i] for i in range(3)) == 0                        # traceless
+    assert dev[0][1] == dev[1][0] == -h * h                             # the extra mass shows where it sits

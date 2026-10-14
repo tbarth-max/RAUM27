@@ -142,3 +142,13 @@ def imbalance_force(mass, radius, omega):
     """Centrifugal pull of an off-axis mass: m * omega^2 * r."""
     m, r, w = _exact(mass, radius, omega)
     return m * w * w * r
+
+
+def deviation_from_sphere(tensor):
+    """The part of an inertia tensor that a perfect sphere does not have: T - (trace/3) * I.
+
+    The perfect sphere rotation is the reference state; this traceless
+    remainder is the only thing left to measure and to store.
+    """
+    mean = sum(tensor[i][i] for i in range(3)) / 3
+    return [[tensor[i][j] - (mean if i == j else 0) for j in range(3)] for i in range(3)]

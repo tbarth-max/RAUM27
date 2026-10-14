@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-782 tests as of this module set, at 100% statement coverage; all
+783 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2695,6 +2695,13 @@ The corner lies on the outer sphere and is the 10.
   have an isotropic inertia tensor: the 8 corners, the 6 faces, the full
   27, the 4 tetrahedron corners and 1+6+8. About every axis through the
   centre they turn like a sphere. One extra mass breaks this.
+- **The perfect sphere rotation is the reference state.** What is stored
+  is only the traceless remainder T − (trace/3)·I. It is zero for the 27
+  points and nonzero as soon as one mass is added, and its off-diagonal
+  entry shows where that mass sits (−81/4 in xy for a mass at (9/2, 9/2, 0)).
+  Measurable are acceleration (specific force) and rotation rate, as in
+  inertial navigation. Velocity and position follow only by integration,
+  so they drift unless they are checked against fixes.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
