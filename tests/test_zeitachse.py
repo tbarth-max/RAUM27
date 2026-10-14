@@ -64,3 +64,33 @@ def test_relays_against_the_direct_line():
     assert intact_probability(Fraction(1, 1000), 1) > intact_probability(Fraction(1, 1000), 24)
     with pytest.raises(ValueError):
         intact_probability(2, 3)
+
+
+def test_a_marked_rotating_sphere_reads_four_values_with_one_check():
+    from raum27.zeitachse import diagonal_cosines_squared, rotation, turn
+    mark = (1, 0, 0)
+    assert diagonal_cosines_squared(mark) == [Fraction(1, 3)] * 4          # on an axis: all equal
+    q = rotation(3, 1, 2, 0)                                                # norm 9 + 1 + 4 + 0 = 14
+    turned = turn(q, mark)
+    readings = diagonal_cosines_squared(turned)
+    assert len(set(readings)) > 1                                           # the turn makes them differ
+    assert sum(readings) == Fraction(4, 3)                                  # the built-in check
+    for u in ((1, 2, 3), (Fraction(1, 2), -5, 7), (0, 0, 1)):
+        assert sum(diagonal_cosines_squared(u)) == Fraction(4, 3)
+    with pytest.raises(ValueError):
+        diagonal_cosines_squared((0, 0, 0))
+
+
+def test_rational_quaternions_turn_exactly():
+    from raum27.zeitachse import rotation, turn
+    m = rotation(3, 1, 2, 0)
+    ident = tuple(tuple(Fraction(int(i == j)) for j in range(3)) for i in range(3))
+    assert tuple(tuple(sum(a * b for a, b in zip(r, q)) for q in m) for r in m) == ident   # M M^T = I
+    det = (m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
+           + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]))
+    assert det == 1
+    assert sum(c * c for c in turn(m, (1, 2, 3))) == 14                    # radius kept
+    third = rotation(1, 1, 1, 1)                                            # 120 degrees about (1,1,1)
+    assert turn(third, (1, 0, 0)) == (0, 1, 0) and turn(third, (0, 1, 0)) == (0, 0, 1)
+    with pytest.raises(ValueError):
+        rotation(0, 0, 0, 0)

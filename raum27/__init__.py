@@ -542,6 +542,9 @@ from raum27.zeitachse import (
     helix_length_squared as za_helix_length_squared,
     interval_squared as za_interval_squared,
     intact_probability as za_intact_probability,
+    diagonal_cosines_squared as za_diagonal_cosines_squared,
+    rotation as za_rotation,
+    turn as za_turn,
 )
 from raum27.zustandsmaschine import (
     TICKS_PER_TURN,
@@ -1025,6 +1028,9 @@ __all__ = [
     "za_helix_length_squared",
     "za_interval_squared",
     "za_intact_probability",
+    "za_diagonal_cosines_squared",
+    "za_rotation",
+    "za_turn",
     "sa_required_response",
     "sa_detection_energy",
     "sa_resonance_gain",

@@ -132,3 +132,42 @@ def intact_probability(error_per_hop, hops):
     if not 0 <= p <= 1 or hops < 0:
         raise ValueError("0 <= p <= 1 and hops >= 0")
     return (1 - p) ** hops
+
+
+# --- the rotating sphere ------------------------------------------------------
+#
+# A bare sphere looks the same however it turns, so rotation alone changes
+# no diagonal reading. A sphere with a mark does: a marked point u gives
+# four different readings on the four diagonals, (d . u)^2 / (3 |u|^2),
+# and they always add up to exactly 4/3 -- four readings, three
+# unknowns, one built-in check (the 6-measure / 8-check pattern again).
+# The rotation itself needs four numbers: a quaternion (a, b, c, d),
+# whose norm is a sum of four squares. With integer a, b, c, d the
+# rotation matrix is a matrix of fractions -- the turn stays exact.
+
+
+def diagonal_cosines_squared(u):
+    """cos^2 of the angle between a marked direction u and each space diagonal."""
+    u = _exact(*u)
+    n2 = sum(c * c for c in u)
+    if n2 == 0:
+        raise ValueError("the mark needs a direction")
+    return [sum(di * ui for di, ui in zip(d, u)) ** 2 / (3 * n2) for d in SPACE_DIAGONALS]
+
+
+def rotation(a, b, c, d):
+    """Rotation matrix of the quaternion a + bi + cj + dk, exact in fractions."""
+    a, b, c, d = _exact(a, b, c, d)
+    n = a * a + b * b + c * c + d * d
+    if n == 0:
+        raise ValueError("the zero quaternion is no rotation")
+    return (
+        ((a*a + b*b - c*c - d*d) / n, 2 * (b*c - a*d) / n, 2 * (b*d + a*c) / n),
+        (2 * (b*c + a*d) / n, (a*a - b*b + c*c - d*d) / n, 2 * (c*d - a*b) / n),
+        (2 * (b*d - a*c) / n, 2 * (c*d + a*b) / n, (a*a - b*b - c*c + d*d) / n),
+    )
+
+
+def turn(matrix, u):
+    u = _exact(*u)
+    return tuple(sum(m * x for m, x in zip(row, u)) for row in matrix)

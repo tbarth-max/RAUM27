@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-755 tests as of this module set, at 100% statement coverage; all
+757 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2525,6 +2525,17 @@ diagrams".
   32 edges, 24 squares and 8 cubes.
 - **Physics has the opposite sign.** s² = x² + y² + z² − (ct)², which is 0
   on a light ray. A Euclidean t axis is a modelling choice.
+- **The sphere can rotate, and then the diagonals do say more.** A bare
+  sphere looks the same however it turns, so rotation alone changes no
+  reading. A sphere with a **mark** does. The mark's cos² to the four
+  diagonals gives four different values that always add up to exactly
+  4/3: four readings, three unknowns, one built-in check (the
+  6-measure / 8-check pattern again). The rotation itself takes four
+  numbers, a quaternion (a, b, c, d), whose norm a² + b² + c² + d² is a
+  sum of four squares. That is where the fourth axis really sits. With
+  integer a, b, c, d the rotation matrix consists of fractions and the
+  turn stays exact (e.g. (3, 1, 2, 0), norm 14). (1, 1, 1, 1) is the
+  120° turn about a space diagonal: x → y → z.
 - **Direct line versus relays.** Through n relays a message arrives
   unchanged with probability (1 − p)ⁿ: 0.976 for 24 relays at p = 1/1000,
   even if every relay checks its own hand-over. Only a check between the
