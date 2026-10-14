@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-787 tests as of this module set, at 100% statement coverage; all
+788 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2741,6 +2741,13 @@ exact in r²: r²(t) = r₀² − 2(n − 1)t.
   bump of 1/9 stays visible as 1/9). Caution: this normalises per
   neighbourhood. Physically merging distinct singularities into one
   point would erase the distinction between them.
+- **Following the flow with its own zoom.** Adjusting the scale at every
+  moment is parabolic rescaling: lengths by 1/r, times by 1/r². In squares
+  both are divided by r², exactly. For the round sphere the picture then
+  never changes. It is self-similar, with radius 1 and remaining time
+  (T − t)/r² = 1/(2(n − 1)) at every moment (1/4 for the 3-sphere). Only
+  what differs from that fixed picture moves, so again: reference state
+  plus delta.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
