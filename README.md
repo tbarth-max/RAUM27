@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-779 tests as of this module set, at 100% statement coverage; all
+780 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2584,6 +2584,14 @@ diagrams".
   world it follows the path with that world's speed. Changing the unit
   changes the numbers, not the physics; quantum effects at the nanometre
   are a different law, not a different unit.
+- **The smallest point is a denominator.** The resolution is the circle
+  N, so the smallest distinguishable point is 1/N. Below it a value
+  counts as 0. That makes "1/∞ = 0" a rule of the grid, not of
+  arithmetic. The rest is carried, not dropped: twenty values of 1/20 on
+  the grid of ninths each show 0 and would lose 1 in total if dropped,
+  while carried they sum exactly to 1. Physically the zero-point
+  oscillation of a crystal never vanishes; the goal is to make it as
+  small as the resolution, not zero.
 
 ## Module: `raum27.schallgrenze` — Stiffness Over Density, Expansion Mirrored by Compression
 

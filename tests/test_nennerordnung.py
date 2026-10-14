@@ -72,3 +72,16 @@ def test_every_world_in_its_own_unit():
     assert (light_year + 1e-9) - light_year == 0.0                        # a float loses the nanometre
     with pytest.raises(ValueError):
         in_world(0)
+
+
+def test_smallest_point_and_carried_rest():
+    from raum27.nennerordnung import snap, snap_series
+    assert snap(Fraction(1, 3), 9) == (Fraction(3, 9), 0)
+    assert snap(Fraction(1, 100), 9) == (0, Fraction(1, 100))          # below the grid: shown as 0
+    small = [Fraction(1, 20)] * 20                                      # each below 1/9
+    dropped = sum(snap(v, 9)[0] for v in small)
+    assert dropped == 0                                                 # setting each to 0 loses 1
+    shown, rest = snap_series(small, 9)
+    assert sum(shown) + rest == 1 and abs(rest) <= Fraction(1, 18)      # carried: nothing lost
+    with pytest.raises(ValueError):
+        snap(1, 0)

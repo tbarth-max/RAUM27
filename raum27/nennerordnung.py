@@ -178,3 +178,29 @@ def to_metres(value, unit):
 def light_time(metres, c=MODEL_C):
     """Time light needs for a path: 1 light-metre = 1/300 000 000 s in the model."""
     return time_from_path(metres, c)
+
+
+# --- the smallest point: resolution as a denominator ---------------------------
+#
+# The smallest point that can be told apart is 1/N: the circle N is the
+# resolution. Below it a value counts as 0 -- "1/infinity = 0" as a rule of
+# the grid, not of arithmetic. The rest is not thrown away but carried, or
+# many values below 1/N would add up to a drift nobody sees.
+
+
+def snap(value, resolution):
+    """(value on the grid 1/N, rest below the grid) -- shown + rest == value."""
+    (value,) = _exact(value)
+    if resolution < 1:
+        raise ValueError("resolution N >= 1")
+    shown = Fraction(round(value * resolution), resolution)
+    return shown, value - shown
+
+
+def snap_series(values, resolution):
+    """Snap each value but carry the rest into the next one: no drift."""
+    shown, carry = [], Fraction(0)
+    for v in values:
+        s, carry = snap(Fraction(v) + carry, resolution)
+        shown.append(s)
+    return shown, carry
