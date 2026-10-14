@@ -3029,3 +3029,15 @@ move it forward.
 17. **Octahedron/polygon sieve as a stepping procedure on data**, and
     **pulsar timing data** as a test bed: the numbers are checked
     (`fundamentalbereich`), the run on data is not done.
+18. **Comparison with the local code base (Antigravity, 14.10.).**
+    Taken over: the inner rotation is a counter-rotating pair with net
+    angular momentum 0. The torus is equal in volume to the sphere; with
+    a closed hole its tube radius is then R·(2/(3π))^(1/3) ≈ 0.596 R and its
+    outer radius ≈ 1.19 R. Still to resolve:
+    - "12 − 3 = 9" as nine planes XY … XC needs ten axes, not four.
+    - Y = λ·sin(16x/(9λ)) has period (9/8)·π·λ, not λ.
+    - A dictionary of 729 entries needs at least 10 bits, not 4.
+    - E·I (N·m²) is not the compression modulus K (Pa), and bending
+      waves are dispersive.
+    The nesting factor (4/3, 9/8 or 9/2) and q (3 or 9/2) are not decided.
+    Details in Drive: `RAUM27_Abgleich_9_Fragen_2026-10-14.md`.
