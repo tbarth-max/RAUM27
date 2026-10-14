@@ -2984,6 +2984,28 @@ What the chain claims and what it does not is therefore visible at a
 glance: items 1–9 are mathematics and engineering that hold, 10 and 11 are the
 rules the model adds, 12 is where it would have to meet experiment.
 
+## The Process in Five Steps (14.10.2026)
+
+1. **Reference state:** perfect sphere rotation around one common centre,
+   scale 9/2 (`eckenruecklauf`).
+2. **Patterns:** whatever can be traced with ruler and radii (arcs,
+   chains, the delta against the reference) is recognised directly
+   (`biegelinie`, `abtastung`, `kurvenkette`).
+3. **Kinks:** where a radius heads toward 0, the trace is stopped at the
+   smallest measurable point 1/N, enclosed in a small sphere and given
+   its address (place, scale) in the node system (`nennerordnung.snap`,
+   `ricci_kugel`).
+4. **Transfer:** each enclosed kink is normalised to the common centre,
+   and the address keeps the way back exact (`ricci_kugel.to_common_centre`).
+5. **Comparison:** there it is checked against the known standard shapes
+   and interactions. What matches is pattern; what remains is the new
+   delta (`deviation_from_sphere`, `kaskade`).
+
+Limit: some kinks come only from limited resolution and disappear with
+a finer N. Others are real, where curvature truly grows without bound. A
+finer measurement decides which is which: a kink of the first kind
+moves with N, a real one stays.
+
 ## Main Condition (Set, Not Derived): The Inner Source Is Never Smaller
 
 Stated as the governing rule of the model: **E_inner ≥ E_outer.** The
