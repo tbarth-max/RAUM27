@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-793 tests as of this module set, at 100% statement coverage; all
+810 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2781,6 +2781,101 @@ it is) and effect sit opposite each other at equal distance, and the
 centre between them is the common zero point. Applying `wirkung` twice
 gives the cause back. In spacetime the counterpart is that the past
 and future light cones of an event touch only in the event itself.
+
+## Module: `raum27.rautenschale` — The Rhombus Shell: The Sphere's Bookkeeping Without Roots
+
+The sphere expanding from the centre is kept as a rhombus: the shell
+|x| + |y| + |z| (the octahedron, the p-ball with p = 1). It touches the
+faces at a/2 like the sphere, but it is a sum, so scaling any hit onto
+9/2 needs a fraction, never a root (`scale_shell_to_nine_halves`).
+
+| Node (edge a) | shell | balance factor 3 cos²θ | sphere r² = shell² / factor |
+|---|---|---|---|
+| face centre | a/2 | 1 (θ = 54.74°, the magic angle) | a²/4 |
+| edge midpoint | a | 2 | a²/2 |
+| corner | 3a/2 | 3 | 3a²/4 |
+
+θ is the angle to the diagonal of the point's octant; cos²θ is a fraction
+for every rational point, and shell² = 3 cos²θ |p|² holds exactly
+(`cos2_to_corner`, `balance_factor`, `sphere_r2_from_shell`). Per octant
+the rhombus face is perpendicular to that octant's corner diagonal: the
+expansion is eight plane fronts, the kinks lie where octants meet.
+
+**Four bits on X, Y, Z, T** (`xyzt_bits`, `kind`, `opposite`). One bit
+per tetrahedral axis, 1 when the reading is positive. Since
+X + Y + Z + T = 0, only 14 of the 16 words occur:
+
+| Word | Count | Meaning |
+|---|---|---|
+| two ones (1100, 0011, 1010, 0101, 1001, 0110) | 6 | the face directions ±X, ±Y, ±Z |
+| one or three ones (1000, 0100, …, 0111, …) | 8 | the corner directions |
+| 0000 | — | rest: nothing changes, nothing to see |
+| 1111 | — | cannot occur; usable as an error check |
+
+The opposite direction through the centre is the inverted word. The 14
+cells are the 6 squares and 8 triangles of the cuboctahedron — the
+rhombus shell at a.
+
+**Halving and folding.** `octree_address` names one of 8 octants per
+level (3 bits), moves its centre to 0 and doubles; `octree_point` undoes
+it exactly. The 9³ grid is exactly three halvings (8 intervals per
+axis). `fold` turns a fractional fold count into knicks and a position:
+7/2 gives 3 knicks and the middle, 10/3 gives 3 knicks and 2/3;
+`closes` is true when every count is an even integer.
+
+**The complexity jump** (`jump`, `unjump`). A delta below the binary
+limit 1/base^bits is scaled up by base^bits and carried one level down —
+mantissa and level, as in floating point: 1/6 → level 2, mantissa 2/3,
+and back exactly. The carry of the ten into the next wheel is
+`zahnwerk`.
+
+Open definitions stay parameters: what a coordinate exactly 0 counts as
+(`zero_positive`, `zero_bit`), and the jump factor (`base` = 2, 3 or 10).
+
+## Module: `raum27.bruchkreis` — Fraction Circles: Cross, Circle, Tree, and When to Stop
+
+**Four fields around one centre.** The closed ring
+q1/q2 · q2/q3 · q3/q4 · q4/q1 is 1 for *any* four non-zero numbers
+(`ring_product`) — it says nothing about them. What does is the cross
+ratio (q1·q4)/(q2·q3) for the layout q1 q2 / q3 q4 (`cross_ratio`): it is
+unchanged when any row or column is rescaled, so normalising onto a
+centre does not move it. 3 5 / 6 2 gives 1/5; 2 3 / 4 5 gives 5/6. For
+any four consecutive numbers the diagonal sums are equal and the
+diagonal products differ by exactly 2 (`consecutive_delta`).
+
+**Across the centre with a sign** (`across`, `kite_area`). 2 against −5
+and 3 against −4 are both diagonals of length 7, but their midpoints lie
+at −3/2 and −1/2: the balanced part is 7 = 7, the delta is the pair
+(−3/2, −1/2). Perpendicular diagonals give the area d1·d2/2 = 49/2
+wherever they cross.
+
+**One fraction, every function.** t gives the exact circle point
+((1 − t²)/(1 + t²), 2t/(1 + t²)) and sin, 1/sin, sin², sinh, cosh as
+fractions; circle and hyperbola differ only in the sign of the
+denominator, and t = 1 is the light limit of the hyperbola. A space
+direction n with |n|² = 1 and a T part t give the four-velocity
+(cosh, sinh·n) with cosh² − sinh²·|n|² = 1 (`four_velocity`,
+`interval`): from rest (1, 0, 0, 0) a boost t = 1/2 and the integer
+quaternion (1, 1, 0, 1) give (5/3, 4/9, 8/9, 8/9), and 225/81 − 144/81 = 1.
+
+**Which fractions touch.** a/b and c/d are neighbours when ad − bc = ±1
+(`neighbours`); then their Ford circles of radius 1/(2q²) touch
+(`ford_touch`). Each new fraction is the mediant of two neighbours. The
+denominator circle q brings φ(q) new points (`new_points`: 1, 2, 2, 4,
+2, 6, 4, 6 for q = 2 … 9), while the Stern–Brocot tree doubles its
+strokes per level, 1, 2, 4, 8 (`stern_brocot_level`), and gives each
+fraction an L/R address (`stern_brocot_path`: 3/5 is LRL).
+
+**When to stop** (`continued_fraction`). A fraction ends by itself, rest
+0 (7/5 = [1; 2, 2]); otherwise stop at the tolerance — every convergent
+p/q is closer than any fraction with a smaller denominator and its error
+is below 1/q²: π → 3, 22/7, 333/106, 355/113.
+
+**Two lattices and a grating.** Parallel lattices give the moiré period
+d1·d2/|d1 − d2| (`moire_period`). A grating sends order m to
+sin_out = sin_in + m·λ/d (`order_sine`): in sines the pattern is a rigid
+grid and the viewing angle only shifts it as a whole — what changes with
+the angle in a photo is the projection (tan instead of sin, d·cos α).
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
