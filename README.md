@@ -74,7 +74,7 @@ On a clean machine:
     pip install -e ".[test]"
     pytest
 
-810 tests as of this module set, at 100% statement coverage; all
+817 tests as of this module set, at 100% statement coverage; all
 mathematical claims in this README are verified rather than asserted.
 `numpy` is the only third-party runtime dependency and `pytest` the only
 test dependency — both are declared in `pyproject.toml`.
@@ -2876,6 +2876,53 @@ d1·d2/|d1 − d2| (`moire_period`). A grating sends order m to
 sin_out = sin_in + m·λ/d (`order_sine`): in sines the pattern is a rigid
 grid and the viewing angle only shifts it as a whole — what changes with
 the angle in a photo is the projection (tan instead of sin, d·cos α).
+
+## Module: `raum27.restkreis` — The Rest Around 1: Normalise, Weigh, Take It Apart
+
+**A working range instead of an endless lever** (`normalize`,
+`denormalize`). Every positive value is m·9^k with exactly one integer k
+and 1/2 ≤ m < 9/2 — the range from the reference radius 1/2 to the scale
+9/2. k counts the zoom steps; m stays where a balance can be read. Both
+directions are exact: 1/9 is (−1, 1), 1/4 is (−1, 9/4), 9/2 is (1, 1/2).
+
+**Weigh with both pans** (`balanced_ternary`, `weigh`). With weights 1,
+3, 9, 27 allowed on either pan, every integer from 1 to 40 is weighed in
+exactly one way (Bachet) — digits −1, 0, +1, the balanced ternary;
+2 = 3 − 1. A fraction is weighed the same way at 1/3, 1/9, … after the
+nearest integer is taken off; after p places the rest is at most half the
+smallest weight, 3^−p/2, on either side, and `unweigh` gives back the
+exact value.
+
+**The rest as a fraction, not a decimal** (`as_fraction`, `rest_to_one`).
+A measured value is cut where its continued fraction falls inside the
+measuring tolerance. The diagonal ratio Q = 0.966 from the asymmetric
+oscillator, read at 1/1000, is 28/29 — a rest to 1 of −1/29, which no
+decimal writes exactly (decimals end only for denominators built from 2
+and 5). The second-order theory for that run, 1 − (5/12)·α²·A² at
+α = 0.3, A = 1, is 77/80; the two fractions differ in the next order.
+
+**Which circles the rest comes from** (`circles`, `partial_fractions`).
+The reduced denominator splits into prime powers. Different primes are
+circles side by side: the fraction is an integer plus one part a/pᵉ per
+prime power, 0 ≤ a < pᵉ — 3/80 = −1 + 7/16 + 3/5, i.e. 7/16 − 2/5. The
+exponent is how deep that circle is zoomed (1/9 is a third of a third,
+1/16 four halvings); a prime denominator such as 29 is one circle and
+cannot be split further.
+
+**The cell and the cube** (`determinant`, `hyperdeterminant`, `faces`,
+`turned`). The cell a b / c d is in balance when ad − bc = 0, and
+±1 marks neighbouring fractions (28/29 and 1/1). For eight values on the
+corners of a cube, Cayley's hyperdeterminant takes that part: it is 0 for
+a cube that is one product uᵢ·vⱼ·wₖ, 1 for the corners (0,0,0) and
+(1,1,1) alone and 0 for the three corners next to (0,0,0) — the same
+numbers that measure three-way entanglement of three qubits. It does not
+depend on the axis along which the cube is cut into a front and a back
+face; the tests check that exactly on 50 random integer cubes.
+
+What this does not establish: the plane-by-plane decomposition XT → XZ →
+XY → X of a large fraction is not implemented, because it is not yet
+defined precisely enough to test. Everything above is exact arithmetic,
+not a claim about the oscillator data beyond the one worked example.
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
