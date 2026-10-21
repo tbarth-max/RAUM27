@@ -6,7 +6,7 @@ import pytest
 
 from raum27.deltaradius import (
     READINGS, Surd3, corner_to_axis_ratio, delta_radius, delta_radius_squared_difference,
-    radial_speed, radii_squared, step_period,
+    radial_speed, radii_squared, slowness, step_period, unit_circle_side,
 )
 from raum27.nennerordnung import Power
 from raum27.rautenraum import cube_corners, face_apexes, squared_length
@@ -79,3 +79,31 @@ def test_rejects_bad_input():
         Surd3(1, 0) * 0.5
     with pytest.raises(ValueError):
         radial_speed(0)
+
+
+def test_speed_and_slowness_are_the_cross():
+    for f in (1, 2, 16):
+        for reading in READINGS:
+            v, s = radial_speed(f, 9, reading), slowness(f, 9, reading)
+            assert v * s == Surd3(1, 0)                    # (dX/dT)·(dT/dX) = 1, exactly
+            assert unit_circle_side(v) == -unit_circle_side(s) != 0
+    assert float(slowness(16)) == pytest.approx(1 / (16 * 4.5 * (3 ** 0.5 - 1)))
+
+
+def test_inside_on_and_outside_the_unit_circle():
+    assert unit_circle_side(Fraction(1, 2)) == -1
+    assert unit_circle_side(1) == 0
+    assert unit_circle_side(2) == 1
+    assert unit_circle_side(radial_speed(1, 1, "raute")) == -1          # 0.134 < 1
+    assert unit_circle_side(radial_speed(1, 9, "wuerfel")) == 1         # 3.29 > 1
+    # ΔR is irrational, so no integer frequency lands exactly on the circle
+    for reading in READINGS:
+        assert all(unit_circle_side(radial_speed(f, 1, reading)) != 0 for f in range(1, 200))
+
+
+def test_inverse_of_zero_is_refused():
+    assert Surd3(2, 1).inverse() * Surd3(2, 1) == Surd3(1, 0)
+    with pytest.raises(ZeroDivisionError):
+        Surd3(0, 0).inverse()
+    with pytest.raises(TypeError):
+        unit_circle_side(0.5)

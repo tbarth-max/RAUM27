@@ -807,7 +807,9 @@ from raum27.deltaradius import (
     delta_radius_squared_difference as dr_delta_radius_squared_difference,
     radial_speed as dr_radial_speed,
     radii_squared as dr_radii_squared,
+    slowness as dr_slowness,
     step_period as dr_step_period,
+    unit_circle_side as dr_unit_circle_side,
 )
 from raum27.duplex_inversion import (
     coincidence_points as duplex_coincidence_points,
@@ -1502,5 +1504,7 @@ __all__ = [
     "dr_delta_radius_squared_difference",
     "dr_radial_speed",
     "dr_radii_squared",
+    "dr_slowness",
     "dr_step_period",
+    "dr_unit_circle_side",
 ]

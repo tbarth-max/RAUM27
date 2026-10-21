@@ -4,7 +4,12 @@ The six axis directions and the eight corner directions cross a shell
 around the centre at two different distances. Their difference is the
 **delta radius** ΔR, the radial step between the 6-system and the
 8-system. Taken over one period ``dT = 1/f`` of the frequency key it
-gives the radial speed ``dX/dT = ΔR · f``.
+gives the radial speed ``dX/dT = ΔR · f``; read the other way round the
+cross gives the slowness ``dT/dX = 1/(ΔR · f)``. The two are inverse, so
+one lies inside the unit circle exactly when the other lies outside, and
+only the value 1 is its own inverse. With dx = 1 m and dt = 1/c (as in
+`lichtgitter`) that 1 is the speed of light. ΔR is irrational in both
+readings, so no integer frequency puts ΔR · f exactly on the circle.
 
 Two readings are in use in this repository, and they give different
 numbers, so both are named here and neither is preferred:
@@ -85,6 +90,13 @@ class Surd3:
     def __float__(self):
         return float(self.p) + float(self.q) * 3 ** 0.5
 
+    def inverse(self):
+        """1 / (p + q·sqrt 3) = (p - q·sqrt 3) / (p² - 3q²), exact."""
+        n = self.p * self.p - 3 * self.q * self.q
+        if n == 0:
+            raise ZeroDivisionError("Surd3 zero has no inverse")
+        return Surd3(self.p / n, -self.q / n)
+
 
 def _edge(edge):
     a = _rational(edge, "edge")
@@ -136,3 +148,20 @@ def step_period(frequency):
 def radial_speed(frequency, edge=9, reading="wuerfel"):
     """dX/dT = ΔR / dT = ΔR · f, exact."""
     return delta_radius(edge, reading) * (1 / step_period(frequency))
+
+
+def slowness(frequency, edge=9, reading="wuerfel"):
+    """dT/dX = 1 / (ΔR · f): the cross read the other way, seconds per metre."""
+    return radial_speed(frequency, edge, reading).inverse()
+
+
+def unit_circle_side(value):
+    """Where a dimensionless speed lies against the unit circle: -1 inside, 0 on it, +1 outside.
+
+    Speed and slowness are inverse, so one is inside exactly when the other is outside;
+    only the value 1 is its own inverse.
+    """
+    if not isinstance(value, Surd3):
+        value = Surd3(_rational(value, "value"), 0)
+    return (value - Surd3(1, 0)).sign()
+

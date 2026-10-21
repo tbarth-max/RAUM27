@@ -2944,6 +2944,16 @@ so both are named and neither is preferred:
 For the nine-cube (a = 9): ΔR = 9(√3 − 1)/2 ≈ 3.294 in the cube reading,
 9(1 − √3/2) ≈ 1.206 in the rhombus reading. dX/dT at f = 16 is 16 · ΔR.
 
+**The cross.** dX over dT is a speed (metres per second); turned round,
+dT over dX is the slowness (seconds per metre). The two are exact
+inverses, so their product is 1, and one lies inside the unit circle
+exactly when the other lies outside; only 1 is its own inverse. With
+dx = 1 m and dt = 1/c (`lichtgitter`) that 1 is the speed of light: below
+it inside, slowness outside. Because ΔR is irrational in both readings,
+no integer frequency places ΔR · f exactly on the circle. Read as a state
+X (path), T (time), Y = ΔX, Z = ΔT, the ratio Y/Z is the speed and Z/Y the
+slowness.
+
 **Open:** which reading is meant by "the distance between the 6 and the 8
 crossing points" has not been fixed (see Open Questions).
 
