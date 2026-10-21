@@ -2933,8 +2933,11 @@ period dT = 1/f of the frequency key it gives the radial speed
 dX/dT = ΔR · f. Everything is exact: a radius difference is kept as
 p + q·√3 with rational p, q, and its sign is decided by comparing squares.
 
-Two readings already exist in this repository and give different numbers,
-so both are named and neither is preferred:
+Two readings already exist in this repository and give different numbers.
+**Fixed (21.10.2026): the cube reading.** The 6 crossing point is the
+centre of a cube face, where the axis pierces the wall: the place of the
+hole a photon passes through while the mirrored inside keeps its image.
+The rhombus reading stays for comparison:
 
 | Reading | 6 points at | 8 points at | ΔR | r8² − r6² | r8 / r6 |
 |---|---|---|---|---|---|
@@ -2954,8 +2957,6 @@ no integer frequency places ΔR · f exactly on the circle. Read as a state
 X (path), T (time), Y = ΔX, Z = ΔT, the ratio Y/Z is the speed and Z/Y the
 slowness.
 
-**Open:** which reading is meant by "the distance between the 6 and the 8
-crossing points" has not been fixed (see Open Questions).
 
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
@@ -3434,8 +3435,6 @@ move it forward.
       waves are dispersive.
     The nesting factor (4/3, 9/8 or 9/2) and q (3 or 9/2) are not decided.
     Details in Drive: `RAUM27_Abgleich_9_Fragen_2026-10-14.md`.
-19. **The delta radius ΔR between the 6 and the 8 crossing points**
-    (`deltaradius`): face centre to corner (cube reading, the corner
-    further out) or pyramid apex to corner (rhombus reading, the apex
-    further out)? Both are computed exactly; the choice decides the sign
-    and size of dX/dT.
+19. ~~The delta radius ΔR: cube or rhombus reading?~~ **Settled 21.10.:**
+    cube reading, the 6 crossing point is the face centre (the photon
+    hole). ΔR = (a/2)(√3 − 1), for a = 9 about 3.294.

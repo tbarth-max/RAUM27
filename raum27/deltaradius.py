@@ -11,8 +11,12 @@ only the value 1 is its own inverse. With dx = 1 m and dt = 1/c (as in
 `lichtgitter`) that 1 is the speed of light. ΔR is irrational in both
 readings, so no integer frequency puts ΔR · f exactly on the circle.
 
-Two readings are in use in this repository, and they give different
-numbers, so both are named here and neither is preferred:
+Two readings are in use in this repository and give different numbers.
+**The cube reading is the one fixed for this definition (21.10.2026):**
+the 6 crossing point is the centre of a cube face, where the axis pierces
+the wall -- the place of the hole that lets a photon through while the
+mirrored inside keeps its image. The rhombus reading is kept for
+comparison only:
 
 * **Cube reading** (``"wuerfel"``, as in `eckenruecklauf`): edge ``a``
   around the centre, the 6 points are the face centres at ``a/2``, the
