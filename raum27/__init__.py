@@ -799,6 +799,16 @@ from raum27.optionsraum import (
     uniform_wish as optionsraum_uniform_wish,
     worst_squared_distance_to_a_single_wish as optionsraum_worst_squared_distance,
 )
+from raum27.deltaradius import (
+    READINGS as dr_READINGS,
+    Surd3 as dr_Surd3,
+    corner_to_axis_ratio as dr_corner_to_axis_ratio,
+    delta_radius as dr_delta_radius,
+    delta_radius_squared_difference as dr_delta_radius_squared_difference,
+    radial_speed as dr_radial_speed,
+    radii_squared as dr_radii_squared,
+    step_period as dr_step_period,
+)
 from raum27.duplex_inversion import (
     coincidence_points as duplex_coincidence_points,
     off_diagonal_coincidences as duplex_off_diagonal_coincidences,
@@ -1485,4 +1495,12 @@ __all__ = [
     "dual_ladders_cover",
     "shared_rung_condition",
     "shared_rungs",
+    "dr_READINGS",
+    "dr_Surd3",
+    "dr_corner_to_axis_ratio",
+    "dr_delta_radius",
+    "dr_delta_radius_squared_difference",
+    "dr_radial_speed",
+    "dr_radii_squared",
+    "dr_step_period",
 ]

@@ -2924,6 +2924,29 @@ XY → X of a large fraction is not implemented, because it is not yet
 defined precisely enough to test. Everything above is exact arithmetic,
 not a claim about the oscillator data beyond the one worked example.
 
+## Module: `raum27.deltaradius` — The Delta Radius Between the 6 and the 8, and dX/dT
+
+The six axis directions and the eight corner directions cross a shell
+around the centre at two distances. Their difference is the delta radius
+ΔR, the radial step between the 6-system and the 8-system; over one
+period dT = 1/f of the frequency key it gives the radial speed
+dX/dT = ΔR · f. Everything is exact: a radius difference is kept as
+p + q·√3 with rational p, q, and its sign is decided by comparing squares.
+
+Two readings already exist in this repository and give different numbers,
+so both are named and neither is preferred:
+
+| Reading | 6 points at | 8 points at | ΔR | r8² − r6² | r8 / r6 |
+|---|---|---|---|---|---|
+| `wuerfel` (as in `eckenruecklauf`) | face centres, a/2 | corners, a√3/2 | (a/2)(√3 − 1) | +a²/2 | √3 |
+| `raute` (as in `rautenraum`) | pyramid apexes, a | corners, a√3/2 | a(1 − √3/2) | −a²/4 | √3/2 |
+
+For the nine-cube (a = 9): ΔR = 9(√3 − 1)/2 ≈ 3.294 in the cube reading,
+9(1 − √3/2) ≈ 1.206 in the rhombus reading. dX/dT at f = 16 is 16 · ΔR.
+
+**Open:** which reading is meant by "the distance between the 6 and the 8
+crossing points" has not been fixed (see Open Questions).
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as
@@ -3401,3 +3424,8 @@ move it forward.
       waves are dispersive.
     The nesting factor (4/3, 9/8 or 9/2) and q (3 or 9/2) are not decided.
     Details in Drive: `RAUM27_Abgleich_9_Fragen_2026-10-14.md`.
+19. **The delta radius ΔR between the 6 and the 8 crossing points**
+    (`deltaradius`): face centre to corner (cube reading, the corner
+    further out) or pyramid apex to corner (rhombus reading, the apex
+    further out)? Both are computed exactly; the choice decides the sign
+    and size of dX/dT.
