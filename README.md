@@ -2958,6 +2958,28 @@ X (path), T (time), Y = ΔX, Z = ΔT, the ratio Y/Z is the speed and Z/Y the
 slowness.
 
 
+## Module: `raum27.gegenpaar` — Keep Only What Stands Opposite: 180° Pairs and 90° Classes
+
+A signal sampled on a circle, each sample an exact pair (I, Q) =
+left-right and up-down channel. **The 180° filter** keeps only what has an
+exact counterpart half a turn away with the opposite sign,
+P f[j] = (f[j] − f[j + M/2]) / 2. The constant ground level (a bias voltage
+with the information modulated on top) and every even harmonic drop out;
+P is a projection (P² = P) and f = P f + (1 − P) f without remainder.
+
+**Its limit, and the 90° step.** A disturbance that is itself a perfect
+opposite pair passes the 180° filter like the signal. The quarter turn
+between two 180° systems splits further: four exact classes by the factor
+1, i, −1, −i a pattern answers a quarter turn with. P₁ + P₃ = P,
+P₀ + P₂ = 1 − P, the classes are orthogonal and add up to the signal. A
+signal turning one way and a disturbance turning the other are both
+opposite pairs, yet the quarter classes separate them exactly.
+
+**What stays.** A disturbance in the same quarter class as the signal
+(same turning sense) is not removed by any of these projections; only a
+further channel can tell them apart. Random noise is reduced, never
+exactly removed: it has a small share in every class.
+
 ## Module: `raum27.zustandsmaschine` — Two Submitted Cores, and What Survived
 
 Two versions of a rational state machine arrived: the first presented as

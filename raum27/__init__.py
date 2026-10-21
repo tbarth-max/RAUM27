@@ -811,6 +811,15 @@ from raum27.deltaradius import (
     step_period as dr_step_period,
     unit_circle_side as dr_unit_circle_side,
 )
+from raum27.gegenpaar import (
+    Gauss as gp_Gauss,
+    energy as gp_energy,
+    occupied_classes as gp_occupied_classes,
+    opposite_pairs as gp_opposite_pairs,
+    quarter_class as gp_quarter_class,
+    returning_part as gp_returning_part,
+    separable as gp_separable,
+)
 from raum27.duplex_inversion import (
     coincidence_points as duplex_coincidence_points,
     off_diagonal_coincidences as duplex_off_diagonal_coincidences,
@@ -1507,4 +1516,11 @@ __all__ = [
     "dr_slowness",
     "dr_step_period",
     "dr_unit_circle_side",
+    "gp_Gauss",
+    "gp_energy",
+    "gp_occupied_classes",
+    "gp_opposite_pairs",
+    "gp_quarter_class",
+    "gp_returning_part",
+    "gp_separable",
 ]
