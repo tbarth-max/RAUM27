@@ -1,0 +1,83 @@
+{
+ "1_ebenenzyklus": {
+  "det": 1.0,
+  "drehwinkel_grad": 120.0,
+  "achse_ist_diagonale": true,
+  "drei_schritte_identitaet": true
+ },
+ "1_ebenenwechsel_dreht_3phasen_um_120": true,
+ "1_ebenen_auf_der_dekade": {
+  "XY": 1,
+  "XZ": 2.1544,
+  "XT": 4.6416,
+  "XY_wieder": 10
+ },
+ "2_mit_sieb": [
+  {
+   "schale": 0,
+   "verzug_median_grad": 12.54,
+   "dreiphasen_leistung": 1.4642,
+   "tunnel_durchlass_mittel": 0.681
+  },
+  {
+   "schale": 1,
+   "verzug_median_grad": 12.5,
+   "dreiphasen_leistung": 1.4644,
+   "tunnel_durchlass_mittel": 0.682
+  },
+  {
+   "schale": 2,
+   "verzug_median_grad": 12.56,
+   "dreiphasen_leistung": 1.4641,
+   "tunnel_durchlass_mittel": 0.679
+  },
+  {
+   "schale": 3,
+   "verzug_median_grad": 12.58,
+   "dreiphasen_leistung": 1.464,
+   "tunnel_durchlass_mittel": 0.681
+  }
+ ],
+ "2_ohne_sieb": [
+  {
+   "schale": 0,
+   "verzug_median_grad": 2.25,
+   "dreiphasen_leistung": 1.4988,
+   "tunnel_durchlass_mittel": 0.198
+  },
+  {
+   "schale": 1,
+   "verzug_median_grad": 4.57,
+   "dreiphasen_leistung": 1.4952,
+   "tunnel_durchlass_mittel": 0.206
+  },
+  {
+   "schale": 2,
+   "verzug_median_grad": 8.94,
+   "dreiphasen_leistung": 1.4818,
+   "tunnel_durchlass_mittel": 0.192
+  },
+  {
+   "schale": 3,
+   "verzug_median_grad": 17.71,
+   "dreiphasen_leistung": 1.4289,
+   "tunnel_durchlass_mittel": 0.181
+  }
+ ],
+ "2_T0_aus_regel": 0.05011,
+ "3_treffpunkte_24er_ring_2zu1": [
+  0,
+  120,
+  240
+ ],
+ "3_ohne_spiegel_gleichsinnig": [
+  0
+ ],
+ "4_lambda2_fuer_resonanz_x1": 0.60826,
+ "4_phase_x1_grad": 167.46,
+ "4_treffpunkte_16_9": {
+  "gleichsinnig": 7,
+  "gegenlaeufig": 25
+ },
+ "5_umlauf_1234_neutral_abweichung": 5.6e-16
+}

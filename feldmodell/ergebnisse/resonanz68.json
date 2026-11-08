@@ -1,0 +1,42 @@
+[
+ {
+  "R": 4,
+  "links": "nur Flaechen (Treppe)",
+  "ankunft_zentrum_8": 12,
+  "ankunft_zentrum_6": 4,
+  "gleichzeitig_im_zentrum": false,
+  "resonanzzellen": 140,
+  "anteil": 0.192,
+  "davon_auf_raumdiagonalen": 8
+ },
+ {
+  "R": 4,
+  "links": "6+8",
+  "ankunft_zentrum_8": 4,
+  "ankunft_zentrum_6": 4,
+  "gleichzeitig_im_zentrum": true,
+  "resonanzzellen": 293,
+  "anteil": 0.4019,
+  "davon_auf_raumdiagonalen": 17
+ },
+ {
+  "R": 13,
+  "links": "nur Flaechen (Treppe)",
+  "ankunft_zentrum_8": 39,
+  "ankunft_zentrum_6": 13,
+  "gleichzeitig_im_zentrum": false,
+  "resonanzzellen": 1164,
+  "anteil": 0.0591,
+  "davon_auf_raumdiagonalen": 0
+ },
+ {
+  "R": 13,
+  "links": "6+8",
+  "ankunft_zentrum_8": 13,
+  "ankunft_zentrum_6": 13,
+  "gleichzeitig_im_zentrum": true,
+  "resonanzzellen": 2485,
+  "anteil": 0.1263,
+  "davon_auf_raumdiagonalen": 49
+ }
+]

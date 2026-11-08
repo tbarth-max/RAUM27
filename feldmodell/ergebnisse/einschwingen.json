@@ -1,0 +1,38 @@
+{
+ "impuls_K9": {
+  "ablesungen": 30,
+  "takte_bis_ablesen_min_mittel_max": [
+   20,
+   20.27,
+   21
+  ],
+  "max_rest_bei_ablesen": 3.9e-13,
+  "tensor_eigen_max_bei_ablesen": 8.3e-27
+ },
+ "impuls_K27": {
+  "ablesungen": 30,
+  "takte_bis_ablesen_min_mittel_max": [
+   20,
+   20.27,
+   21
+  ],
+  "max_rest_bei_ablesen": 3.9e-13,
+  "tensor_eigen_max_bei_ablesen": 2.7e-27
+ },
+ "impuls_K81": {
+  "ablesungen": 30,
+  "takte_bis_ablesen_min_mittel_max": [
+   20,
+   20.27,
+   21
+  ],
+  "max_rest_bei_ablesen": 3.9e-13,
+  "tensor_eigen_max_bei_ablesen": 1.1e-27
+ },
+ "dauerchaos_K9": {
+  "ablesungen": 0,
+  "takte": 5000,
+  "rest_ende": 0.2569
+ },
+ "theorie_schritte_1_auf_1e-12": 18.37
+}

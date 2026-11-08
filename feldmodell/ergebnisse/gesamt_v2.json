@@ -1,0 +1,68 @@
+{
+ "1_rueckbau_faktor": [
+  27.14,
+  27.01,
+  27.0,
+  27.0,
+  27.0,
+  27.0,
+  27.0
+ ],
+ "2_tunnel_je_ebene": [
+  0.96,
+  0.956,
+  0.942,
+  0.94,
+  0.967
+ ],
+ "2_verzug_median": [
+  12.55,
+  12.58,
+  12.67,
+  12.81,
+  12.52
+ ],
+ "3_takte_bis_auslesen": {
+  "9": 21,
+  "27": 21,
+  "81": 21
+ },
+ "5_R2_druck_vs_bedarf": 1.0,
+ "5_ruhe_defizit": 0.0,
+ "6_ankunft_8_6_treppe8": [
+  6,
+  6,
+  18
+ ],
+ "8_gesamt_streuung": [
+  216.0,
+  4.3e-05
+ ],
+ "9_phasen_max_ort": [
+  5,
+  9
+ ],
+ "9_hof_abfall": [
+  0.861,
+  0.422,
+  0.305,
+  0.226,
+  0.168
+ ],
+ "CHECKS": {
+  "1 Rueckbau x27 je Ring": true,
+  "2 Tunnel >=0.9 alle Ebenen": true,
+  "2 Verzug-Median 12.54+-0.5": true,
+  "3 Einschwingen tiefenunabhaengig": true,
+  "4 XOR7 = Kehrwert": true,
+  "5 Druck misst Bedarf linear (R2>0.999)": true,
+  "5 Ruhe: Fluss steht": true,
+  "6 8 und 6 gleichzeitig (6+8)": true,
+  "6 Treppe nicht im Takt": true,
+  "7 4D 24 Nachbarn Abstand 1": true,
+  "8 Energie erhalten, normiert": true,
+  "9 Farbhof zentriert auf Fehler": true,
+  "9 Hof faellt nach aussen": true
+ },
+ "ALLE_OK": true
+}

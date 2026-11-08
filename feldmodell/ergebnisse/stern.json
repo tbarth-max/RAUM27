@@ -1,0 +1,26 @@
+{
+ "3": {
+  "knoten": 343,
+  "aussenschale": 218,
+  "stern_abfall_max": 0.0826,
+  "kette_abfall": 3.0
+ },
+ "6": {
+  "knoten": 2197,
+  "aussenschale": 866,
+  "stern_abfall_max": 0.0839,
+  "kette_abfall": 6.0
+ },
+ "9": {
+  "knoten": 6859,
+  "aussenschale": 1946,
+  "stern_abfall_max": 0.0842,
+  "kette_abfall": 9.0
+ },
+ "12": {
+  "knoten": 15625,
+  "aussenschale": 3458,
+  "stern_abfall_max": 0.0844,
+  "kette_abfall": 12.0
+ }
+}

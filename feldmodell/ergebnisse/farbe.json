@@ -1,0 +1,44 @@
+{
+ "perfekt": {
+  "rot": [],
+  "blau": [],
+  "gruen": 81
+ },
+ "X-Fehler bei (2,3) +1%": {
+  "rot": [
+   [
+    2,
+    3
+   ]
+  ],
+  "blau": [],
+  "gruen": 80
+ },
+ "Y-Fehler bei (6,6) +1%": {
+  "rot": [],
+  "blau": [
+   [
+    6,
+    6
+   ]
+  ],
+  "gruen": 80
+ },
+ "beide": {
+  "rot": [
+   [
+    2,
+    3
+   ]
+  ],
+  "blau": [
+   [
+    6,
+    6
+   ]
+  ],
+  "gruen": 79
+ },
+ "amplitude_als_traeger_rauschen_rel": 0.3,
+ "phasenversatz_nach_T=10_bei_1%_grad": 36.0
+}

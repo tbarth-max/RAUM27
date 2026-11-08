@@ -1,0 +1,23 @@
+{
+ "ruhe": {
+  "arterie_min": 1.0,
+  "herz_schiebt_mittel": 0.0,
+  "bedarf_mittel": 0.0,
+  "fluss_mittel": 0.0,
+  "volumen_erhalten": true
+ },
+ "bedarf": {
+  "arterie_min": 0.815,
+  "herz_schiebt_mittel": 0.00906,
+  "bedarf_mittel": 0.009032,
+  "fluss_mittel": 0.04558,
+  "volumen_erhalten": true
+ },
+ "bedarf_dann_ruhe": {
+  "arterie_min": 1.0,
+  "herz_schiebt_mittel": 6.224e-07,
+  "bedarf_mittel": 0.0,
+  "fluss_mittel": 3.769e-06,
+  "volumen_erhalten": true
+ }
+}

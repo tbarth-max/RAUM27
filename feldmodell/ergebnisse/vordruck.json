@@ -1,0 +1,38 @@
+{
+ "offen_9x9": {
+  "entnommen": 39.9756,
+  "zufluss_aus_reservoir": 39.894,
+  "bilanz_rest": 0.0,
+  "druck_mittel": 0.999,
+  "druck_min_spaete_haelfte": 0.995,
+  "druck_mitte": 0.9979,
+  "druck_rand": 0.9993
+ },
+ "offen_27x27": {
+  "entnommen": 361.5066,
+  "zufluss_aus_reservoir": 356.5448,
+  "bilanz_rest": 0.0,
+  "druck_mittel": 0.9932,
+  "druck_min_spaete_haelfte": 0.9624,
+  "druck_mitte": 0.9865,
+  "druck_rand": 0.9984
+ },
+ "geschlossen_9x9": {
+  "entnommen": 40.3418,
+  "zufluss_aus_reservoir": 2.0249,
+  "bilanz_rest": -0.0,
+  "druck_mittel": 0.527,
+  "druck_min_spaete_haelfte": 0.525,
+  "druck_mitte": 0.527,
+  "druck_rand": 0.5269
+ },
+ "offen_9x9_ueberlast_x20": {
+  "entnommen": 797.3533,
+  "zufluss_aus_reservoir": 795.9533,
+  "bilanz_rest": -0.0,
+  "druck_mittel": 0.9827,
+  "druck_min_spaete_haelfte": 0.8997,
+  "druck_mitte": 0.9743,
+  "druck_rand": 0.9891
+ }
+}

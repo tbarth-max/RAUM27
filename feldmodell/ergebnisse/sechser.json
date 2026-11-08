@@ -1,0 +1,26 @@
+{
+ "1 Zwerg je 3er-Block (Mitte), 27": {
+  "zwerge": 27,
+  "anteil_an_knoten": 0.037,
+  "max_abfall": 0.00279,
+  "mittel_abfall": 0.00255
+ },
+ "6 Zwerge je 3er-Block (Flaechen), 162": {
+  "zwerge": 162,
+  "anteil_an_knoten": 0.2222,
+  "max_abfall": 0.00079,
+  "mittel_abfall": 0.00034
+ },
+ "6 aus 6: nur die 6 Flaechenbloecke des Ganzen, je 6 Zwerge, 36": {
+  "zwerge": 36,
+  "anteil_an_knoten": 0.0494,
+  "max_abfall": 0.00447,
+  "mittel_abfall": 0.00289
+ },
+ "6 aus 6 + Zentrum-Block 6, 42": {
+  "zwerge": 42,
+  "anteil_an_knoten": 0.0576,
+  "max_abfall": 0.00425,
+  "mittel_abfall": 0.00265
+ }
+}

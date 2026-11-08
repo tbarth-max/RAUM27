@@ -1,0 +1,36 @@
+{
+ "nachbarn_je_knoten": [
+  14
+ ],
+ "verbindung_beidseitig": true,
+ "abstandsprofil_je_zentrum_verschieden": 1,
+ "abstandsprofil": [
+  1,
+  14,
+  62,
+  94,
+  45
+ ],
+ "gewichte_summe": 0.9999999999999997,
+ "nachbarn_zusammen": 0.777778,
+ "impuls_null": true,
+ "isotrop_2_ordnung_sum_w_cicj": [
+  [
+   0.333333,
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.333333,
+   0.0
+  ],
+  [
+   0.0,
+   0.0,
+   0.333333
+  ]
+ ],
+ "ohne_zentrum_nur_umverteilen_streuung_ende": 0.00102,
+ "mittel_ende": 0.6506
+}

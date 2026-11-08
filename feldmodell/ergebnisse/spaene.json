@@ -1,0 +1,142 @@
+{
+ "A_streuung_faktor2_je_ebene": [
+  {
+   "ebene": 0,
+   "verzug_p10_p90": [
+    9.58,
+    16.36
+   ],
+   "spanne": 6.78,
+   "tunnel": 0.68
+  },
+  {
+   "ebene": 1,
+   "verzug_p10_p90": [
+    9.58,
+    16.37
+   ],
+   "spanne": 6.8,
+   "tunnel": 0.68
+  },
+  {
+   "ebene": 2,
+   "verzug_p10_p90": [
+    9.57,
+    16.35
+   ],
+   "spanne": 6.79,
+   "tunnel": 0.68
+  },
+  {
+   "ebene": 3,
+   "verzug_p10_p90": [
+    9.56,
+    16.36
+   ],
+   "spanne": 6.81,
+   "tunnel": 0.68
+  },
+  {
+   "ebene": 4,
+   "verzug_p10_p90": [
+    9.57,
+    16.36
+   ],
+   "spanne": 6.79,
+   "tunnel": 0.681
+  },
+  {
+   "ebene": 5,
+   "verzug_p10_p90": [
+    9.57,
+    16.35
+   ],
+   "spanne": 6.78,
+   "tunnel": 0.681
+  }
+ ],
+ "B_streuung_ganze_luecke": [
+  {
+   "ebene": 0,
+   "verzug_p10_p90": [
+    9.57,
+    16.35
+   ],
+   "spanne": 6.78,
+   "tunnel": 0.681
+  },
+  {
+   "ebene": 1,
+   "verzug_p10_p90": [
+    7.28,
+    21.18
+   ],
+   "spanne": 13.89,
+   "tunnel": 0.445
+  },
+  {
+   "ebene": 2,
+   "verzug_p10_p90": [
+    4.21,
+    33.99
+   ],
+   "spanne": 29.78,
+   "tunnel": 0.262
+  },
+  {
+   "ebene": 3,
+   "verzug_p10_p90": [
+    1.38,
+    63.78
+   ],
+   "spanne": 62.4,
+   "tunnel": 0.152
+  },
+  {
+   "ebene": 4,
+   "verzug_p10_p90": [
+    0.15,
+    86.95
+   ],
+   "spanne": 86.79,
+   "tunnel": 0.091
+  }
+ ],
+ "B_noetige_unterstufen": [
+  {
+   "ebene": 0,
+   "luecke": 2.0,
+   "stufen_fuer_tunnel_0_9": 4,
+   "tunnel": 0.961,
+   "stufen_je_faktor2": 4.0
+  },
+  {
+   "ebene": 1,
+   "luecke": 4.0,
+   "stufen_fuer_tunnel_0_9": 8,
+   "tunnel": 0.956,
+   "stufen_je_faktor2": 4.0
+  },
+  {
+   "ebene": 2,
+   "luecke": 16.0,
+   "stufen_fuer_tunnel_0_9": 16,
+   "tunnel": 0.942,
+   "stufen_je_faktor2": 4.0
+  },
+  {
+   "ebene": 3,
+   "luecke": 256.0,
+   "stufen_fuer_tunnel_0_9": 32,
+   "tunnel": 0.941,
+   "stufen_je_faktor2": 4.0
+  },
+  {
+   "ebene": 4,
+   "luecke": 65536.0,
+   "stufen_fuer_tunnel_0_9": 32,
+   "tunnel": 0.912,
+   "stufen_je_faktor2": 2.0
+  }
+ ]
+}

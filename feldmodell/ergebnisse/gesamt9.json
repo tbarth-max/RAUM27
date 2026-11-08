@@ -1,0 +1,171 @@
+{
+ "raum_achtel_je_ring": [
+  8,
+  8,
+  8,
+  8,
+  8,
+  8,
+  8,
+  8,
+  8
+ ],
+ "raum_rueckbaufehler": [
+  0.35,
+  0.0112,
+  0.000412,
+  1.52e-05,
+  5.65e-07,
+  2.09e-08,
+  7.74e-10,
+  2.87e-11,
+  1.06e-12
+ ],
+ "raum_rueckbau_faktor_je_ring": [
+  31.31,
+  27.14,
+  27.01,
+  27.0,
+  27.0,
+  27.0,
+  27.0,
+  27.0
+ ],
+ "raum_umlauf_max_abw": 5.6e-16,
+ "raum_spiegel_max_abw": 2.2e-16,
+ "zellen_je_quadrant_ring9": 387420489,
+ "16/9*9/2": 8.0,
+ "schalen_verzug_leistung_tunnel (Sieb x1/2)": [
+  [
+   12.54,
+   1.4642,
+   0.679
+  ],
+  [
+   12.56,
+   1.4641,
+   0.682
+  ],
+  [
+   12.57,
+   1.4641,
+   0.681
+  ],
+  [
+   12.59,
+   1.4639,
+   0.679
+  ],
+  [
+   12.58,
+   1.464,
+   0.679
+  ],
+  [
+   12.6,
+   1.4638,
+   0.68
+  ],
+  [
+   12.57,
+   1.464,
+   0.678
+  ],
+  [
+   12.56,
+   1.4641,
+   0.681
+  ],
+  [
+   12.57,
+   1.464,
+   0.68
+  ]
+ ],
+ "schalen_tunnel (Sieb 4 Unterstufen)": [
+  0.961,
+  0.96,
+  0.961,
+  0.96,
+  0.96,
+  0.96,
+  0.96,
+  0.96,
+  0.96
+ ],
+ "schalen_ohne_sieb": [
+  [
+   0.81,
+   1.4998,
+   0.153
+  ],
+  [
+   1.66,
+   1.4994,
+   0.156
+  ],
+  [
+   3.28,
+   1.4975,
+   0.151
+  ],
+  [
+   6.56,
+   1.4902,
+   0.145
+  ],
+  [
+   12.91,
+   1.4621,
+   0.138
+  ],
+  [
+   24.24,
+   1.3678,
+   0.131
+  ],
+  [
+   41.7,
+   1.1199,
+   0.122
+  ],
+  [
+   60.86,
+   0.7304,
+   0.113
+  ],
+  [
+   74.24,
+   0.4075,
+   0.089
+  ]
+ ],
+ "T0": 0.05018,
+ "nutation_grad_je_schale (aus G12-Gesetz)": [
+  0.588,
+  0.147,
+  0.0368,
+  0.00919,
+  0.0023,
+  0.000574,
+  0.000144,
+  3.59e-05,
+  8.98e-06
+ ],
+ "lambda2": 0.60826,
+ "CHECKS": {
+  "8 Achtel in jedem Ring": true,
+  "Rueckbau faellt ~27 je Ring": true,
+  "Umlauf 1234 neutral": true,
+  "Spiegel exakt": true,
+  "Verzug konstant ueber 9 Schalen (<0.2 Grad)": true,
+  "Tunnel gleich in allen Schalen": true,
+  "feineres Sieb -> Tunnel hoeher": true,
+  "ohne Sieb driftet": true,
+  "Ebenenzyklus XY-XZ-XT schliesst nach 3": true,
+  "2:1 ueber Spiegel -> 3 Phasen": true,
+  "3 Phasen Leistung konstant": true,
+  "16/9-Resonanz bei x=1 (lambda2)": true
+ },
+ "ALLE_OK": true
+}

@@ -1,0 +1,71 @@
+{
+ "alle_gleich": {
+  "Ressource0": {
+   "mittel": 0.9997,
+   "spanne_alle": 0.0015,
+   "vielentnehmer": 0.9996,
+   "nachbar": 0.9997,
+   "weit_weg": 0.9999
+  },
+  "Ressource1": {
+   "mittel": 0.9997,
+   "spanne_alle": 0.0005,
+   "vielentnehmer": 0.9995,
+   "nachbar": 0.9995,
+   "weit_weg": 1.0
+  },
+  "Ressource2": {
+   "mittel": 0.9997,
+   "spanne_alle": 0.001,
+   "vielentnehmer": 0.9994,
+   "nachbar": 0.9995,
+   "weit_weg": 1.0
+  }
+ },
+ "ein_vielentnehmer_0.05": {
+  "Ressource0": {
+   "mittel": 0.9597,
+   "spanne_alle": 0.182,
+   "vielentnehmer": 0.8132,
+   "nachbar": 0.8756,
+   "weit_weg": 0.9951
+  },
+  "Ressource1": {
+   "mittel": 0.9996,
+   "spanne_alle": 0.0013,
+   "vielentnehmer": 0.9993,
+   "nachbar": 0.9991,
+   "weit_weg": 0.9999
+  },
+  "Ressource2": {
+   "mittel": 0.9997,
+   "spanne_alle": 0.0011,
+   "vielentnehmer": 0.9995,
+   "nachbar": 0.9995,
+   "weit_weg": 1.0
+  }
+ },
+ "ein_vielentnehmer_0.05_lokale_reservoirs": {
+  "Ressource0": {
+   "mittel": 0.9974,
+   "spanne_alle": 0.0214,
+   "vielentnehmer": 0.9906,
+   "nachbar": 0.9786,
+   "weit_weg": 1.0
+  },
+  "Ressource1": {
+   "mittel": 1.0,
+   "spanne_alle": 0.0001,
+   "vielentnehmer": 1.0,
+   "nachbar": 0.9999,
+   "weit_weg": 1.0
+  },
+  "Ressource2": {
+   "mittel": 1.0,
+   "spanne_alle": 0.0001,
+   "vielentnehmer": 1.0,
+   "nachbar": 1.0,
+   "weit_weg": 1.0
+  }
+ }
+}

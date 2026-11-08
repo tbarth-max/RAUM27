@@ -1,0 +1,79 @@
+{
+ "N9_mitte": {
+  "minimum_ueberall_jemals": 0.9923,
+  "boden_gehalten": true,
+  "mittel": 0.9998,
+  "nachbar_vom_vielentnehmer": 0.9984,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N9_rand": {
+  "minimum_ueberall_jemals": 0.9923,
+  "boden_gehalten": true,
+  "mittel": 0.9998,
+  "nachbar_vom_vielentnehmer": 0.9984,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N9_ecke": {
+  "minimum_ueberall_jemals": 0.9924,
+  "boden_gehalten": true,
+  "mittel": 0.9999,
+  "nachbar_vom_vielentnehmer": 0.9984,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N27_mitte": {
+  "minimum_ueberall_jemals": 0.992,
+  "boden_gehalten": true,
+  "mittel": 1.0,
+  "nachbar_vom_vielentnehmer": 0.9984,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N27_rand": {
+  "minimum_ueberall_jemals": 0.9922,
+  "boden_gehalten": true,
+  "mittel": 1.0,
+  "nachbar_vom_vielentnehmer": 0.9984,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N27_ecke": {
+  "minimum_ueberall_jemals": 0.9923,
+  "boden_gehalten": true,
+  "mittel": 1.0,
+  "nachbar_vom_vielentnehmer": 0.9984,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N9_mitte_OHNE_boden_nur_randreservoir": {
+  "minimum_ueberall_jemals": 0.8086,
+  "boden_gehalten": false,
+  "mittel": 0.9591,
+  "nachbar_vom_vielentnehmer": 0.8749,
+  "vielentnehmer_bekam_je_takt": 0.05
+ },
+ "N9_mitte_will0.5_boden_ohne_lokale": {
+  "minimum_ueberall_jemals": 0.9201,
+  "boden_gehalten": true,
+  "mittel": 0.9825,
+  "nachbar_vom_vielentnehmer": 0.9472,
+  "vielentnehmer_bekam_je_takt": 0.0209
+ },
+ "N9_mitte_will0.5_ohne_boden_ohne_lokale": {
+  "minimum_ueberall_jemals": 0.2107,
+  "boden_gehalten": false,
+  "mittel": 0.83,
+  "nachbar_vom_vielentnehmer": 0.4751,
+  "vielentnehmer_bekam_je_takt": 0.2116
+ },
+ "N9_mitte_will0.5_boden_und_lokale": {
+  "minimum_ueberall_jemals": 0.9873,
+  "boden_gehalten": true,
+  "mittel": 0.9997,
+  "nachbar_vom_vielentnehmer": 0.9972,
+  "vielentnehmer_bekam_je_takt": 0.0873
+ },
+ "N27_mitte_will0.5_boden_ohne_lokale": {
+  "minimum_ueberall_jemals": 0.9131,
+  "boden_gehalten": true,
+  "mittel": 0.9836,
+  "nachbar_vom_vielentnehmer": 0.9318,
+  "vielentnehmer_bekam_je_takt": 0.0142
+ }
+}

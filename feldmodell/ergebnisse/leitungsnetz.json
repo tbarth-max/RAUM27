@@ -1,0 +1,14 @@
+{
+ "kanten": 42,
+ "knotenregel_max_abw": 2.2e-16,
+ "potential_ecken_nah_(+x)": [
+  0.1905
+ ],
+ "potential_ecken_fern_(-x)": [
+  0.1429
+ ],
+ "strom_direkt_ins_zentrum": 0.3524,
+ "leistung_I2R (Verlust)": 0.3524,
+ "LC_energie_drift_rel": 0.012,
+ "v_normiert = (lambda/2pi)*(2pi*nu)/c": 1.0
+}
