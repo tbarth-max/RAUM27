@@ -34,7 +34,7 @@
 <body>
   <h1>RAUM27 — ein Würfel</h1>
   <p class="sub">Zwei Extreme testen: Mini (1/9⁹, der verdichtete Punkt) und Maxi (9⁹, volle Expansion von der Eins).
-     Funktion y = λ·sin(16x / 9λ). Sechs Seiten als RGB und BGR.</p>
+     Funktion y = λ·sin(16x / 9λ). Sechs Seiten: 3 Wände Rot/Grün/Blau, die 3 Gegenwände invers (Cyan/Magenta/Gelb) — gegenüber zusammen Weiß.</p>
 
   <div class="row">
     <button id="mini" class="on">Mini · 1/9⁹</button>
@@ -111,13 +111,26 @@ function alles(){
   document.getElementById('rad').textContent=r;
   const aktiv=zeichne(mctx,N,false);
   document.getElementById('cells').textContent=aktiv.toLocaleString('de');
-  // sechs Seiten RGB/BGR
+  // sechs Seiten: 3 Wände RGB, 3 Gegenwände invers -> gegenüber zusammen Weiss
   const fc=document.getElementById('faces'); fc.innerHTML='';
-  const namen=[['+X RGB',false],['+Y RGB',false],['+Z RGB',false],['−X BGR',true],['−Y BGR',true],['−Z BGR',true]];
-  for(const [nm,sw] of namen){
+  const seiten=[
+    ['+X  Rot',       [255,0,0]],
+    ['+Y  Grün',      [0,255,0]],
+    ['+Z  Blau',      [0,0,255]],
+    ['−X  Cyan',      [0,255,255]],
+    ['−Y  Magenta',   [255,0,255]],
+    ['−Z  Gelb',      [255,255,0]],
+  ];
+  for(const [nm,[cr,cg,cb]] of seiten){
     const fig=document.createElement('figure');
     const c=document.createElement('canvas'); c.width=N;c.height=N;
-    zeichne(c.getContext('2d'),N,sw);
+    const cx=c.getContext('2d');
+    const img=cx.createImageData(N,N), rr=radiusFuerTakt();
+    for(let j=0;j<N;j++)for(let i=0;i<N;i++){
+      const x=i-R,y=j-R,v=feldWert(x,y,rr),k=4*(j*N+i);
+      img.data[k]=cr*v; img.data[k+1]=cg*v; img.data[k+2]=cb*v; img.data[k+3]=255;
+    }
+    cx.putImageData(img,0,0);
     const cap=document.createElement('figcaption'); cap.textContent=nm;
     fig.append(c,cap); fc.append(fig);
   }
