@@ -42,10 +42,10 @@
     <label>Unterbrechung <input id="gap" type="range" min="0" max="1" step="0.01" value="0"></label>
   </div>
   <div class="row">
-    <label>λ (Wellenlänge) <input id="lam" type="range" min="1" max="9" step="1" value="9"></label>
-    <span class="val" id="lamv">9</span>
-    <label>Takt <input id="t" type="range" min="0" max="7" step="1" value="0"></label>
-    <span class="val" id="tv">0</span>
+    <button id="play" class="on">▶ Atmen</button>
+    <label>Tempo <input id="speed" type="range" min="1" max="10" step="1" value="4"></label>
+    <label>Radius <input id="t" type="range" min="0.5" max="9" step="0.5" value="1"></label>
+    <span class="val" id="tv">1,0</span>
   </div>
 
   <canvas id="main" width="190" height="190" aria-label="Schnitt durch den Würfel"></canvas>
@@ -61,25 +61,23 @@
 <script>
 const R=9, N=2*R+1, Q=9;
 const main=document.getElementById('main'), mctx=main.getContext('2d');
-let mode='mini', takt=0, lam=9, gap=0;
+let mode='mini', radius=1, gap=0;
 
-// Würfel-Zustand: eine Zahl je Zelle im 19x19 Schnitt z=0
+// Wellenlänge läuft im Radius in 1/2-Schritten mit: lambda = radius (1/9 .. 9/9 der Hülle)
 function feldWert(x,y,r){
   const d=Math.max(Math.abs(x),Math.abs(y));           // Schale (Chebyshev)
   if(mode==='maxi'){
-    // Expansion von der Eins: Welle y=lam*sin(16x/9lam), nach aussen bis r
-    if(d>r) return 0;
-    const arg=16*(d)/(9*lam);
-    let w=lam*Math.sin(arg);
-    if(gap>0 && ((d % 2)===1) && Math.random()<gap*0) {} // Unterbruch unten
+    if(d>r) return 0;                                    // nur bis zur aktuellen Hülle
+    const lam=Math.max(0.5,r);                           // Wellenlänge = aktueller Radius
+    const arg=16*d/(9*lam);
+    const w=lam*Math.sin(arg);
     const u=(d%2===1)?(1-gap):1;                          // symmetrische Unterbrechung
-    return Math.max(0,(w*u+lam))/(2*lam);                 // 0..1
+    return Math.max(0,(w*u+lam))/(2*lam);                // 0..1
   } else {
-    // Mini: alles im Zentrum verdichtet, 1/9^9
-    return d===0?1:0;
+    return d===0?1:0;                                    // Mini: nur der Punkt
   }
 }
-function radiusFuerTakt(){ return mode==='maxi' ? Math.min(9, takt+2) : 0; }
+function radiusFuerTakt(){ return mode==='maxi' ? radius : 0; }
 
 function farbe(v, swap){
   // v 0..1 -> RGB, swap -> BGR
@@ -136,12 +134,36 @@ function alles(){
   }
 }
 
-document.getElementById('mini').onclick=e=>{mode='mini';e.target.classList.add('on');document.getElementById('maxi').classList.remove('on');alles()};
+document.getElementById('mini').onclick=e=>{mode='mini';spielen=false;document.getElementById('play').classList.remove('on');document.getElementById('play').textContent='▶ Atmen';e.target.classList.add('on');document.getElementById('maxi').classList.remove('on');alles()};
 document.getElementById('maxi').onclick=e=>{mode='maxi';e.target.classList.add('on');document.getElementById('mini').classList.remove('on');alles()};
 document.getElementById('gap').oninput=e=>{gap=+e.target.value;alles()};
-document.getElementById('lam').oninput=e=>{lam=+e.target.value;document.getElementById('lamv').textContent=lam;alles()};
-document.getElementById('t').oninput=e=>{takt=+e.target.value;document.getElementById('tv').textContent=takt;alles()};
-alles();
+const tSlider=document.getElementById('t');
+tSlider.oninput=e=>{radius=+e.target.value;spielen=false;document.getElementById('play').classList.remove('on');document.getElementById('play').textContent='▶ Atmen';zeigeRadius();alles()};
+function zeigeRadius(){document.getElementById('tv').textContent=radius.toFixed(1).replace('.',',');tSlider.value=radius;}
+
+// Atmen: Radius schwingt in 1/2-Schritten 1 -> 9 -> 1
+let spielen=true, richtung=1, tempo=4, last=0;
+function schritt(ts){
+  if(spielen && mode==='maxi'){
+    if(ts-last > 420/tempo){
+      last=ts;
+      radius+=0.5*richtung;
+      if(radius>=9){radius=9;richtung=-1;}
+      if(radius<=1){radius=1;richtung=1;}
+      zeigeRadius(); alles();
+    }
+  }
+  requestAnimationFrame(schritt);
+}
+document.getElementById('play').onclick=e=>{
+  spielen=!spielen;
+  e.target.classList.toggle('on',spielen);
+  e.target.textContent=spielen?'▶ Atmen':'⏸ Pause';
+  if(mode!=='maxi'){mode='maxi';document.getElementById('maxi').classList.add('on');document.getElementById('mini').classList.remove('on');alles();}
+};
+document.getElementById('speed').oninput=e=>{tempo=+e.target.value;};
+zeigeRadius(); alles();
+requestAnimationFrame(schritt);
 </script>
 </body>
 </html>
