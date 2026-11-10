@@ -52,6 +52,11 @@
 
   <div class="faces" id="faces"></div>
 
+  <figure style="margin:12px 0;text-align:center">
+    <canvas id="overlay" width="190" height="190" style="max-width:260px"></canvas>
+    <figcaption style="color:var(--dim);font-size:12px">Überlagerung aller 6 Wände — im Zentrum weiß (Eins / Gleichgewicht)</figcaption>
+  </figure>
+
   <div class="box">
     <div>Modus: <span class="val" id="mode">Mini</span> · Zentrumsdichte <span class="val" id="rho">—</span></div>
     <div>Expansionsradius: <span class="val" id="rad">—</span> von 9 · aktive Zellen <span class="val" id="cells">—</span></div>
@@ -119,19 +124,28 @@ function alles(){
     ['−Y  Magenta',   [255,0,255]],
     ['−Z  Gelb',      [255,255,0]],
   ];
+  const rr=radiusFuerTakt();
+  // Überlagerung: Summe aller sechs Wände -> im Zentrum weiss
+  const ov=document.getElementById('overlay').getContext('2d');
+  const ovimg=ov.createImageData(N,N);
   for(const [nm,[cr,cg,cb]] of seiten){
     const fig=document.createElement('figure');
     const c=document.createElement('canvas'); c.width=N;c.height=N;
     const cx=c.getContext('2d');
-    const img=cx.createImageData(N,N), rr=radiusFuerTakt();
+    const img=cx.createImageData(N,N);
     for(let j=0;j<N;j++)for(let i=0;i<N;i++){
       const x=i-R,y=j-R,v=feldWert(x,y,rr),k=4*(j*N+i);
       img.data[k]=cr*v; img.data[k+1]=cg*v; img.data[k+2]=cb*v; img.data[k+3]=255;
+      ovimg.data[k]=Math.min(255,ovimg.data[k]+cr*v/2);
+      ovimg.data[k+1]=Math.min(255,ovimg.data[k+1]+cg*v/2);
+      ovimg.data[k+2]=Math.min(255,ovimg.data[k+2]+cb*v/2);
+      ovimg.data[k+3]=255;
     }
     cx.putImageData(img,0,0);
     const cap=document.createElement('figcaption'); cap.textContent=nm;
     fig.append(c,cap); fc.append(fig);
   }
+  ov.putImageData(ovimg,0,0);
 }
 
 document.getElementById('mini').onclick=e=>{mode='mini';spielen=false;document.getElementById('play').classList.remove('on');document.getElementById('play').textContent='▶ Atmen';e.target.classList.add('on');document.getElementById('maxi').classList.remove('on');alles()};
