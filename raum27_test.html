@@ -52,9 +52,13 @@
 
   <div class="faces" id="faces"></div>
 
+  <div class="row">
+    <button id="licht" class="on">Licht (Energie → weiß)</button>
+    <button id="welle">Welle 180° (Auslöschung → schwarz)</button>
+  </div>
   <figure style="margin:12px 0;text-align:center">
     <canvas id="overlay" width="190" height="190" style="max-width:260px"></canvas>
-    <figcaption style="color:var(--dim);font-size:12px">Überlagerung aller 6 Wände — im Zentrum weiß (Eins / Gleichgewicht)</figcaption>
+    <figcaption style="color:var(--dim);font-size:12px" id="ovcap">Überlagerung aller 6 Wände — im Zentrum weiß (Eins / Gleichgewicht)</figcaption>
   </figure>
 
   <div class="box">
@@ -66,7 +70,7 @@
 <script>
 const R=9, N=2*R+1, Q=9;
 const main=document.getElementById('main'), mctx=main.getContext('2d');
-let mode='mini', radius=1, gap=0;
+let mode='mini', radius=1, gap=0, overlayModus='licht';
 
 // Wellenlänge läuft im Radius in 1/2-Schritten mit: lambda = radius (1/9 .. 9/9 der Hülle)
 function feldWert(x,y,r){
@@ -125,7 +129,6 @@ function alles(){
     ['−Z  Gelb',      [255,255,0]],
   ];
   const rr=radiusFuerTakt();
-  // Überlagerung: Summe aller sechs Wände -> im Zentrum weiss
   const ov=document.getElementById('overlay').getContext('2d');
   const ovimg=ov.createImageData(N,N);
   for(const [nm,[cr,cg,cb]] of seiten){
@@ -144,6 +147,17 @@ function alles(){
     cx.putImageData(img,0,0);
     const cap=document.createElement('figcaption'); cap.textContent=nm;
     fig.append(c,cap); fc.append(fig);
+  }
+  if(overlayModus==='welle'){
+    // 180°: inverse Paare löschen sich -> Weiss wird zu Schwarz, Rand bleibt hell
+    for(let p=0;p<ovimg.data.length;p+=4){
+      const w=Math.min(ovimg.data[p],ovimg.data[p+1],ovimg.data[p+2]); // Weissanteil = Auslöschung
+      const rest=255-w;
+      ovimg.data[p]=ovimg.data[p]-w+ (ovimg.data[p]===0?0:0);
+      ovimg.data[p]=Math.max(0,ovimg.data[p]-w);
+      ovimg.data[p+1]=Math.max(0,ovimg.data[p+1]-w);
+      ovimg.data[p+2]=Math.max(0,ovimg.data[p+2]-w);
+    }
   }
   ov.putImageData(ovimg,0,0);
 }
@@ -176,6 +190,8 @@ document.getElementById('play').onclick=e=>{
   if(mode!=='maxi'){mode='maxi';document.getElementById('maxi').classList.add('on');document.getElementById('mini').classList.remove('on');alles();}
 };
 document.getElementById('speed').oninput=e=>{tempo=+e.target.value;};
+document.getElementById('licht').onclick=e=>{overlayModus='licht';e.target.classList.add('on');document.getElementById('welle').classList.remove('on');document.getElementById('ovcap').textContent='Überlagerung aller 6 Wände — im Zentrum weiß (Energie addiert sich, Eins / Gleichgewicht)';alles()};
+document.getElementById('welle').onclick=e=>{overlayModus='welle';e.target.classList.add('on');document.getElementById('licht').classList.remove('on');document.getElementById('ovcap').textContent='180°-Resonanz — schwarzer Punkt in weißer Kugel (Wellen löschen sich, Auslenkung null)';alles()};
 zeigeRadius(); alles();
 requestAnimationFrame(schritt);
 </script>
