@@ -1,0 +1,240 @@
+{
+ "T1_schnitte_parität_je_ebene": [
+  {
+   "ebene": 0,
+   "k": 1.7778,
+   "oktanten": 8,
+   "gleich": 13,
+   "umgekehrt": 14
+  },
+  {
+   "ebene": 1,
+   "k": 3.5556,
+   "oktanten": 8,
+   "gleich": 13,
+   "umgekehrt": 14
+  },
+  {
+   "ebene": 2,
+   "k": 7.1111,
+   "oktanten": 8,
+   "gleich": 13,
+   "umgekehrt": 14
+  },
+  {
+   "ebene": 3,
+   "k": 14.2222,
+   "oktanten": 8,
+   "gleich": 13,
+   "umgekehrt": 14
+  },
+  {
+   "ebene": 4,
+   "k": 28.4444,
+   "oktanten": 8,
+   "gleich": 13,
+   "umgekehrt": 14
+  }
+ ],
+ "T2_spiegel_je_ebene": [
+  {
+   "ebene": 0,
+   "inversion_fehler": 0.0,
+   "beruehrung_bei_grad": 50.625,
+   "r_min_aussen": 1.0
+  },
+  {
+   "ebene": 1,
+   "inversion_fehler": 0.0,
+   "beruehrung_bei_grad": 25.3125,
+   "r_min_aussen": 1.0
+  },
+  {
+   "ebene": 2,
+   "inversion_fehler": 0.0,
+   "beruehrung_bei_grad": 12.6562,
+   "r_min_aussen": 1.0
+  },
+  {
+   "ebene": 3,
+   "inversion_fehler": 0.0,
+   "beruehrung_bei_grad": 6.3281,
+   "r_min_aussen": 1.0
+  },
+  {
+   "ebene": 4,
+   "inversion_fehler": 0.0,
+   "beruehrung_bei_grad": 3.1641,
+   "r_min_aussen": 1.0
+  }
+ ],
+ "T3_marken": [
+  0.0,
+  0.301,
+  0.4771,
+  0.6021,
+  0.699,
+  0.7782,
+  0.8451,
+  0.9031,
+  0.9542
+ ],
+ "T3_dekaden_identisch": true,
+ "T3_7_9_gegen_log6": {
+  "sieben_neuntel": 0.777778,
+  "log10_6": 0.778151,
+  "rel_abstand": 0.00048
+ },
+ "T3_beispiele": {
+  "1": [
+   0,
+   0.0
+  ],
+  "6": [
+   0,
+   0.778151
+  ],
+  "9": [
+   0,
+   0.954243
+  ],
+  "9.999999": [
+   0,
+   1.0
+  ],
+  "10": [
+   1,
+   0.0
+  ],
+  "60": [
+   1,
+   0.778151
+  ],
+  "99.99": [
+   1,
+   0.999957
+  ],
+  "100": [
+   2,
+   0.0
+  ]
+ },
+ "T4_benford": {
+  "soll": [
+   0.301,
+   0.176,
+   0.125,
+   0.097,
+   0.079,
+   0.067,
+   0.058,
+   0.051,
+   0.046
+  ],
+  "multiplikativ": [
+   0.303,
+   0.174,
+   0.125,
+   0.095,
+   0.079,
+   0.067,
+   0.059,
+   0.052,
+   0.046
+  ],
+  "additiv": [
+   0.11,
+   0.111,
+   0.11,
+   0.111,
+   0.112,
+   0.112,
+   0.112,
+   0.111,
+   0.112
+  ],
+  "max_abw_mult": 0.002,
+  "max_abw_add": 0.1911
+ },
+ "T5_feld_schneller_teilchen_kleiner": [
+  {
+   "schale": 0,
+   "feld_frequenz": 1,
+   "fall": "Teilchen gleich groß",
+   "phasenverzug_grad": 17.441,
+   "verlustanteil": 0.2859
+  },
+  {
+   "schale": 0,
+   "feld_frequenz": 1,
+   "fall": "Teilchen halbiert je Schale",
+   "phasenverzug_grad": 17.441,
+   "verlustanteil": 0.2859
+  },
+  {
+   "schale": 1,
+   "feld_frequenz": 2,
+   "fall": "Teilchen gleich groß",
+   "phasenverzug_grad": 32.142,
+   "verlustanteil": 0.4505
+  },
+  {
+   "schale": 1,
+   "feld_frequenz": 2,
+   "fall": "Teilchen halbiert je Schale",
+   "phasenverzug_grad": 17.441,
+   "verlustanteil": 0.2859
+  },
+  {
+   "schale": 2,
+   "feld_frequenz": 4,
+   "fall": "Teilchen gleich groß",
+   "phasenverzug_grad": 51.488,
+   "verlustanteil": 0.4872
+  },
+  {
+   "schale": 2,
+   "feld_frequenz": 4,
+   "fall": "Teilchen halbiert je Schale",
+   "phasenverzug_grad": 17.441,
+   "verlustanteil": 0.2859
+  },
+  {
+   "schale": 3,
+   "feld_frequenz": 8,
+   "fall": "Teilchen gleich groß",
+   "phasenverzug_grad": 68.303,
+   "verlustanteil": 0.3435
+  },
+  {
+   "schale": 3,
+   "feld_frequenz": 8,
+   "fall": "Teilchen halbiert je Schale",
+   "phasenverzug_grad": 17.441,
+   "verlustanteil": 0.2859
+  },
+  {
+   "schale": 4,
+   "feld_frequenz": 16,
+   "fall": "Teilchen gleich groß",
+   "phasenverzug_grad": 78.748,
+   "verlustanteil": 0.1914
+  },
+  {
+   "schale": 4,
+   "feld_frequenz": 16,
+   "fall": "Teilchen halbiert je Schale",
+   "phasenverzug_grad": 17.441,
+   "verlustanteil": 0.2859
+  }
+ ],
+ "T6_gewichte": {
+  "ruhe": "2/9",
+  "flaechen_gesamt": "2/3",
+  "ecken_gesamt": "1/9",
+  "nachbarn_gesamt": "7/9",
+  "summe": "1",
+  "verhaeltnis_flaechen_zu_ecken": "6",
+  "isotrop": true
+ }
+}

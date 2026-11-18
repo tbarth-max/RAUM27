@@ -1,0 +1,66 @@
+[
+ {
+  "form": "6x6x6",
+  "knoten": 216,
+  "aussenverbindungen": 944,
+  "innenverbindungen": 1040,
+  "durchmesser": 6,
+  "aussen_je_knoten": 4.37
+ },
+ {
+  "form": "12x6x3",
+  "knoten": 216,
+  "aussenverbindungen": 1100,
+  "innenverbindungen": 962,
+  "durchmesser": 12,
+  "aussen_je_knoten": 5.09
+ },
+ {
+  "form": "9x8x3",
+  "knoten": 216,
+  "aussenverbindungen": 1078,
+  "innenverbindungen": 973,
+  "durchmesser": 9,
+  "aussen_je_knoten": 4.99
+ },
+ {
+  "form": "12x9x2",
+  "knoten": 216,
+  "aussenverbindungen": 1324,
+  "innenverbindungen": 850,
+  "durchmesser": 12,
+  "aussen_je_knoten": 6.13
+ },
+ {
+  "form": "18x12x1",
+  "knoten": 216,
+  "aussenverbindungen": 2220,
+  "innenverbindungen": 402,
+  "durchmesser": 28,
+  "aussen_je_knoten": 10.28
+ },
+ {
+  "form": "24x9x1",
+  "knoten": 216,
+  "aussenverbindungen": 2226,
+  "innenverbindungen": 399,
+  "durchmesser": 31,
+  "aussen_je_knoten": 10.31
+ },
+ {
+  "form": "36x6x1",
+  "knoten": 216,
+  "aussenverbindungen": 2244,
+  "innenverbindungen": 390,
+  "durchmesser": 40,
+  "aussen_je_knoten": 10.39
+ },
+ {
+  "form": "216x1x1",
+  "knoten": 216,
+  "aussenverbindungen": 2594,
+  "innenverbindungen": 215,
+  "durchmesser": 215,
+  "aussen_je_knoten": 12.01
+ }
+]

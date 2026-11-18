@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: raum27
+Version: 0.1.0
+Summary: Rational-space geometry and fractal attractors: the checkable mathematical core extracted from the RAUM27 notes.
+Requires-Python: >=3.10
+Requires-Dist: numpy
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"

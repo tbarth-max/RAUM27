@@ -7,9 +7,12 @@ from raum27.lotto_benchmark import (
     FingerprintKNNPredictor,
     RandomPredictor,
     backtest,
+    expected_any_repeat_years,
     expected_matches,
+    expected_specific_state_recurrence_years,
     match_count,
     match_probability,
+    n_draw_states,
     permutation_test,
 )
 
@@ -86,3 +89,27 @@ def test_fingerprint_knn_shows_no_significant_edge_on_random_history():
     # No claim of "p < 0.05 therefore it works" -- the claim under test is
     # the opposite: on true i.i.d. noise, this p-value should NOT be small.
     assert p_value > 0.05
+
+
+def test_n_draw_states_matches_known_6aus49_count():
+    assert n_draw_states() == 13_983_816
+
+
+def test_specific_state_recurrence_is_about_269_thousand_years():
+    years = expected_specific_state_recurrence_years(draws_per_year=52)
+    assert 268_000 < years < 269_000
+
+
+def test_any_repeat_is_about_90_years_not_269_thousand():
+    years = expected_any_repeat_years(draws_per_year=52)
+    assert 85 < years < 95
+
+
+def test_specific_state_and_any_repeat_differ_by_about_3000x():
+    """The two questions are easy to conflate ('how long until a repeat')
+    but have very different answers -- verifying the ratio here keeps
+    that distinction checkable rather than just asserted in prose."""
+    specific = expected_specific_state_recurrence_years(draws_per_year=52)
+    any_repeat = expected_any_repeat_years(draws_per_year=52)
+    ratio = specific / any_repeat
+    assert 2500 < ratio < 3500

@@ -1,0 +1,38 @@
+[
+ {
+  "spin": 5,
+  "neigung_grad": 10.0,
+  "trudel_nutation_grad": 2.1881,
+  "praezession_umlaufzeit": 18.258,
+  "mittlere_achse_ueber_umlauf": 0.00447,
+  "rest_nach_180_inversion": 0.0375,
+  "rest_ohne_inversion": 0.1736
+ },
+ {
+  "spin": 10,
+  "neigung_grad": 10.0,
+  "trudel_nutation_grad": 0.71265,
+  "praezession_umlaufzeit": 32.431,
+  "mittlere_achse_ueber_umlauf": 0.000491,
+  "rest_nach_180_inversion": 0.00368,
+  "rest_ohne_inversion": 0.1736
+ },
+ {
+  "spin": 20,
+  "neigung_grad": 10.0,
+  "trudel_nutation_grad": 0.19329,
+  "praezession_umlaufzeit": 63.356,
+  "mittlere_achse_ueber_umlauf": 0.000208,
+  "rest_nach_180_inversion": 0.00332,
+  "rest_ohne_inversion": 0.1736
+ },
+ {
+  "spin": 40,
+  "neigung_grad": 10.0,
+  "trudel_nutation_grad": 0.04938,
+  "praezession_umlaufzeit": 125.925,
+  "mittlere_achse_ueber_umlauf": 6.17e-05,
+  "rest_nach_180_inversion": 0.000849,
+  "rest_ohne_inversion": 0.1736
+ }
+]

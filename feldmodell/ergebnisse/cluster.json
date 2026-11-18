@@ -1,0 +1,58 @@
+{
+ "einzelaufgabe": [
+  {
+   "komplexitaet": 0.1,
+   "knoten": 1,
+   "schalen": 0,
+   "gedeckt": 0.1,
+   "boden_min": 0.9
+  },
+  {
+   "komplexitaet": 1,
+   "knoten": 10,
+   "schalen": 1,
+   "gedeckt": 1.0,
+   "boden_min": 0.9
+  },
+  {
+   "komplexitaet": 5,
+   "knoten": 50,
+   "schalen": 2,
+   "gedeckt": 5.0,
+   "boden_min": 0.9
+  },
+  {
+   "komplexitaet": 20,
+   "knoten": 200,
+   "schalen": 3,
+   "gedeckt": 20.0,
+   "boden_min": 0.9
+  },
+  {
+   "komplexitaet": 60,
+   "knoten": 600,
+   "schalen": 5,
+   "gedeckt": 60.0,
+   "boden_min": 0.9
+  },
+  {
+   "komplexitaet": 150,
+   "knoten": 1501,
+   "schalen": 6,
+   "gedeckt": 150.0,
+   "boden_min": 0.9
+  }
+ ],
+ "zwei_ueberlappend": {
+  "A": {
+   "knoten": 200,
+   "schalen": 3
+  },
+  "B": {
+   "knoten": 201,
+   "schalen": 4
+  },
+  "boden_min": 0.9
+ },
+ "schalen_volumen_6+8": "1,14,62,... (aus netz14)"
+}

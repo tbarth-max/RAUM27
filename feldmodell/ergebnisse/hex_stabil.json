@@ -1,0 +1,133 @@
+{
+ "A_xor1_xor7_gleich_kehrwert_max_abw": 1.1e-16,
+ "B_mit_lenkung_K9": {
+  "mittel": 0.1739,
+  "max": 0.319,
+  "ring_anfang_mitte_ende": [
+   0.1876,
+   0.188,
+   0.1857
+  ],
+  "ablesung_mittel": 0.1732,
+  "zaehler_ring_gleich_echter_ring_am_ende": true,
+  "max_ringversatz": 0,
+  "versatz_ende": 0
+ },
+ "B_mit_lenkung_K27": {
+  "mittel": 0.1758,
+  "max": 0.3569,
+  "ring_anfang_mitte_ende": [
+   0.1591,
+   0.1652,
+   0.1706
+  ],
+  "ablesung_mittel": 0.1731,
+  "zaehler_ring_gleich_echter_ring_am_ende": true,
+  "max_ringversatz": 0,
+  "versatz_ende": 0
+ },
+ "B_mit_lenkung_K81": {
+  "mittel": 0.1755,
+  "max": 0.3761,
+  "ring_anfang_mitte_ende": [
+   0.1459,
+   0.1395,
+   0.1848
+  ],
+  "ablesung_mittel": 0.1733,
+  "zaehler_ring_gleich_echter_ring_am_ende": true,
+  "max_ringversatz": 0,
+  "versatz_ende": 0
+ },
+ "C_ohne_lenkung_K9": {
+  "mittel": 6.0872,
+  "max": 18.4139,
+  "ring_anfang_mitte_ende": [
+   2.4324,
+   5.3214,
+   7.7373
+  ],
+  "ablesung_mittel": 5.7727,
+  "zaehler_ring_gleich_echter_ring_am_ende": true,
+  "max_ringversatz": 0,
+  "versatz_ende": 0
+ },
+ "D_bitfehler_1e-2_ohne_resync_10laeufe": {
+  "versatz_ende": [
+   6,
+   3,
+   4,
+   3,
+   4,
+   3,
+   10,
+   0,
+   5,
+   0
+  ],
+  "max_versatz": [
+   9,
+   5,
+   6,
+   4,
+   5,
+   3,
+   11,
+   6,
+   6,
+   7
+  ],
+  "mittel_e": [
+   0.1765,
+   0.168,
+   0.1766,
+   0.1793,
+   0.1679,
+   0.1692,
+   0.1774,
+   0.1723,
+   0.1775,
+   0.1749
+  ]
+ },
+ "D_bitfehler_1e-2_mit_resync_10laeufe": {
+  "versatz_ende": [
+   1,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "max_versatz": [
+   3,
+   2,
+   3,
+   3,
+   3,
+   4,
+   3,
+   2,
+   3,
+   3
+  ],
+  "mittel_e": [
+   0.168,
+   0.1634,
+   0.1776,
+   0.169,
+   0.1705,
+   0.1758,
+   0.1786,
+   0.1775,
+   0.1697,
+   0.1796
+  ]
+ },
+ "E_takte_bis_5tau_rest": 4,
+ "E_feldschritte_je_registerzyklus": 14
+}

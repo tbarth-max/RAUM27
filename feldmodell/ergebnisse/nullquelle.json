@@ -1,0 +1,23 @@
+[
+ {
+  "C_zwerg": 1,
+  "tiefster_druck_ecke": 0.7574,
+  "aus_nullpunkt": 10.0,
+  "verbraucht": 10.0,
+  "noch_offen": 0.0
+ },
+ {
+  "C_zwerg": 10,
+  "tiefster_druck_ecke": 0.7729,
+  "aus_nullpunkt": 10.0,
+  "verbraucht": 10.0,
+  "noch_offen": 0.0
+ },
+ {
+  "C_zwerg": 100,
+  "tiefster_druck_ecke": 0.8329,
+  "aus_nullpunkt": 9.7857,
+  "verbraucht": 10.0,
+  "noch_offen": 0.21431
+ }
+]

@@ -1,0 +1,62 @@
+{
+ "A_herz0.2_stress1": {
+  "deckung_je_ressource": [
+   0.9977,
+   1.0,
+   1.0
+  ],
+  "zwerg_min": 0.451,
+  "druck_min": 0.9495,
+  "quelle": 81708.3
+ },
+ "A_herz0.6_stress1": {
+  "deckung_je_ressource": [
+   0.9977,
+   1.0,
+   1.0
+  ],
+  "zwerg_min": 0.906,
+  "druck_min": 0.9495,
+  "quelle": 81717.0
+ },
+ "B_herz0.2_stress1": {
+  "deckung_je_ressource": [
+   0.9977,
+   1.0,
+   1.0
+  ],
+  "zwerg_min": 0.496,
+  "druck_min": 0.9495,
+  "quelle": 81708.3
+ },
+ "A_herz0.2_stress3": {
+  "deckung_je_ressource": [
+   0.9592,
+   0.9593,
+   0.9592
+  ],
+  "zwerg_min": 0.2,
+  "druck_min": 0.9399,
+  "quelle": 88192.9
+ },
+ "A_herz0.6_stress3": {
+  "deckung_je_ressource": [
+   0.9977,
+   0.9978,
+   0.9978
+  ],
+  "zwerg_min": 0.748,
+  "druck_min": 0.949,
+  "quelle": 89661.2
+ },
+ "B_herz0.2_stress3": {
+  "deckung_je_ressource": [
+   0.9977,
+   0.9978,
+   0.9978
+  ],
+  "zwerg_min": 0.495,
+  "druck_min": 0.949,
+  "quelle": 89652.5
+ }
+}

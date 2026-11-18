@@ -1,0 +1,229 @@
+{
+ "R1_rueckbaufehler_je_ring": [
+  0.3499,
+  0.01117,
+  0.0004116,
+  1.524e-05,
+  5.645e-07,
+  2.091e-08
+ ],
+ "R1_verhaeltnis_ring_zu_ring": [
+  31.313,
+  27.145,
+  27.005,
+  27.0,
+  27.0
+ ],
+ "R1_kontrolle_ohne_oktopol": 4.4e-16,
+ "R2_umlaufprodukt_max_abweichung_von_1": 4.4e-16,
+ "R2_besuche_je_achtel_pro_vollzyklus": [
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3
+ ],
+ "R3a_raster_passt (Feld x3, Loch x1/3)": {
+  "ringe": [
+   {
+    "ring": 0,
+    "anzahl": 33528,
+    "verzug_grad": 10.74,
+    "verlust_je_schritt": 0.1819,
+    "verlust_je_zyklus_1234": 0.7276
+   },
+   {
+    "ring": 1,
+    "anzahl": 33533,
+    "verzug_grad": 10.72,
+    "verlust_je_schritt": 0.1816,
+    "verlust_je_zyklus_1234": 0.7263
+   },
+   {
+    "ring": 2,
+    "anzahl": 33256,
+    "verzug_grad": 10.78,
+    "verlust_je_schritt": 0.1824,
+    "verlust_je_zyklus_1234": 0.7297
+   },
+   {
+    "ring": 3,
+    "anzahl": 33280,
+    "verzug_grad": 10.78,
+    "verlust_je_schritt": 0.1825,
+    "verlust_je_zyklus_1234": 0.7299
+   },
+   {
+    "ring": 4,
+    "anzahl": 66403,
+    "verzug_grad": 7.19,
+    "verlust_je_schritt": 0.1226,
+    "verlust_je_zyklus_1234": 0.4903
+   }
+  ],
+  "spreizung_grad": 0.06
+ },
+ "R3b_gestern_b2 (Feld x2, Loch x1/2)": {
+  "ringe": [
+   {
+    "ring": 0,
+    "anzahl": 21158,
+    "verzug_grad": 12.73,
+    "verlust_je_schritt": 0.2141,
+    "verlust_je_zyklus_1234": 0.8563
+   },
+   {
+    "ring": 1,
+    "anzahl": 21081,
+    "verzug_grad": 12.75,
+    "verlust_je_schritt": 0.2144,
+    "verlust_je_zyklus_1234": 0.8576
+   },
+   {
+    "ring": 2,
+    "anzahl": 21211,
+    "verzug_grad": 12.71,
+    "verlust_je_schritt": 0.2138,
+    "verlust_je_zyklus_1234": 0.8553
+   },
+   {
+    "ring": 3,
+    "anzahl": 21046,
+    "verzug_grad": 12.77,
+    "verlust_je_schritt": 0.2148,
+    "verlust_je_zyklus_1234": 0.8593
+   },
+   {
+    "ring": 4,
+    "anzahl": 115504,
+    "verzug_grad": 4.57,
+    "verlust_je_schritt": 0.078,
+    "verlust_je_zyklus_1234": 0.312
+   }
+  ],
+  "spreizung_grad": 0.06
+ },
+ "R3c_gemischt (Feld x3, Loch x1/2)": {
+  "ringe": [
+   {
+    "ring": 0,
+    "anzahl": 21158,
+    "verzug_grad": 12.73,
+    "verlust_je_schritt": 0.2141,
+    "verlust_je_zyklus_1234": 0.8563
+   },
+   {
+    "ring": 1,
+    "anzahl": 21081,
+    "verzug_grad": 18.71,
+    "verlust_je_schritt": 0.3015,
+    "verlust_je_zyklus_1234": 1.2061
+   },
+   {
+    "ring": 2,
+    "anzahl": 21211,
+    "verzug_grad": 26.76,
+    "verlust_je_schritt": 0.397,
+    "verlust_je_zyklus_1234": 1.5881
+   },
+   {
+    "ring": 3,
+    "anzahl": 21046,
+    "verzug_grad": 37.08,
+    "verlust_je_schritt": 0.4724,
+    "verlust_je_zyklus_1234": 1.8895
+   },
+   {
+    "ring": 4,
+    "anzahl": 115504,
+    "verzug_grad": 19.5,
+    "verlust_je_schritt": 0.2554,
+    "verlust_je_zyklus_1234": 1.0216
+   }
+  ],
+  "spreizung_grad": 24.35
+ },
+ "R3d_gemischt (Feld x2, Loch x1/3)": {
+  "ringe": [
+   {
+    "ring": 0,
+    "anzahl": 33528,
+    "verzug_grad": 10.74,
+    "verlust_je_schritt": 0.1819,
+    "verlust_je_zyklus_1234": 0.7276
+   },
+   {
+    "ring": 1,
+    "anzahl": 33533,
+    "verzug_grad": 7.21,
+    "verlust_je_schritt": 0.1241,
+    "verlust_je_zyklus_1234": 0.4964
+   },
+   {
+    "ring": 2,
+    "anzahl": 33256,
+    "verzug_grad": 4.85,
+    "verlust_je_schritt": 0.0841,
+    "verlust_je_zyklus_1234": 0.3364
+   },
+   {
+    "ring": 3,
+    "anzahl": 33280,
+    "verzug_grad": 3.24,
+    "verlust_je_schritt": 0.0564,
+    "verlust_je_zyklus_1234": 0.2255
+   },
+   {
+    "ring": 4,
+    "anzahl": 66403,
+    "verzug_grad": 1.44,
+    "verlust_je_schritt": 0.025,
+    "verlust_je_zyklus_1234": 0.1002
+   }
+  ],
+  "spreizung_grad": 7.5
+ },
+ "R3e_ohne_sieb (Feld x3)": {
+  "ringe": [
+   {
+    "ring": 0,
+    "anzahl": 39893,
+    "verzug_grad": 2.7,
+    "verlust_je_schritt": 0.0461,
+    "verlust_je_zyklus_1234": 0.1844
+   },
+   {
+    "ring": 1,
+    "anzahl": 39816,
+    "verzug_grad": 7.62,
+    "verlust_je_schritt": 0.1156,
+    "verlust_je_zyklus_1234": 0.4624
+   },
+   {
+    "ring": 2,
+    "anzahl": 39816,
+    "verzug_grad": 17.31,
+    "verlust_je_schritt": 0.1872,
+    "verlust_je_zyklus_1234": 0.7486
+   },
+   {
+    "ring": 3,
+    "anzahl": 40298,
+    "verzug_grad": 30.15,
+    "verlust_je_schritt": 0.2207,
+    "verlust_je_zyklus_1234": 0.8826
+   },
+   {
+    "ring": 4,
+    "anzahl": 40177,
+    "verzug_grad": 44.38,
+    "verlust_je_schritt": 0.2274,
+    "verlust_je_zyklus_1234": 0.9096
+   }
+  ],
+  "spreizung_grad": 27.45
+ }
+}

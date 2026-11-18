@@ -1,0 +1,50 @@
+{
+ "R4_treppe_nur_flaechen": {
+  "R": 4,
+  "knoten": 729,
+  "seriell_takte": 729,
+  "parallel_takte_bis_zentrum": 12,
+  "alle_erreicht_nach": 12,
+  "zweige_gleichzeitig_im_zentrum": 8
+ },
+ "R4_6+8": {
+  "R": 4,
+  "knoten": 729,
+  "seriell_takte": 729,
+  "parallel_takte_bis_zentrum": 4,
+  "alle_erreicht_nach": 5,
+  "zweige_gleichzeitig_im_zentrum": 8
+ },
+ "R13_treppe_nur_flaechen": {
+  "R": 13,
+  "knoten": 19683,
+  "seriell_takte": 19683,
+  "parallel_takte_bis_zentrum": 39,
+  "alle_erreicht_nach": 39,
+  "zweige_gleichzeitig_im_zentrum": 8
+ },
+ "R13_6+8": {
+  "R": 13,
+  "knoten": 19683,
+  "seriell_takte": 19683,
+  "parallel_takte_bis_zentrum": 13,
+  "alle_erreicht_nach": 14,
+  "zweige_gleichzeitig_im_zentrum": 8
+ },
+ "R40_treppe_nur_flaechen": {
+  "R": 40,
+  "knoten": 531441,
+  "seriell_takte": 531441,
+  "parallel_takte_bis_zentrum": 120,
+  "alle_erreicht_nach": 120,
+  "zweige_gleichzeitig_im_zentrum": 8
+ },
+ "R40_6+8": {
+  "R": 40,
+  "knoten": 531441,
+  "seriell_takte": 531441,
+  "parallel_takte_bis_zentrum": 40,
+  "alle_erreicht_nach": 41,
+  "zweige_gleichzeitig_im_zentrum": 8
+ }
+}

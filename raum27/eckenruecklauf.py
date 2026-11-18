@@ -1,0 +1,199 @@
+"""The corner as the unreachable ten: a sphere grows into the cube but never into its corner.
+
+Cube edge a = 9 around the centre: the touching spheres have radius^2
+a^2/4, a^2/2, 3a^2/4 (faces, edges, corners) -- 81/4, 81/2, 243/4. The
+inner one, radius a/2 = 9/2, is the proportionality factor of the first
+cube; the corner, the 10, lies on the outer one.
+
+* **From sphere to cube without a corner.** The p-ball
+  |x|^p + |y|^p + |z|^p = r^p touches every face at r for every p, and
+  reaches along a space diagonal to r * 3^(1/2 - 1/p): r at p = 2 (the
+  sphere), r * sqrt 3 only for p -> infinity (the cube). For every finite
+  p the corner is rounded, its radius never 0 -- no 90 degrees, no
+  infinite curvature (a sharp corner is where a real structure cracks).
+* **Approaching without arriving.** What is left of the way after n
+  pushes, each taking the fraction 1 - q of the rest, is gap * q^n: never
+  0, and the pushes together never exceed the gap.
+* **The return comes out of the corner.** Three mirrors at right angles
+  turn every direction v into -v -- the corner reflector (the laser
+  reflectors on the Moon). On the grid that is the opposite pole
+  d -> 10 - d. What is sent towards a corner comes straight back.
+"""
+
+from fractions import Fraction
+
+from raum27.nennerordnung import Power
+
+
+def _exact(*values):
+    for v in values:
+        if isinstance(v, float):
+            raise TypeError("exact module: use int or Fraction, not float")
+    return [Fraction(v) for v in values]
+
+
+def touching_radii_squared(edge=9):
+    """(faces, edges, corners) radius^2 for a cube of the given edge: a^2/4, a^2/2, 3a^2/4."""
+    (a,) = _exact(edge)
+    return a * a / 4, a * a / 2, 3 * a * a / 4
+
+
+def diagonal_reach(r, p):
+    """How far the p-ball of radius r reaches along a space diagonal, as an exact power form."""
+    r, p = _exact(r, p)
+    if r <= 0 or p < 1:
+        raise ValueError("r > 0 and p >= 1")
+    return Power.of(r) * Power.of(3) ** (Fraction(1, 2) - 1 / p)
+
+
+def reaches_corner(p):
+    """Only the cube itself (p infinite, passed as None) has a sharp corner."""
+    return p is None
+
+
+def corner_radius(radius):
+    """A corner radius for the structure; 0 (a sharp 90 degree corner) is refused."""
+    (radius,) = _exact(radius)
+    if radius <= 0:
+        raise ValueError("radius 0 is a sharp corner: not allowed in the structure")
+    return radius
+
+
+def remaining_gaps(gap, q, steps):
+    """What is left of the way after each push: gap * q^n, never 0 for 0 < q < 1."""
+    gap, q = _exact(gap, q)
+    if not 0 < q < 1 or gap <= 0:
+        raise ValueError("0 < q < 1 and a positive gap")
+    return [gap * q ** n for n in range(steps + 1)]
+
+
+def corner_reflect(v):
+    """Reflect on the three faces of a corner, one after the other: v -> -v."""
+    v = list(_exact(*v))
+    for axis in range(3):
+        v[axis] = -v[axis]
+    return tuple(v)
+
+
+def opposite_digit_node(node):
+    """The same on the 1..9 grid: each digit d -> 10 - d."""
+    return "".join(str(10 - int(d)) for d in node)
+
+
+# --- turning about a space diagonal ---------------------------------------------
+#
+# A spiral turning about the space diagonal (1, 1, 1) meets the six face
+# directions (up, down, left, right, front, back) every 60 degrees: seen
+# along the diagonal they form a regular hexagon. The cube symmetries that
+# keep this axis in place are exactly the 6 permutations of the three
+# coordinate axes -- the 6 orders of XY, XZ, XT. Each face centre stays at
+# 9/2 from the centre: (9/2)^2 = 81/4 = 27/4 along the axis + 27/2 across.
+
+DIAGONAL = (1, 1, 1)
+
+
+def axis_keepers(axis=DIAGONAL):
+    """Signed axis permutations g with g(axis) = axis."""
+    from raum27.fundamentalbereich import act, cube_group
+    return [g for g in cube_group() if act(g, axis) == tuple(axis)]
+
+
+def split_along_axis(point, axis=DIAGONAL):
+    """(squared part along the axis, squared part across it) of a point, exactly."""
+    point = _exact(*point)
+    axis = _exact(*axis)
+    dot = sum(p * a for p, a in zip(point, axis))
+    along2 = dot * dot / sum(a * a for a in axis)
+    return along2, sum(p * p for p in point) - along2
+
+
+# --- the balance that can spin ------------------------------------------------
+#
+# Stopped, a balance weighs (statics). Spinning, it shows every imbalance
+# as a force that grows with the square of the speed: an extra mass m at
+# distance r from the axis pulls with m * omega^2 * r. Fast spinning does
+# not make an unbalanced body symmetric -- it only looks symmetric to a
+# slow eye; mechanically it shakes harder. What it does give is a stiff
+# axis (gyroscope). The RAUM27 point sets themselves -- 8 corners, 6 faces,
+# the full 27 -- have an isotropic inertia tensor: about every axis
+# through the centre they turn like a sphere.
+
+
+def inertia_tensor(points, mass=1):
+    """Inertia tensor of equal point masses about the origin, exact."""
+    (mass,) = _exact(mass)
+    pts = [_exact(*p) for p in points]
+    t = [[Fraction(0)] * 3 for _ in range(3)]
+    for p in pts:
+        r2 = sum(c * c for c in p)
+        for i in range(3):
+            for j in range(3):
+                t[i][j] += mass * ((r2 if i == j else 0) - p[i] * p[j])
+    return t
+
+
+def is_isotropic(tensor):
+    """Same moment about every axis: diagonal and all diagonal entries equal."""
+    d = tensor[0][0]
+    return all(tensor[i][j] == (d if i == j else 0) for i in range(3) for j in range(3))
+
+
+def imbalance_force(mass, radius, omega):
+    """Centrifugal pull of an off-axis mass: m * omega^2 * r."""
+    m, r, w = _exact(mass, radius, omega)
+    return m * w * w * r
+
+
+def deviation_from_sphere(tensor):
+    """The part of an inertia tensor that a perfect sphere does not have: T - (trace/3) * I.
+
+    The perfect sphere rotation is the reference state; this traceless
+    remainder is the only thing left to measure and to store.
+    """
+    mean = sum(tensor[i][i] for i in range(3)) / 3
+    return [[tensor[i][j] - (mean if i == j else 0) for j in range(3)] for i in range(3)]
+
+
+def across_axis(point, axis=DIAGONAL):
+    """The part of a point across the axis (its shadow when looking along the axis)."""
+    point = _exact(*point)
+    axis = _exact(*axis)
+    k = sum(p * a for p, a in zip(point, axis)) / sum(a * a for a in axis)
+    return tuple(p - k * a for p, a in zip(point, axis))
+
+
+# --- locating an enclosed anomaly on the 6 + 8 axes -------------------------------
+#
+# An anomaly is enclosed by a small sphere (centre p). Its distances to the
+# 3 coordinate axis lines (the 6 face directions) and to the 4 space
+# diagonals (the 8 corner directions) are exact in squares, and they come
+# with two built-in checks: the 3 add up to 2|p|^2, the 4 add up to
+# (8/3)|p|^2. A hit on the 9/2 sphere fixes the scale: everything is
+# multiplied by (9/2)/(distance of the hit), and the anomaly reads its
+# X, Y, Z, T coordinates on the four tetrahedral axes (summing to 0).
+
+COORDINATE_AXES = ((1, 0, 0), (0, 1, 0), (0, 0, 1))
+DIAGONAL_AXES = ((1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, 1))   # X, Y, Z, T
+NINE_HALVES = Fraction(9, 2)
+
+
+def axis_distances_squared(point):
+    """(squared distances to the 3 coordinate axes, to the 4 diagonal axes)."""
+    return ([split_along_axis(point, a)[1] for a in COORDINATE_AXES],
+            [split_along_axis(point, a)[1] for a in DIAGONAL_AXES])
+
+
+def scale_to_nine_halves(point, hit_distance):
+    """Scale so that the hit lands on the 9/2 sphere; returns the scaled point."""
+    point = _exact(*point)
+    (hit_distance,) = _exact(hit_distance)
+    if hit_distance <= 0:
+        raise ValueError("the hit must lie away from the centre")
+    s = NINE_HALVES / hit_distance
+    return tuple(s * c for c in point)
+
+
+def xyzt_readings(point):
+    """Readings of a point on the four tetrahedral axes X, Y, Z, T (they add up to 0)."""
+    point = _exact(*point)
+    return tuple(sum(p * a for p, a in zip(point, axis)) for axis in DIAGONAL_AXES)

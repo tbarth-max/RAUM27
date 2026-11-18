@@ -1,0 +1,109 @@
+{
+ "feld79_K9": {
+  "mittel_ende": 0.1722,
+  "max_ende": 0.3214,
+  "je_ring_mittel": [
+   0.1843,
+   0.1795,
+   0.1777
+  ],
+  "LF_bereich": [
+   0.8003,
+   1.2495
+  ],
+  "verlauf_anfang_ende": [
+   0.1822,
+   0.1722
+  ]
+ },
+ "feld79_K27": {
+  "mittel_ende": 0.1736,
+  "max_ende": 0.3365,
+  "je_ring_mittel": [
+   0.1577,
+   0.1688,
+   0.1647
+  ],
+  "LF_bereich": [
+   0.7919,
+   1.2627
+  ],
+  "verlauf_anfang_ende": [
+   0.1713,
+   0.1736
+  ]
+ },
+ "feld79_K81": {
+  "mittel_ende": 0.1741,
+  "max_ende": 0.3555,
+  "je_ring_mittel": [
+   0.1783,
+   0.1561,
+   0.194
+  ],
+  "LF_bereich": [
+   0.7816,
+   1.2794
+  ],
+  "verlauf_anfang_ende": [
+   0.1745,
+   0.1741
+  ]
+ },
+ "ohne_feld_K9": {
+  "mittel_ende": 1.5611,
+  "max_ende": 5.6104,
+  "je_ring_mittel": [
+   0.7693,
+   1.5661,
+   2.4342
+  ],
+  "LF_bereich": [
+   0.0205,
+   48.8551
+  ],
+  "verlauf_anfang_ende": [
+   1.6221,
+   1.5611
+  ]
+ },
+ "tau5_K9": {
+  "mittel_ende": 0.3992,
+  "max_ende": 1.1887,
+  "je_ring_mittel": [
+   0.2486,
+   0.3608,
+   0.5204
+  ],
+  "LF_bereich": [
+   0.4387,
+   2.2794
+  ],
+  "verlauf_anfang_ende": [
+   0.3729,
+   0.3992
+  ]
+ },
+ "feld79_K9_mit_bias0.5": {
+  "mittel_ende": 0.2137,
+  "max_ende": 0.4756,
+  "je_ring_mittel": [
+   0.1905,
+   0.219,
+   0.1626
+  ],
+  "LF_bereich": [
+   0.7192,
+   1.3905
+  ],
+  "verlauf_anfang_ende": [
+   0.2236,
+   0.2137
+  ]
+ },
+ "takte_bis_5tau_rest_feld79": 4,
+ "takte_bis_5tau_rest_tau5": 23,
+ "(2/9)^4": 0.00244,
+ "e^-5": 0.00674,
+ "stationaer_theorie_bias": 0.1429
+}
