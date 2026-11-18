@@ -4,6 +4,13 @@
 > Benchmark everything.
 > Keep only what survives.
 
+**Live:** [tbarth-max.github.io/RAUM27](https://tbarth-max.github.io/RAUM27/) · [Würfel ansehen / view the cube](https://tbarth-max.github.io/RAUM27/raum27_test.html)
+
+**Kurz auf Deutsch:** RAUM27 ist ein offenes Forschungsprojekt. Im Kern steht ein
+Würfel aus 19 × 19 × 19 = 6859 Knoten, der mit ganzen Zahlen und Brüchen exakt
+rechnet und im eigenen Browser läuft. Jede Idee muss sich an überprüfbarer
+Mathematik und an Tests bewähren, bevor sie bleibt. Quelltext und Tests sind offen.
+
 RAUM27 is an open research project exploring prediction, pattern recognition and reproducible benchmarking.
 
 The objective is not to prove a theory.
@@ -14,11 +21,14 @@ Every hypothesis must survive objective benchmarks before it becomes part of the
 
 ## Research Areas
 
-- Prediction Benchmarks
-- Pattern Recognition
-- Multi-Agent Systems
-- Information Geometry
-- Reproducible Experiments
+- **Prediction Benchmarks** — active, see below.
+- Pattern Recognition — not started.
+- Multi-Agent Systems — not started.
+- Information Geometry — not started.
+- Reproducible Experiments — not started.
+
+Listed for direction, not as a claim of coverage: per the principle below,
+nothing here counts until it has actual benchmarked work behind it.
 
 ## Research Principle
 
@@ -235,6 +245,47 @@ any function of history to a process with provably zero mutual
 information between past and future draws, and the benchmark's job is to
 demonstrate that honestly rather than assume it.
 
+**Real data, not just synthetic:** `data/lotto_6aus49_since_2000.csv`
+holds 2724 real German Lotto 6-aus-49 draws, 2000-01-01 through
+2026-07-22 (source: [daowa89/lottery-archive](https://github.com/daowa89/lottery-archive),
+see `data/README.md`). `load_draws_from_csv` loads it;
+`scripts/run_real_data_benchmark.py` runs both `RandomPredictor` and
+`FingerprintKNNPredictor` over the full real history and reports the
+delta between them — the exact "Zufallsdurchlauf vs. Vorhersagedurchlauf"
+comparison this benchmark exists to make. It is a standalone script, not
+part of `pytest`, because the k-NN backtest over ~2700 real draws is
+O(n²) and takes several minutes; `tests/test_real_data_and_ztest.py`
+covers the same loading/statistics logic in milliseconds on a slice of
+the real data instead.
+
+Because a full permutation test on that much data would mean re-running
+the expensive predictor hundreds of times, real-data significance is
+assessed with `z_test_vs_theoretical_baseline` instead: under the null
+hypothesis, walk-forward match counts are i.i.d. Hypergeometric(49,6,6)
+*regardless of any correlation in the predictor's own picks* (proof in
+its docstring), so the Central Limit Theorem gives an exact-in-the-large-sample
+significance test without needing to re-run the predictor at all.
+
+**Actual result, run once on the full real history (`k=5`, `seed=1`, no
+tuning or cherry-picking — this is the exact specification from the
+source notes):**
+
+| | mean matches/draw | vs. theoretical baseline (0.7347) | p-value |
+|---|---|---|---|
+| `RandomPredictor` | 0.7384 | +0.0037 | 0.40 (not significant) |
+| `FingerprintKNNPredictor` | 0.7032 | **−0.0315** | 0.98 for "better than chance" |
+
+**Delta (Vorhersage − Zufall) = −0.0353 matches/draw.** The fingerprint/k-NN
+system did not show the requested measurable improvement over random —
+on this real dataset its point estimate is slightly *below* random
+guessing, not above it (z ≈ −2.17; treated as its own one-sided test for
+"significantly worse," that corresponds to p ≈ 0.015, though with no
+correction for having looked at this after the fact, so read that as
+suggestive rather than conclusive). The one claim this result does
+support without qualification: there is no evidence here of the
+algorithm doing better than chance, which is the bar this whole exercise
+was set up to test.
+
 **What this does and does not establish:**
 
 - It shows this specific algorithm does not manufacture a fake edge out
@@ -345,6 +396,71 @@ chaos erases it:
 is whether the specific data stream you hand the model has measurable
 memory in it. This module demonstrates, with the same code, that the
 methodology correctly says yes to one and no to the other.
+
+## Module: `raum27.debruijn_loop` — Cyclic State Space with Instant Position Lookup
+
+A De Bruijn sequence B(2, k) is a binary cyclic sequence of length 2^k in which
+every possible k-bit window appears **exactly once**. The consequence: reading
+any k consecutive bits from anywhere in the loop uniquely identifies the
+absolute position — without knowing the entry point, without scanning from a
+fixed start.
+
+This is the mathematical core of absolute rotary encoders (used in robotics and
+CNC machines) and is proven combinatorics (Martin 1934; van Aardenne-Ehrenfest
+& de Bruijn 1951).
+
+**What is implemented and verified (`tests/test_debruijn_loop.py`, 10 tests):**
+
+- `generate(k)` — FKM recursive construction of B(2, k), length exactly 2^k.
+- `position_map(loop, k)` — lookup table of all 2^k windows → position, built
+  in O(N); raises `ValueError` if any window appears more than once.
+- `lookup_position(window, table)` — O(1) absolute position recovery from a
+  k-bit window read at any entry point.
+- `shannon_capacity(n)` — log₂(n) bits for n distinguishable positions. The
+  loop topology does not add storage capacity over a linear arrangement of the
+  same n positions; the advantage is access pattern, not density.
+
+**What this does NOT claim:**
+
+- The circular arrangement stores more information than a linear one — it does
+  not. Shannon capacity is log₂(N) bits in both cases.
+- Anything about physical signals, resonance, or photonics.
+
+## Module: `raum27.scale_selection` — Automatic Resolution-Level Selection
+
+Every signal containing a pattern of characteristic width σ_pattern embedded in
+noise has an **optimal analysis scale**: too fine (σ → 0) and noise dominates;
+too coarse (σ ≫ σ_pattern) and the pattern averages away. The signal-to-noise
+ratio of pattern detection is maximised when the smoothing scale matches the
+pattern width — the classical Matched Filter / Scale-Space theorem (Lindeberg
+1994).
+
+Applied to multi-agent systems: an agent network can measure its own detection
+quality across candidate scales and select the maximum without any prior
+knowledge of what the pattern width is.
+
+**What is implemented and verified (`tests/test_scale_selection.py`, 10 tests):**
+
+- `smooth(signal, sigma)` — 1D Gaussian convolution, pure stdlib.
+- `detection_snr(signal, sigma, center, exclude_radius)` — SNR of the pattern
+  peak above background at a given smoothing scale.
+- `select_scale(signal, center, exclude_radius, scales)` — scans candidate
+  scales and returns the (sigma, SNR) pair at the maximum.
+
+**Verified claims:**
+
+- The automatically selected scale lies within ±10σ of the true pattern width
+  across a range of pattern widths (5, 10, 20, 30 samples).
+- Both the nano-scale extreme (σ = 0, no smoothing) and the macro-scale extreme
+  (σ = 55) yield strictly lower SNR than the selected optimum.
+- The selection is parameter-free with respect to the pattern width.
+
+**What this does NOT claim:**
+
+- "Nano-level" has special physical status.
+- The result generalises unchanged to non-Gaussian patterns or non-Gaussian
+  noise (the theorem still applies, but the optimal kernel shape changes).
+- Anything about consciousness or resonance fields.
 
 ## Module: `raum27.rubik_state` — Solved-State Check, Factored by Axis
 
@@ -3460,3 +3576,145 @@ move it forward.
 19. ~~The delta radius ΔR: cube or rhombus reading?~~ **Settled 21.10.:**
     cube reading, the 6 crossing point is the face centre (the photon
     hole). ΔR = (a/2)(√3 − 1), for a = 9 about 3.294.
+## Module: `raum27.optical_ring_register` — Cyclic RGB Register, and the Cost of Optical Storage
+
+A conversation about mirror photos proposed a "ring register": RGB LED
+states circulating through a mirror-reflection loop, each round trip a
+register position, the last position fed back into the first. Same
+approach as everywhere else in this package — split the idea into the part
+that is ordinary, checkable engineering and the part that is a physical
+claim needing a number, not prose.
+
+**The discrete part** (implemented directly): `RingRegister` is a
+fixed-capacity circular shift register of 24-bit RGB words, addressed mod
+N — the same family of cyclic structure as `debruijn_loop` and `q144`.
+`write`/`read` address any position; `rotate` shifts the whole register by
+n steps, the loop's feedback path. `total_capacity_bits(n)` is `n * 24`,
+identical to a linear array of the same length: the ring topology changes
+access pattern, not capacity (the same conclusion `debruijn_loop` already
+establishes for a different cyclic structure).
+
+**The optical part** (checked, and it does not hold up as-is): a real
+mirror has reflectivity R < 1, so after n round trips the signal amplitude
+is `R**n` (`mirror_attenuation`) — ordinary passive-cavity decay, the same
+law behind any optical cavity's finesse. `round_trips_until_below_quantization`
+computes exactly how many round trips a given reflectivity survives before
+the attenuated signal drops below one 8-bit quantization step. For
+realistic first-surface mirrors (R in 0.90–0.99) that boundary is **53 to
+552 round trips** — not long enough for a passive mirror loop alone to
+serve as durable storage.
+
+**What closes the gap**: `OpticalRingRegister` tracks round-trip age per
+cell and exposes `amplitude`/`is_still_resolvable` against that boundary,
+and `regenerate` resets a cell's age to zero without touching its stored
+value — the concrete implementation of "the loop needs periodic
+regeneration to stay stable," verified in
+`tests/test_optical_ring_register.py`: the digital value survives past the
+resolvability boundary as an integer even after the optical signal alone
+would no longer be resolvable, and only `regenerate` (not the optics) can
+reset the amplitude.
+
+**What this does NOT claim:**
+
+- That a mirror arrangement can be built to hit any chosen reflectivity or
+  capacity — those are free parameters here, not measurements of a built
+  device.
+- That regeneration happens optically. It is modeled as re-emitting the
+  already-known digital value at full amplitude — an electronic operation
+  on a measured/decoded value, not something the mirror loop does for
+  free.
+- Anything about "resonance," consciousness, or physical information
+  transfer beyond ordinary geometric attenuation of reflected light.
+
+**One idealization worth stating precisely rather than dismissing:** R = 1
+(a perfectly lossless mirror) is a genuine mathematical limit —
+`round_trips_survived_near_ideal` shows survived round trips growing
+without bound as R approaches 1, verified in
+`test_round_trips_survived_grows_without_bound_as_reflectivity_approaches_one`.
+This is the same logical status as a Carnot engine's efficiency
+`1 - Tc/Th`: a real, calculable theoretical upper bound that is never
+reached by an actual device — a real mirror's R < 1 is blocked by
+absorption, scattering, and imperfect coatings, the same way a real heat
+engine's efficiency is blocked by the second law of thermodynamics.
+Citing the ideal limit is legitimate; treating it as a design target for
+a real optical loop is not.
+
+## Corrections to the 2026-08-27 synthesis document
+
+A later pass synthesized everything confirmed that day into one document.
+Four claims in it didn't hold up as stated, corrected here and pinned
+down with tests in `tests/test_synthesis_corrections_2026_08_27.py` (plus
+a dedicated module for the fourth):
+
+1. **16/9 was claimed "four independent confirmations."** Two of the four
+   are the same fact stated twice — `C = 3/4` squared and `C = 4/3`
+   squared are reciprocals of each other, not independent derivations.
+   A third ("Lean proof at n=1") has no corresponding code in this repo
+   to check. Only one is actually verified here: `coupling_constant() ==
+   4/3` (from `cube_symmetry`, corners/faces) and its square `16/9`.
+2. **"6 face midpoints determine the 8 corners with no information
+   loss"** contradicts the already-verified eigenstructure of
+   `cube_projection`'s corner↔face round trip: `composed_kernel()` has a
+   proven 2-dimensional eigenvalue-0 eigenspace. Demonstrated directly:
+   `(1, 1, -1, -1, 0, 0)` (faces ordered +x,-x,+y,-y,+z,-z) is a nonzero
+   vector that `composed_kernel()` maps to exactly zero — information
+   about that mode is provably not recoverable from face values alone.
+3. **The "equilibrium formula"** `((((X+/X-)/(Y+/Y-)²)/(Z+/Z-)³)/(T+/T-)⁴)`
+   was claimed to detect whether all four axes are balanced. It's
+   necessary (balance ⟹ ratio = 1) but not sufficient (ratio = 1 ⇏
+   balance): `raum27.equilibrium_check` implements the formula exactly,
+   and `test_equilibrium_ratio_has_false_positives` gives a concrete
+   counterexample — `X+/X- = 2`, `Y+/Y- ≈ √2` (both clearly unbalanced)
+   still gives ratio ≈ 1, because the mismatch cancels across the
+   different exponents. Checking `all_axes_balanced` directly (comparing
+   each pair) is what the notes actually needed; the single-scalar
+   formula can't substitute for it.
+4. **"9⁹ ≈ 387 million crosses the speed of light (≈300 million)"** is a
+   unit artifact, not a structural fact: `c` is 299,792,458 **m/s**
+   specifically. In km/h it's ≈1.08 billion; in miles/s it's ≈186,282 —
+   nowhere near 9⁹ in either. A real relationship to `c` would survive a
+   change of units; this doesn't (`test_speed_of_light_threshold_is_not_unit_invariant`).
+
+## Module: `raum27.bias_detection` — A Different Question From `lotto_benchmark`
+
+A later proposal (from a separate brainstorming session, forwarded here
+for review) bundled a `GeometrieKern` restating already-verified
+constants — with two regressions worth naming rather than silently
+merging past: its `C_QUADRIERT` comment reverted to the already-corrected
+"vierfach unabhängig bestätigt" overclaim (see the corrections above —
+still just one verified derivation here), and its
+`sechs_flaechen_zu_acht_ecken` function claimed to show the face↔corner
+reconstruction is lossless "see today's clarification," which sounds like
+it addresses the proven 2D null space in `cube_projection` but doesn't:
+it only recombines the 6 fixed axis *direction vectors* into the 8
+corner directions (i.e. it reproduces `corner_directions()` from its own
+building blocks) — not a reconstruction of arbitrary *values* placed on
+the 6 faces, which is what the null space is actually about. Neither
+regression is carried into this repo.
+
+What *was* new and held up: a bias detector, now `ConstantBiasDetector`.
+It answers a different question than `lotto_benchmark` — not "does
+history predict the next draw" (no, confirmed), but "does the draw
+mechanism itself have a persistent, non-uniform bias" (e.g. a defective
+ball or unbalanced equipment — exactly what lottery regulators audit
+for). Detected by ordinary frequency analysis: sum how often each value
+appears across many events and flag the largest deviations from the
+uniform expectation. Verified here, not just asserted:
+
+- Reliably recovers a deliberately injected constant bias
+  (`test_detector_finds_a_deliberately_injected_constant_bias`), with
+  detection strength increasing as the injected bias grows
+  (`test_detection_strength_increases_with_bias_strength`).
+- **Its false-positive rate was checked, which the original proposal
+  didn't do:** with no injected bias, mean overlap with an arbitrary
+  fixed 5-number set across 20 seeds stays near the chance expectation
+  (5·5/49 ≈ 0.51), not near 5
+  (`test_false_positive_rate_matches_chance_when_there_is_no_bias`).
+
+**What this does not do:** detect cyclic or time-varying patterns, or
+say anything about whether history predicts a specific future draw — a
+biased-but-fair mechanism (same wrong distribution every time) is a
+different failure mode than the notes' original claim, and this module
+does not blur the two. On a real certified lottery there is no constant
+bias to find, so this tool would correctly find nothing there — it is
+not a way to route around the null result in `lotto_benchmark`.

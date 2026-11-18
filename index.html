@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAUM27</title>
+<meta name="description" content="RAUM27 – ein offenes Forschungsprojekt: ein exakt rechnender Würfel aus 19×19×19 Knoten, der im eigenen Browser läuft.">
+<style>
+  :root{--bg:#0a0a0f;--fg:#f5e6c0;--gold:#e8b34a;--dim:#8a8a98;--line:#23232e;color-scheme:dark}
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){--bg:#faf8f2;--fg:#1d1b16;--gold:#9a6a10;--dim:#5d5a52;--line:#ddd6c6;color-scheme:light}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}
+  main{max-width:720px;margin:0 auto;padding:40px 16px}
+  h1{color:var(--gold);font-size:28px;margin:0 0 .3em}
+  p{margin:.6em 0}
+  .sub{color:var(--dim)}
+  a.btn{display:inline-block;margin:1.2em .6em 0 0;padding:.6em 1.1em;border:1px solid var(--gold);
+        color:var(--gold);text-decoration:none;border-radius:8px}
+  a.btn:hover{background:var(--gold);color:var(--bg)}
+  ul{padding-left:1.2em}
+  footer{margin-top:3em;padding-top:1em;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <h1>RAUM27</h1>
+  <p class="sub">Ein offenes Forschungsprojekt. Ein Würfel aus 19 × 19 × 19 = 6859 Knoten, der exakt rechnet – im eigenen Browser.</p>
+
+  <p>RAUM27 baut eine kleine Welt aus ganzen Zahlen: sechs Flächen, acht Ecken, ein Mittelpunkt. Jede Idee muss sich an überprüfbarer Mathematik und an Tests bewähren, bevor sie bleibt.</p>
+
+  <ul>
+    <li>Rechnet mit ganzen Zahlen und Brüchen, ohne Rundungsdrift.</li>
+    <li>Läuft lokal im Browser, ohne Konto und ohne Server.</li>
+    <li>Quelltext und Tests sind offen einsehbar.</li>
+  </ul>
+
+  <a class="btn" href="raum27_test.html">Würfel ansehen</a>
+  <a class="btn" href="https://github.com/tbarth-max/RAUM27">Quelltext auf GitHub</a>
+
+  <footer>RAUM27 · Forschungsstand, kein Produkt.</footer>
+</main>
+</body>
+</html>

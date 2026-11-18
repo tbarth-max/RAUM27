@@ -41,9 +41,11 @@ from raum27.lotto_benchmark import (
     expected_any_repeat_years,
     expected_matches,
     expected_specific_state_recurrence_years,
+    load_draws_from_csv,
     match_probability,
     n_draw_states,
     permutation_test,
+    z_test_vs_theoretical_baseline,
 )
 from raum27.autocorrelation_control import (
     PersistencePredictor,
@@ -64,6 +66,17 @@ from raum27.clockfree_scheduler import (
     ScheduleResult,
     schedule_round_robin,
     schedule_run_to_completion,
+)
+from raum27.debruijn_loop import (
+    generate as debruijn_generate,
+    lookup_position,
+    position_map,
+    shannon_capacity,
+)
+from raum27.scale_selection import (
+    detection_snr,
+    select_scale,
+    smooth,
 )
 from raum27.rubik_state import (
     axis_is_solved,
@@ -119,6 +132,17 @@ from raum27.kubus_6_8_gleichgewicht import (
     find_equilibrium as kubus68_find_equilibrium,
     is_strictly_increasing_on_sample as kubus68_is_strictly_increasing_on_sample,
 )
+from raum27.optical_ring_register import (
+    OpticalRingRegister,
+    RGBWord,
+    RingRegister,
+    mirror_attenuation,
+    round_trips_survived_near_ideal,
+    round_trips_until_below_quantization,
+    total_capacity_bits as ring_register_total_capacity_bits,
+)
+from raum27.equilibrium_check import all_axes_balanced, equilibrium_ratio
+from raum27.bias_detection import ConstantBiasDetector
 from raum27.kern_modul_v1 import (
     all_corners as kmv1_all_corners,
     complement_contribution as kmv1_complement_contribution,
@@ -862,6 +886,8 @@ __all__ = [
     "match_probability",
     "n_draw_states",
     "permutation_test",
+    "load_draws_from_csv",
+    "z_test_vs_theoretical_baseline",
     "PersistencePredictor",
     "permutation_test_continuous",
     "simulate_ar1",
@@ -876,6 +902,13 @@ __all__ = [
     "ScheduleResult",
     "schedule_round_robin",
     "schedule_run_to_completion",
+    "debruijn_generate",
+    "lookup_position",
+    "position_map",
+    "shannon_capacity",
+    "detection_snr",
+    "select_scale",
+    "smooth",
     "axis_is_solved",
     "axis_pairs",
     "face_is_uniform",
@@ -1523,4 +1556,14 @@ __all__ = [
     "gp_quarter_class",
     "gp_returning_part",
     "gp_separable",
+    "OpticalRingRegister",
+    "RGBWord",
+    "RingRegister",
+    "mirror_attenuation",
+    "round_trips_survived_near_ideal",
+    "round_trips_until_below_quantization",
+    "ring_register_total_capacity_bits",
+    "all_axes_balanced",
+    "equilibrium_ratio",
+    "ConstantBiasDetector",
 ]
